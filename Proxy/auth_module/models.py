@@ -12,6 +12,6 @@ class SignUp(models.Model):
 		('1', 'PROFESSOR'),
 	)
 	name = models.CharField(max_length=30)
-	email = models.EmailField()
+	email = models.EmailField(unique=True)
 	code = models.CharField(max_length=6)
 	account = models.CharField(max_length=1, choices = ACCOUNT_TYPE)
