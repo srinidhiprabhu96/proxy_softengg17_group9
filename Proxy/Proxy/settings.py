@@ -54,7 +54,9 @@ ROOT_URLCONF = 'Proxy.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            './Proxy/templates/prof/',
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
