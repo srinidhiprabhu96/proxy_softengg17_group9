@@ -1,6 +1,9 @@
 <html>
 	<head>
 		<title>Sign-Up for Proxy</title>
+		<style>
+			.error {color: red;}
+		</style>
 	</head>
 	
 	<body>
@@ -11,5 +14,10 @@
 			<input type="text" name="email"><br>
 			<input type="submit" value="Submit"><br>
 		</form>
+		{% if messages %}
+			{% for message in messages %}
+				<span {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</span><br>
+			{% endfor %}
+		{% endif %}
 	</body>
 </html>
