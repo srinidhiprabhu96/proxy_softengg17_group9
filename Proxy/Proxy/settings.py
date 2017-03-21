@@ -55,7 +55,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            './Proxy/templates/prof/',
+            './templates/prof/',
         ],
         'APP_DIRS': True,
         'OPTIONS': {
