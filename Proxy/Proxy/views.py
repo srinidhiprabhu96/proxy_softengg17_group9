@@ -79,7 +79,8 @@ def before_verify(request):
 			signupobject.save()
 			return render(request,'verify.html')
 		
-	# If it's not POST, just redirect to signup page.	
+	# If it's not POST, just redirect to signup page.
+	messages.error(request,"Please enter an e-mail ID of the form \"abc@smail.iitm.ac.in\" or \"xyz@iitm.ac.in\"")
 	return redirect("/signup/")
 	
 # The method called when the user clicks on the verification link.
