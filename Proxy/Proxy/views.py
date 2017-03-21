@@ -2,11 +2,9 @@ from django.http import HttpResponse
 from django.template.loader import get_template
 from django.shortcuts import render,redirect
 from django.contrib import messages
+from django.template import Template, Context
 import string
 import smtplib
-from PIL import Image
-from PIL import ImageFont
-from PIL import ImageDraw
 from email.mime.text import MIMEText
 from email.mime.application import MIMEApplication
 from email.mime.multipart import MIMEMultipart
@@ -24,13 +22,13 @@ import md5
 
 def signup(request):
 	return render(request,'signup.html')
-	
+
 @csrf_exempt
 def before_verify(request):
 	if request.method == 'POST':		# If the method is POST, it means the request is coming from the signup page.
 		form = SignUpForm(request.POST)
 		if form.is_valid():		# Get the entered data as a form.
-		
+
 			# Get form fields.
 			name = str(form.cleaned_data['name'])
 			email = str(form.cleaned_data['email'])
@@ -46,11 +44,11 @@ def before_verify(request):
 				else:
 					messages.info(request,"This e-mail is already in use.")
 				return render(request,'verify.html')
-				
+
 			# If no match for the email found in the table.
 			prof_mail_re = re.compile(".+@iitm.ac.in")
 			student_mail_re = re.compile(".+@smail.iitm.ac.in")
-			
+
 			# Try matching with the prof and student mail reg-ex
 			prof_match = prof_mail_re.match(email)
 			if prof_match:
@@ -60,28 +58,28 @@ def before_verify(request):
 				if student_match:
 					account_label = '0'
 				else:
-					
+
 					# If both reg-exs don't match display an error message.
 					messages.error(request,"Please enter an e-mail ID of the form \"abc@smail.iitm.ac.in\" or \"xyz@iitm.ac.in\"")
 					return redirect("/signup/")		# Redirects to signup URL.
-			
-			# Control reaches here if it's either a student or prof account.		
+
+			# Control reaches here if it's either a student or prof account.
 			code = generateCode()
 			signupobject = SignUp(name=name,email=email,code=code,account=account_label)
 			mailSent = sendEmail(name,email,code,account_label)
-			
+
 			if not mailSent:
 				# If there is some error while sending the mail, display an error message.
 				messages.error(request,"Something went wrong, please try again!")
 				return redirect("/signup/")
-			
+
 			# Save the signup object only once mail is sent.
 			signupobject.save()
 			return render(request,'verify.html')
-		
-	# If it's not POST, just redirect to signup page.	
+
+	# If it's not POST, just redirect to signup page.
 	return redirect("/signup/")
-	
+
 # The method called when the user clicks on the verification link.
 def after_verify(request):
 	if request.method == 'GET':
@@ -94,7 +92,7 @@ def after_verify(request):
 			# The code does not exist.
 			context = {}
 			context['code_not_found'] = True
-			
+
 		else:
 			# There must be only 1 element in row.
 			if row.status == '0':
@@ -106,7 +104,7 @@ def after_verify(request):
 				context = {}
 				context['verified'] = True
 		return render(request,'password_signup_page.html',Context(context))
-	
+
 	# Redirect to signup page if request method is not GET.
 	return redirect("/signup/")
 
@@ -119,7 +117,7 @@ def finish_signup(request):
 		password = request.POST['password']
 		confirm = request.POST['confirm_password']
 		if password == confirm:
-			
+
 			# Add hashed password here.
 			hashed = make_password(password)		#Used for hashing the password. # Use a similar function check_password while trying to login.
 			try:
@@ -141,10 +139,10 @@ def finish_signup(request):
 			messages.error(request, "Passwords do not match")
 		context = {}
 		context['name'] = name
-		context['email'] = email		
+		context['email'] = email
 		return render(request,'password_signup_page.html',Context(context))
 	return redirect("/signup/")
-	
+
 def generateCode():
 	code = ''
 	codeLength = 32		# For more security, so that guessing the code is difficult.
@@ -153,7 +151,7 @@ def generateCode():
 		code = get_random_string(length= codeLength, allowed_chars=u'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789')
 		flag = len(SignUp.objects.filter(code=code))
 	return code
-	
+
 # This function is being used instead of Django's inbuilt function because the mails weren't being sent when we used Django's inbuilt mail-sender. This needs to be looked into.
 def sendEmail(name,email,code,account_label):
 	try:
@@ -179,3 +177,31 @@ def sendEmail(name,email,code,account_label):
 		return True
 	except:
 		return False
+
+def prof_home(request):
+    # add context as third arg to render
+    return render(request, 'prof_home.html')
+
+def prof_course(request):
+    # add context as third arg to render
+    return render(request, 'prof_course.html')
+
+def add_stud(request):
+    # add context as third arg to render
+    return render(request, 'add_stud.html')
+
+def daily_report(request):
+    # add context as third arg to render
+    return render(request, 'daily_report.html')
+
+def prof_history(request):
+    # add context as third arg to render
+    return render(request, 'prof_history.html')
+
+def take_attendance(request):
+    # add context as third arg to render
+    return render(request, 'take_attendance.html')
+
+def prof_queries(request):
+    # add context as third arg to render
+    return render(request, 'prof_queries.html')
