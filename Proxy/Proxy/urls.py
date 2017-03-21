@@ -20,5 +20,7 @@ from Proxy.views import *
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^signup/$',signup),
-    url(r'^verify/$',verify)
+    url(r'^verify/$',before_verify),
+    url(r'^verification/',after_verify),
+    url(r'^finish-signup/$',finish_signup),
 ]

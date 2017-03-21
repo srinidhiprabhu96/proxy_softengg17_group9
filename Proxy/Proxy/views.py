@@ -14,15 +14,19 @@ from django.views.decorators.csrf import csrf_exempt
 from auth_module.forms import *
 from auth_module.models import *
 from django.utils.crypto import get_random_string
+from django.template import Context
+from django.contrib.auth.models import User
+from django.contrib.auth.hashers import make_password
 import random
 import string
 import re
+import md5
 
 def signup(request):
 	return render(request,'signup.html')
 	
 @csrf_exempt
-def verify(request):
+def before_verify(request):
 	if request.method == 'POST':		# If the method is POST, it means the request is coming from the signup page.
 		form = SignUpForm(request.POST)
 		if form.is_valid():		# Get the entered data as a form.
@@ -30,11 +34,17 @@ def verify(request):
 			# Get form fields.
 			name = str(form.cleaned_data['name'])
 			email = str(form.cleaned_data['email'])
-			match = SignUp.objects.filter(email=email)
-			if len(match) > 0:		# If the email is already present, just resend the mail.
-				row = match[0]
-				sendEmail(row.name,row.email,row.code)
-				messages.info(request,"Verification mail resent!")
+			try:
+				match = SignUp.objects.get(email=email)
+			except:
+				match = None
+			if match:		# If the email is already present, just resend the mail.
+				row = match
+				if row.status == '0':
+					sendEmail(row.name,row.email,row.code,row.account)
+					messages.info(request,"Verification mail resent!")
+				else:
+					messages.info(request,"This e-mail is already in use.")
 				return render(request,'verify.html')
 				
 			# If no match for the email found in the table.
@@ -58,7 +68,7 @@ def verify(request):
 			# Control reaches here if it's either a student or prof account.		
 			code = generateCode()
 			signupobject = SignUp(name=name,email=email,code=code,account=account_label)
-			mailSent = sendEmail(name,email,code)
+			mailSent = sendEmail(name,email,code,account_label)
 			
 			if not mailSent:
 				# If there is some error while sending the mail, display an error message.
@@ -71,11 +81,73 @@ def verify(request):
 		
 	# If it's not POST, just redirect to signup page.	
 	return redirect("/signup/")
+	
+# The method called when the user clicks on the verification link.
+def after_verify(request):
+	if request.method == 'GET':
+		verify_code = request.GET['code']
+		try:
+			row = SignUp.objects.get(code=verify_code)		# We get either no rows or 1 row because code is ensured to be unique.
+		except:
+			row = None
+		if not row:
+			# The code does not exist.
+			context = {}
+			context['code_not_found'] = True
+			
+		else:
+			# There must be only 1 element in row.
+			if row.status == '0':
+				context = {}
+				context['code_not_found'] = False
+				context['name'] = row.name
+				context['email'] = row.email
+			else:
+				context = {}
+				context['verified'] = True
+		return render(request,'password_signup_page.html',Context(context))
+	
+	# Redirect to signup page if request method is not GET.
+	return redirect("/signup/")
 
-
+@csrf_exempt
+def finish_signup(request):
+	if request.method == 'POST':
+		# We use the django User class for maintaining the accounts.
+		name = request.POST['name']
+		email = request.POST['email']
+		password = request.POST['password']
+		confirm = request.POST['confirm_password']
+		if password == confirm:
+			
+			# Add hashed password here.
+			hashed = make_password(password)		#Used for hashing the password. # Use a similar function check_password while trying to login.
+			try:
+				row = SignUp.objects.get(email=email)	# Since email is unique
+			except:
+				row = None
+			if row:	# E-mail field is unique in signup
+				try:
+					user = ProxyUser(first_name=name,email=email,password=hashed,account_type=row.account)
+					user.save()
+					row.status = '1'
+					row.save()
+				except:
+					pass
+				return render(request,'finish_signup.html')
+			else:
+				messages.error(request, "Could not find e-mail")	# There are no entries corresponding to this email.
+		else:
+			messages.error(request, "Passwords do not match")
+		context = {}
+		context['name'] = name
+		context['email'] = email		
+		return render(request,'password_signup_page.html',Context(context))
+	return redirect("/signup/")
+	
 def generateCode():
 	code = ''
-	codeLength = 6
+	codeLength = 32		# For more security, so that guessing the code is difficult.
 	flag = 1
 	while flag != 0:		# Loop to ensure that the generated code doesn't exist already.
 		code = get_random_string(length= codeLength, allowed_chars=u'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789')
@@ -83,7 +155,7 @@ def generateCode():
 	return code
 	
 # This function is being used instead of Django's inbuilt function because the mails weren't being sent when we used Django's inbuilt mail-sender. This needs to be looked into.
-def sendEmail(name,email,code):
+def sendEmail(name,email,code,account_label):
 	try:
 		userEmail='softwareengineeringroup9@gmail.com'
 		userPassword = 'zecykaz2'
@@ -91,7 +163,11 @@ def sendEmail(name,email,code):
 		content['SUBJECT'] = 'Proxy E-mail verification'
 		content['FROM'] = userEmail
 		content['TO'] = email
-		p=MIMEText("Hello "+name+",\n\nThis is a verification mail from Group 9. Please click on the below link to verify your email ID.\n\nhttp://127.0.0.1:8080/verification/?code=" + code)
+		if account_label == '1':
+			message = "You will be given professor rights in your account."
+		else:
+			message = "You will be given student rights in your account."
+		p=MIMEText("Hello "+name+",\n\nThis is a verification mail from Group 9.\n"+message+"\nPlease click on the below link to verify your email ID.\n\nhttp://127.0.0.1:8000/verification/?code=" + code)
 		content.attach(p)
 		mail=smtplib.SMTP('smtp.gmail.com',587) #smtp server and its port number
 		mail.ehlo()
