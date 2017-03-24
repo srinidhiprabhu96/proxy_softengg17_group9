@@ -1,0 +1,23 @@
+<html>
+	<head>
+		<title>Login</title>
+		<style>
+			.error {color: red;}
+		</style>
+	</head>
+
+	<body>
+		<form action="/auth1/" method="post">
+			E-mail id:<br>
+			<input type="text" name="email"><br>
+			Password:<br>
+			<input type="password" name="password"><br>
+			<input type="submit" value="Submit"><br>
+		</form>
+		{% if messages %}
+			{% for message in messages %}
+				<span {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</span><br>
+			{% endfor %}
+		{% endif %}
+	</body>
+</html>

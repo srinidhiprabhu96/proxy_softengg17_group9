@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.template.loader import get_template
 from django.shortcuts import render,redirect
 from django.contrib import messages
-from django.template import Template, Context
+from django.template import Template, Context, RequestContext
 import string
 import smtplib
 from email.mime.text import MIMEText
@@ -126,7 +126,7 @@ def finish_signup(request):
 				row = None
 			if row:	# E-mail field is unique in signup
 				try:
-					user = ProxyUser(first_name=name,email=email,password=hashed,account_type=row.account)
+					user = ProxyUser(username=email,first_name=name,email=email,password=hashed,account_type=row.account)
 					user.save()
 					row.status = '1'
 					row.save()
@@ -178,30 +178,65 @@ def sendEmail(name,email,code,account_label):
 	except:
 		return False
 
+def login(request):
+	return render(request, 'login.html')
+
+@csrf_exempt
+def auth(request):
+	if request.method == 'POST':
+		# print request.POST
+		form = LoginForm(request.POST)
+		# print form
+		if form.is_valid():		# Get the entered data as a form.
+			# Get form fields.
+			e_mail = str(form.cleaned_data['email'])
+			raw_password = str(form.cleaned_data['password'])
+			try:
+				user_obj = ProxyUser.objects.get(email = e_mail)
+				is_password = user_obj.check_password(raw_password)
+				# print is_password
+				if is_password:
+					if user_obj.ACCOUNT_TYPE == 0:
+						return redirect('/student_home/')
+					else:
+						return redirect('/prof_home/')
+				else:
+					messages.error(request, "Password doesn't match. Please try again.")
+			except:
+				messages.error(request, "User doesn't exist. Please try again.")
+		else:
+			messages.error(request, "Please check your details and try again.")
+	return redirect("/login/")
+
+
+@csrf_exempt
 def prof_home(request):
-    # add context as third arg to render
-    return render(request, 'prof_home.html')
+	# add context as third arg to render
+	if request.user.is_authenticated():
+		return render(request, 'prof_home.html')
+	else:
+		return redirect('/signup/')
 
 def prof_course(request):
-    # add context as third arg to render
-    return render(request, 'prof_course.html')
+	# add context as third arg to render
+	return render(request, 'prof_course.html')
 
 def add_stud(request):
-    # add context as third arg to render
-    return render(request, 'add_stud.html')
+	# add context as third arg to render
+	return render(request, 'add_stud.html')
 
 def daily_report(request):
-    # add context as third arg to render
-    return render(request, 'daily_report.html')
+	# add context as third arg to render
+	return render(request, 'daily_report.html')
 
 def prof_history(request):
-    # add context as third arg to render
-    return render(request, 'prof_history.html')
+	# add context as third arg to render
+	return render(request, 'prof_history.html')
 
 def take_attendance(request):
-    # add context as third arg to render
-    return render(request, 'take_attendance.html')
+	# add context as third arg to render
+	return render(request, 'take_attendance.html')
 
 def prof_queries(request):
-    # add context as third arg to render
-    return render(request, 'prof_queries.html')
+	# add context as third arg to render
+	return render(request, 'prof_queries.html')
