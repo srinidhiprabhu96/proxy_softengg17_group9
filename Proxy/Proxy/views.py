@@ -13,8 +13,9 @@ from auth_module.forms import *
 from auth_module.models import *
 from django.utils.crypto import get_random_string
 from django.template import Context
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User,Permission
 from django.contrib.auth.hashers import make_password
+from django.contrib.auth import authenticate, login
 import random
 import string
 import re
@@ -127,13 +128,18 @@ def finish_signup(request):
 				row = None
 			if row:	# E-mail field is unique in signup
 				try:
-					user = ProxyUser(username=email,first_name=name,email=email,password=hashed,account_type=row.account)
+					if row.account == '1':
+						is_prof = True
+					else:
+						is_prof = False
+					user = User(username=email,first_name=name,email=email,password=hashed,is_staff=is_prof)
 					user.save()
 					row.status = '1'
 					row.save()
-				except:
-					pass
-				return render(request,'finish_signup.html')
+					return render(request,'finish_signup.html')
+				except Exception as e:
+					messages.error(request, "Some error occurred.")
+				
 			else:
 				messages.error(request, "Could not find e-mail")	# There are no entries corresponding to this email.
 		else:
@@ -144,17 +150,9 @@ def finish_signup(request):
 		return render(request,'password_signup_page.html',Context(context))
 	return redirect("/signup/")
 
-def generateCode():
-	code = ''
-	codeLength = 32		# For more security, so that guessing the code is difficult.
-	flag = 1
-	while flag != 0:		# Loop to ensure that the generated code doesn't exist already.
-		code = get_random_string(length= codeLength, allowed_chars=u'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789')
-		flag = len(SignUp.objects.filter(code=code))
-	return code
-
 # This function is being used instead of Django's inbuilt function because the mails weren't being sent when we used Django's inbuilt mail-sender. This needs to be looked into.
 def sendEmail(name,email,code,account_label):
+	print "Hi in sendEmail"
 	try:
 		userEmail='softwareengineeringroup9@gmail.com'
 		userPassword = 'zecykaz2'
@@ -166,6 +164,7 @@ def sendEmail(name,email,code,account_label):
 			message = "You will be given professor rights in your account."
 		else:
 			message = "You will be given student rights in your account."
+		print message
 		p=MIMEText("Hello "+name+",\n\nThis is a verification mail from Group 9.\n"+message+"\nPlease click on the below link to verify your email ID.\n\nhttp://127.0.0.1:8000/verification/?code=" + code)
 		content.attach(p)
 		mail=smtplib.SMTP('smtp.gmail.com',587) #smtp server and its port number
@@ -178,6 +177,18 @@ def sendEmail(name,email,code,account_label):
 		return True
 	except:
 		return False
+		
+		
+def generateCode():
+	code = ''
+	codeLength = 32		# For more security, so that guessing the code is difficult.
+	flag = 1
+	while flag != 0:		# Loop to ensure that the generated code doesn't exist already.
+		code = get_random_string(length= codeLength, allowed_chars=u'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789')
+		flag = len(SignUp.objects.filter(code=code))
+	return code
+
+
 
 def login(request):
 	return render(request, 'login.html')
@@ -193,16 +204,21 @@ def auth(request):
 			e_mail = str(form.cleaned_data['email'])
 			raw_password = str(form.cleaned_data['password'])
 			try:
-				user_obj = ProxyUser.objects.get(email = e_mail)
-				is_password = user_obj.check_password(raw_password)
-				# print is_password
-				if is_password:
-					if user_obj.ACCOUNT_TYPE == 0:
-						return redirect('/student_home/')
+				#user_obj = User.objects.get(email = e_mail)
+				#is_password = user_obj.check_password(raw_password)
+				#print is_password
+				user = authenticate(username=email, password=raw_password)
+				if user:
+					if user.is_active:
+						login(request,user)
+						if user.is_staff:
+							return redirect('/prof_home/')						
+						else:
+							return redirect('/student_home/')
 					else:
-						return redirect('/prof_home/')
+						messages.error(request, "User isn't active. Please try again.")
 				else:
-					messages.error(request, "Password doesn't match. Please try again.")
+					messages.error(request, "Password doesn't match or user does not exist. Please try again.")
 			except:
 				messages.error(request, "User doesn't exist. Please try again.")
 		else:
@@ -213,6 +229,7 @@ def auth(request):
 @csrf_exempt
 def prof_home(request):
 	# add context as third arg to render
+	print request.user.is_authenticated()
 	if request.user.is_authenticated():
 		return render(request, 'prof_home.html')
 	else:
