@@ -190,7 +190,7 @@ def generateCode():
 
 
 
-def login(request):
+def login_page(request):
 	return render(request, 'login.html')
 
 @csrf_exempt
@@ -207,7 +207,7 @@ def auth(request):
 				#user_obj = User.objects.get(email = e_mail)
 				#is_password = user_obj.check_password(raw_password)
 				#print is_password
-				user = authenticate(username=email, password=raw_password)
+				user = authenticate(username=e_mail, password=raw_password)
 				if user:
 					if user.is_active:
 						login(request,user)
@@ -229,7 +229,6 @@ def auth(request):
 @csrf_exempt
 def prof_home(request):
 	# add context as third arg to render
-	print request.user.is_authenticated()
 	if request.user.is_authenticated():
 		return render(request, 'prof_home.html')
 	else:
