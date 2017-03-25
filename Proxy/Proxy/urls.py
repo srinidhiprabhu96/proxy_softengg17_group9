@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
-from Proxy.views.prof import *
+from prof_module.views import *
 from auth_module.views import *
 
 urlpatterns = [
