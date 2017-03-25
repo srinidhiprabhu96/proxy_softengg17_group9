@@ -5,9 +5,14 @@
 <body>
 
     <h1>Homepage</h1>
-
     <p>Hello, {{user.first_name}}</p>
-
+    {% for c in courses%}
+    <span>Course ID - {{c.course_id}} ; Course name - {{c.course_name}}</span><a href="/prof_course/{{c.course_id}}"><button>Go to course</button></a><br>
+    {% endfor %}
+    <br>
+    <a href="/prof_queries">
+      <button>View Queries</button>
+    </a>
 
 </body>
 </html>
