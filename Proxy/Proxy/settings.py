@@ -56,8 +56,8 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            os.path.join(BASE_DIR, 'templates'),
-            os.path.join(BASE_DIR, 'templates/prof'),
+            os.path.join(BASE_DIR, 'auth_module/templates'),
+            os.path.join(BASE_DIR, 'Proxy/templates/prof'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {

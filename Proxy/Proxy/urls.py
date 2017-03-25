@@ -15,7 +15,8 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
-from Proxy.views import *
+from Proxy.views.prof import *
+from auth_module.views import *
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
