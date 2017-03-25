@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.template.loader import get_template
 from django.shortcuts import render,redirect
 from django.contrib import messages
@@ -21,25 +21,39 @@ def prof_home(request):
 		qs = Course.objects.filter(taught_by=request.user)
 		return render(request, 'prof_home.html', {'courses':qs})
 	else:
-		return redirect('/signup/')
+		return redirect('/login/')
 
-def prof_course(request, course_id):
+@csrf_exempt
+def prof_course(request, c_id):
 	# add context as third arg to render
-	return render(request, 'prof_course.html')
+	if request.user.is_authenticated:
+		try:
+			c = Course.objects.get(course_id=c_id,taught_by=request.user)
+			return render(request, 'prof_course.html',{'course_id':c_id})
+		except Exception as e:
+			raise Http404("You don't teach the course!")
+	else:
+		return redirect('/login/')
 
-def add_stud(request):
+@csrf_exempt
+def add_stud(request, c_id):
 	# add context as third arg to render
-	return render(request, 'add_stud.html')
+	if request.user.is_authenticated:
+		return render(request, 'add_stud.html')
+	else:
+		return redirect('/login/')
 
-def daily_report(request):
+# def store_stud: doubt - where to create new student
+
+def daily_report(request, c_id):
 	# add context as third arg to render
 	return render(request, 'daily_report.html')
 
-def prof_history(request):
+def prof_history(request, c_id):
 	# add context as third arg to render
 	return render(request, 'prof_history.html')
 
-def take_attendance(request):
+def take_attendance(request, c_id):
 	# add context as third arg to render
 	return render(request, 'take_attendance.html')
 
