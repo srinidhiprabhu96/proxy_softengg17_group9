@@ -1,0 +1,24 @@
+<html>
+<head>
+    <title>{{course_id}} Course Page</title>
+</head>
+<body>
+
+    <h1>{{course_id}} Course Page</h1>
+    <p>Hello, {{user.first_name}}</p>
+
+    <form action="/take_attendance/{{course_id}}/" method="post" enctype="multipart/form-data">
+			Select the images you want to upload:
+			<input type="file" name="myfiles" multiple="multiple" accept="image/*"><br>
+			<input type="submit" value="Submit"><br>
+		</form>
+
+    {% if messages %}
+			{% for message in messages %}
+				<span {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</span><br>
+			{% endfor %}
+		{% endif %}
+
+    <a href="/prof_home/"><button>Back to home</button></a>
+</body>
+</html>
