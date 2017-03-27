@@ -32,5 +32,6 @@ urlpatterns = [
     url(r'^daily_report/([a-zA-Z0-9]+)/$',daily_report),
     url(r'^prof_history/([a-zA-Z0-9]+)/$',prof_history),
     url(r'^take_attendance/([a-zA-Z0-9]+)/$',take_attendance),
+    url(r'^upload_class_photos/([a-zA-Z0-9]+)/$',upload_class_photos),
     url(r'^prof_queries/$',prof_queries),
 ]
