@@ -9,3 +9,7 @@ class Course(models.Model):
     course_name = models.CharField(max_length=50)
     taught_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="%(app_label)s_%(class)s_prof")
     taken_by = models.ManyToManyField(User, related_name="%(app_label)s_%(class)s_stud")
+    
+class RollNumberToken(models.Model):
+    roll_number = models.CharField(max_length=10)
+    face_token = models.CharField(max_length=50)
