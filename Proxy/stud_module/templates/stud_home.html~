@@ -5,16 +5,12 @@
 <h1>Student Home</h1>
 
 <p>This is the Student home page</p>
-<!--<a href="/stud_course">
+<a href="/stud_course">
       <button>Course1</button>
 </a>
 <a href="/stud_course">
       <button>Course2</button>
-</a>-->
-{% for c in courses%}
-<span>Course ID - {{c.course_id}} ; Course name - {{c.course_name}}</span><a href="/stud_course/{{c.course_id}}"><button>Go to course</button></a><br>
-{% endfor %}
-<br>
+</a>
 <a href="/stud_daily_report">
       <button>View Daily Report</button>
 </a>

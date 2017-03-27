@@ -46,10 +46,10 @@ def stud_queries(request):
 	# add context as third arg to render
 	return render(request, 'stud_queries.html')
 
-def raise_query(request, c_id):
+def raise_query(request):
 	# add context as third arg to render
 	return render(request, 'raise_query.html')
 
-def stud_history(request, c_id):
+def stud_history(request):
 	# add context as third arg to render
 	return render(request, 'stud_history.html')

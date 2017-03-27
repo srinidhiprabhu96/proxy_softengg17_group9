@@ -6,9 +6,9 @@
 
     <h1>{{course_id}} Student Course Page</h1>
     <p>Hello, {{user.first_name}}</p>
-    <a href="/stud_history/{{course_id}}/"><button>View History</button></a>
+    <a href="/stud_history/"><button>View History</button></a>
     <br>
-    <a href="/raise_query/{{course_id}}/"><button>Raise Query</button></a>
+    <a href="/raise_query/"><button>Raise Query</button></a>
     <br>
     <a href="/stud_home/"><button>Back to home</button></a>
 </body>
