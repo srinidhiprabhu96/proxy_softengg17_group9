@@ -28,7 +28,7 @@ urlpatterns = [
     url(r'^finish-signup/$',finish_signup),
     url(r'^prof_home/$',prof_home),
     url(r'^prof_course/([a-zA-Z0-9]+)/$',prof_course),
-    url(r'^add_stud/([a-zA-Z0-9]+)/$',add_stud),
+    # url(r'^add_stud/([a-zA-Z0-9]+)/$',add_stud),
     url(r'^daily_report/([a-zA-Z0-9]+)/$',daily_report),
     url(r'^prof_history/([a-zA-Z0-9]+)/$',prof_history),
     url(r'^take_attendance/([a-zA-Z0-9]+)/$',take_attendance),

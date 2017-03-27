@@ -16,32 +16,37 @@ from prof_module.models import *
 @csrf_exempt
 def prof_home(request):
 	# add context as third arg to render
-	if request.user.is_authenticated():
+	if request.user.is_authenticated() and request.user.is_staff:
 		# print request.user.username
 		qs = Course.objects.filter(taught_by=request.user)
 		return render(request, 'prof_home.html', {'courses':qs})
+	elif not request.user.is_staff:
+		raise Http404("You don't have the required permissions!")
 	else:
 		return redirect('/login/')
+
 
 @csrf_exempt
 def prof_course(request, c_id):
 	# add context as third arg to render
-	if request.user.is_authenticated:
+	if request.user.is_authenticated() and request.user.is_staff:
 		try:
 			c = Course.objects.get(course_id=c_id,taught_by=request.user)
 			return render(request, 'prof_course.html',{'course_id':c_id})
 		except Exception as e:
 			raise Http404("You don't teach the course!")
+	elif not request.user.is_staff:
+		raise Http404("You don't have the required permissions!")
 	else:
 		return redirect('/login/')
 
-@csrf_exempt
-def add_stud(request, c_id):
-	# add context as third arg to render
-	if request.user.is_authenticated:
-		return render(request, 'add_stud.html')
-	else:
-		return redirect('/login/')
+# @csrf_exempt
+# def add_stud(request, c_id):
+# 	# add context as third arg to render
+# 	if request.user.is_authenticated:
+# 		return render(request, 'add_stud.html')
+# 	else:
+# 		return redirect('/login/')
 
 # def store_stud: doubt - where to create new student
 
