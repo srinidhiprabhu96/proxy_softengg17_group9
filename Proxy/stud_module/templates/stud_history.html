@@ -1,11 +1,14 @@
-<!DOCTYPE html>
 <html>
+<head>
+    <title>Course Attendance Page</title>
+</head>
 <body>
 
-<h1>View History</h1>
-
-<p>View the course history here</p>
-
-
+    <h1>{{course_id}} Student Course Attendance Page</h1>
+    <p>Hello, {{user.first_name}}</p>
+    {% for c in attendances%}
+	<span>Course ID - {{c.course_id}} ; Course name - {{c.course_name}}; Date - {{c.date}}; PresentOrNot - {{c.isPresent}}</span></a><br>
+	{% endfor %}
+<br>
 </body>
 </html>

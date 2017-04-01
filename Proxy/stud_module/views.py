@@ -13,6 +13,7 @@ from auth_module.models import *
 from auth_module.forms import *
 from stud_module.models import *
 from prof_module.models import *
+from django.template import RequestContext
 
 @csrf_exempt
 def stud_home(request):
@@ -40,11 +41,13 @@ def stud_course(request, c_id):
 
 def stud_daily_report(request):
 	# add context as third arg to render
-	return render(request, 'stud_daily_report.html')
+	c = Attendance.objects.filter(date = "2017-03-30",student=request.user)	
+	return render(request, 'stud_daily_report.html', {'attendances':c})
 
 def stud_queries(request):
+	c = Query.objects.filter(student=request.user)	
 	# add context as third arg to render
-	return render(request, 'stud_queries.html')
+	return render(request, 'stud_queries.html',{'queries':c})
 
 def raise_query(request, c_id):
 	# add context as third arg to render
@@ -52,4 +55,13 @@ def raise_query(request, c_id):
 
 def stud_history(request, c_id):
 	# add context as third arg to render
-	return render(request, 'stud_history.html')
+	c = Attendance.objects.filter(course_id=c_id,student=request.user)
+	return render(request, 'stud_history.html',{'attendances':c})
+
+def save_query(request, c_id):
+    if request.method == 'POST':
+      datehere = request.POST['date']
+      description = request.POST['description']
+      query = Query(course_id = c_id,date = datehere, student = request.user, text = description, isApproved = False)
+      query.save()
+    return redirect("/raise_query/", RequestContext(request))

@@ -39,5 +39,6 @@ urlpatterns = [
     url(r'^stud_daily_report/$',stud_daily_report),
     url(r'^stud_history/([a-zA-Z0-9]+)/$',stud_history),
     url(r'^stud_queries/$',stud_queries),
+	url(r'^savequery/$',save_query),
 	url(r'^raise_query/([a-zA-Z0-9]+)/$',raise_query),
 ]
