@@ -37,7 +37,7 @@ class Query(models.Model):
     query = models.CharField(max_length=500)
     status = models.CharField(max_length=1, choices = STATUS, default='0')
     
-=======
+#=======
 
 # class TrainingData(models.Model):
 #     stud = models.ForeignKey(User, on_delete=models.CASCADE, related_name="%(app_label)s_%(class)s_stud")
@@ -49,4 +49,4 @@ class Query(models.Model):
 # class AttendancePhotos(models.Model):
 #     prof = models.ForeignKey(User, on_delete=models.CASCADE, related_name="%(app_label)s_%(class)s_prof")
 #     image = models.FileField(upload_to='attendancephotos/'+str(user_directory_path)+'/%Y/%m/%d/')
->>>>>>> dd8a38de297eb7d057e39efa043494e029cdbeda
+#>>>>>>> dd8a38de297eb7d057e39efa043494e029cdbeda
