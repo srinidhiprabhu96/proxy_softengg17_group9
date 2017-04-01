@@ -1,11 +1,48 @@
 <!DOCTYPE html>
 <html>
-<body>
+	<head>
+		<title>Attendance history for {{user.first_name}}</title>
+		<style>
+			.error {color: red;}
+			.present {color: green;}
+			.absent {color: red;}
+		</style>
+	</head>
+	<body>
 
-<h1>View History</h1>
+	<h1>Attendance History for {{user.first_name}}</h1>
 
-<p>View the course history here</p>
+	<p>History for the course {{course}}</p><br>
+	{% if attendance %}
+		<table>
+			<tr> 
+				<!--<th>S. No</th>-->
+				<th>Date</th>
+				<th>Attendance</th> 
+			</tr>
+			{% for item in attendance %}
+				<tr>
+					<td>{{item.date}}</td>
+					{% if item.is_present == '1' %}
+						<td><span class="present">Present</span></td>
+					{% else %}
+						<td><span class="absent">Absent</span></td>
+					{% endif %}
+				</tr>
+			{% endfor %}
+			
+		</table>
+	{% else %}
+		<span class="error"> No history to display </span>
+	{% endif %}
+	<a href="/stud_course/{{course}}"><button>Back to course page</button></a>
 
 
-</body>
+		{% if messages %}
+			{% for message in messages %}
+				<span {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</span><br>
+			{% endfor %}
+		{% endif %}
+
+	</body>
 </html>

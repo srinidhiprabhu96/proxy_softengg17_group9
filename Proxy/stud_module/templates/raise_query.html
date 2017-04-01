@@ -1,11 +1,22 @@
 <!DOCTYPE html>
 <html>
-<body>
+	<head>
+		<title>Raise query for {{course}}</title>
+		<style>
+			.error {color: red;}
+		</style>
+	</head>
+	<body>
+		
+		<p>Hello, {{user.first_name}}<br> Raise your query for {{course}} here.</p>
+		<!--<h1>Raise query</h1>-->
+		<form action="/query/{{course}}/" method="post" id="queryform">
+			<textarea name="query" form="queryform" maxlength="500" cols="50" rows="10"></textarea><br>
+			<input type="submit" value="Submit"><br>
+		</form>
+		<br>
+		<a href="/stud_course/{{course}}"><button>Back to course page</button></a>
 
-<h1>Raise query</h1>
 
-<p>Type your query</p>
-
-
-</body>
+	</body>
 </html>
