@@ -96,3 +96,55 @@ def take_attendance(request, c_id):
 def prof_queries(request, c_id):
 	# add context as third arg to render
 	return render(request, 'prof_queries.html')
+
+'''class ViewAllQueries(View):
+    
+    template_name = "prof_queries.html"
+
+    @method_decorator(assess_role_prof)
+    def dispatch(self, request):
+        return super(ViewAllQueries, self).dispatch(request)
+
+    def get(self,request):
+        print "viewallqueries get"
+        email = request.session.get('email',None)
+        if not email:
+            print "Error"
+            return HttpResponse("Error")
+        print email
+        try:
+            prof = Users.objects.get(email=email,role="T")
+            profID = prof.ID
+            print profID
+            courses = Course.objects.filter(profID=profID)
+            courseIDs = []
+            for course in courses:
+                courseIDs.append(course.courseID)
+            print courseIDs
+            allqueries=[]
+            for courseID in courseIDs:
+                queries = Queries.objects.filter(courseID=courseID,resolved=False)
+                print "q : "+str(queries)
+                allqueries.extend(queries)
+            print str(allqueries)
+            return render(request,self.template_name,{'profID' : profID ,'query_list' : allqueries })
+        except:
+            print "Error"
+        return HttpResponse("Error")
+
+
+class ResolveQuery(View):
+
+    def get(self,request,query):
+        print "resolvequery get"
+        queryID = int(query)
+        print queryID
+        try:
+            queryob = Queries.objects.get(id=queryID)
+            queryob.resolved = True
+            queryob.save()
+            print query+" resolved"
+            return redirect("/prof/viewallqueries/")
+        except:
+            print "error"
+        return HttpResponse("Error")'''
