@@ -25,7 +25,7 @@ def stud_home(request):
 		for a in qs:
 			totalno = Attendance.objects.filter(student=request.user,course_id=a.course_id).count()
 			presentno = Attendance.objects.filter(student=request.user,course_id=a.course_id,is_present=1).count()
-			currpercent = (100*totalno)/presentno
+			currpercent = (100*presentno)/totalno
 			percent.append(currpercent)
 		return render(request, 'stud_home.html', {'course_percent':zip(qs,percent)})
 	else:

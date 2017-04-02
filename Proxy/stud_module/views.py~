@@ -13,6 +13,7 @@ from auth_module.models import *
 from auth_module.forms import *
 from stud_module.models import *
 from prof_module.models import *
+import datetime
 
 @csrf_exempt
 def stud_home(request):
@@ -20,7 +21,13 @@ def stud_home(request):
 	if request.user.is_authenticated():
 		# print request.user.username
 		qs = Course.objects.filter(taken_by=request.user)
-		return render(request, 'stud_home.html', {'courses':qs})
+		percent = []
+		for a in qs:
+			totalno = Attendance.objects.filter(student=request.user,course_id=a.course_id).count()
+			presentno = Attendance.objects.filter(student=request.user,course_id=a.course_id,is_present=1).count()
+			currpercent = (100*totalno)/presentno
+			percent.append(currpercent)
+		return render(request, 'stud_home.html', {'course_percent':zip(qs,percent)})
 	else:
 		return redirect('/login/')
 
@@ -40,16 +47,56 @@ def stud_course(request, c_id):
 
 def stud_daily_report(request):
 	# add context as third arg to render
+	if request.user.is_authenticated and not request.user.is_staff:
+		attendances = Attendance.objects.filter(student=request.user).order_by('-date')
+		if len(attendances) == 0:
+			#messages.error(request,"No history to display")
+			return render(request, 'view_queries.html')
+		else:
+			return render(request, 'view_queries.html', {'attendances':attendances})
+	# Handle errors	
 	return render(request, 'stud_daily_report.html')
 
-def stud_queries(request):
+def view_queries(request, c_id):
 	# add context as third arg to render
-	return render(request, 'stud_queries.html')
+	if request.user.is_authenticated and not request.user.is_staff:
+		queries = Query.objects.filter(course_id=c_id, student=request.user)
+		if len(queries) == 0:
+			#messages.error(request,"No history to display")
+			return render(request, 'view_queries.html',{'course':c_id})
+		else:
+			return render(request, 'view_queries.html', {'queries':queries, 'course':c_id})
+	# Handle errors
+	return render(request, 'view_queries.html')
 
-def raise_query(request):
-	# add context as third arg to render
-	return render(request, 'raise_query.html')
+@csrf_exempt	
+def query(request, c_id):
+	if request.method == "POST":
+		if request.user.is_authenticated and not request.user.is_staff:
+			# Use a form for handling boundary cases.
+			text = request.POST['query']
+			q = Query(course_id=c_id,student=request.user,date=datetime.date.today(),query=text)
+			q.save()
+			messages.info(request,"Request successfully raised")
+			return render(request, 'stud_course.html',{'course_id':c_id})
+		else:
+			pass # Handle error here
+	return render(request, 'stud_course.html',{'course_id':c_id})
 
-def stud_history(request):
+def raise_query(request, c_id):
 	# add context as third arg to render
+	return render(request, 'raise_query.html',{'course':c_id})
+
+def stud_history(request, c_id):
+	# add context as third arg to render
+	print c_id
+	if request.user.is_authenticated and not request.user.is_staff:
+		# Control reaches here if the user is a student and is authenticated.
+		att = Attendance.objects.filter(course_id=c_id,student=request.user)	#Handle the request.user thing better
+		if len(att) == 0:
+			#messages.error(request,"No history to display")
+			return render(request, 'stud_history.html',{'course':c_id})
+		else:
+			return render(request, 'stud_history.html', {'attendance':att, 'course':c_id})
+	# Handle the error case here
 	return render(request, 'stud_history.html')
