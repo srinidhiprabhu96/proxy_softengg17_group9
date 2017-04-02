@@ -25,3 +25,8 @@ a1.save()
 a2.save()
 a3.save()
 a4.save()
+
+q1 = Query(course_id='CS1100',student=s1,status='0',date=datetime.date(2017,4,1),query='some query')
+q2 = Query(course_id='CS1100',student=s2,status='1',date=datetime.date(2017,4,2),query='some query 2')
+q1.save()
+q2.save()

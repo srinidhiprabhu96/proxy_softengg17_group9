@@ -5,8 +5,8 @@
 <body>
 
     <h1>Queries</h1>
-    {% for c in courses %}
-    <span>Course ID - {{c.course_id}} ; Course name - {{c.course_name}}</span>
+    {% for q in queries %}
+    <span>{{q.date}} ; {{q.student.first_name}} ; {{q.query}} ; {{q.status}}</span><br>
     {% endfor %}
     <br>
     <a href="/prof_home">
