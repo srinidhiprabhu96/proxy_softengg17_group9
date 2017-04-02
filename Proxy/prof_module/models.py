@@ -15,18 +15,18 @@ class RollNumberToken(models.Model):
     roll_number = models.CharField(max_length=10)
     face_token = models.CharField(max_length=50)
 
-class Queries(models.Model):
-	STATUS = (
-		('0', 'REJECTED'),
-		('1', 'ACCEPTED'),
-	)
-    course_id = models.CharField(max_length=10, primary_key=True)
-    message = models.CharField(max_length=200)
-    query_by = models.ManyToManyField(User, related_name="%(app_label)s_%(class)s_stud")
-    status = models.CharField(max_length=1, choices = STATUS_TYPE, default='0')
 
 
-
+# class Queries(models.Model):
+# 	STATUS = (
+# 		('0', 'REJECTED'),
+# 		('1', 'ACCEPTED'),
+# 	)
+#     course_id = models.CharField(max_length=10, primary_key=True)
+#     message = models.CharField(max_length=200)
+#     query_by = models.ManyToManyField(User, related_name="%(app_label)s_%(class)s_stud")
+#     status = models.CharField(max_length=1, choices = STATUS_TYPE, default='0')
+#
 # class TrainingData(models.Model):
 #     stud = models.ForeignKey(User, on_delete=models.CASCADE, related_name="%(app_label)s_%(class)s_stud")
 #     image = models.FileField(upload_to='trainingdata')     # extend to many images
