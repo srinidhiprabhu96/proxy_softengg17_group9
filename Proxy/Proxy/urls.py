@@ -30,7 +30,7 @@ urlpatterns = [
     url(r'^prof_home/$',prof_home),
     url(r'^prof_course/([a-zA-Z0-9]+)/$',prof_course),
     # url(r'^add_stud/([a-zA-Z0-9]+)/$',add_stud),
-    url(r'^daily_report/([a-zA-Z0-9]+)/$',daily_report),
+    url(r'^daily_report/([a-zA-Z0-9]+)/([0-9]{4})/([0-9]{2})/([0-9]{2})/$',daily_report),
     url(r'^prof_history/([a-zA-Z0-9]+)/$',prof_history),
     url(r'^take_attendance/([a-zA-Z0-9]+)/$',take_attendance),
     url(r'^upload_class_photos/([a-zA-Z0-9]+)/$',upload_class_photos),
