@@ -5,6 +5,8 @@ import time
 
 api_key = "f4EgW60XiioU-gWYEmNqy9Vsvdq_gMap"	# API Key to use Face++ services
 api_secret = "_QBW4ClvR0wjugjLInRvOd7KN4obJd1l"	# API secret to use Face++ services
+from prof_module.models import *
+import ast
 
 """ List of URLs for the API calls	"""
 faceset_create_url = "https://api-us.faceplusplus.com/facepp/v3/faceset/create"
@@ -40,8 +42,18 @@ def createFaceSet(course_number):
 	data.append(course_number)
 	data.append('--%s--\r\n' % boundary)
 	
-	make_request(faceset_create_url,data,boundary)
-
+	try:
+		response = make_request(faceset_create_url,data,boundary)
+		response = ast.literal_eval(response)
+		if "faceset_token" in response:
+			c = Facesets(faceset_token=response["faceset_token"],outer_id=response["outer_id"])
+			c.save()
+			print "Created faceset for course " + response["outer_id"]
+		else:
+			print "Could not create faceset for course "+course_number
+	except:
+		print "Something went wrong"
+	
 
 # This function is to be called during upload training data, after getting the face tokens. We can add atmost 5 face tokens to a faceset at a time. The input argument 'face_tokens' should be a list.
 # Cupping for some reason, try with postman
@@ -70,7 +82,12 @@ def addFaceSet(course_number,face_tokens):
 	data.append(face_token_string)
 	data.append('--%s--\r\n' % boundary)
 	
-	make_request(faceset_add_url,data,boundary)
+	try:
+		response = make_request(faceset_add_url,data,boundary)
+		response = ast.literal_eval(response)
+		print response
+	except:
+		print "Something went wrong"
 	
 # This function is to be called during take attendance. We can pass either of "image_path" or "face_token". We get the facetoken in the faceSet that matches this face. So, we need to store roll number - face token mapping.
 def searchFace(course_number,image_path=None,face_token=None):
@@ -132,7 +149,19 @@ def detectFace(image_path):
 		raise Exception("Image not found")
 	data.append('--%s--\r\n' % boundary)
 	
-	make_request(detect_url,data,boundary)
+	try:
+		response = make_request(detect_url,data,boundary)
+		response = ast.literal_eval(response)
+		#print response
+		#print type(response)
+		if "faces" in response:	# Assuming only 1 face in the training image
+			token = response["faces"][0]["face_token"]
+			print token
+			return token
+		else:
+			"No faces"
+	except:
+		print "Something went wrong"
 	
 		
 # Response part is currently here, we need to return values appropriately.		
@@ -151,7 +180,7 @@ def make_request(url,data,boundary):
 		resp = urllib2.urlopen(req, timeout=5)
 		#get response
 		qrcont=resp.read()
-		print qrcont
+		return qrcont
 
 	except Exception,e:
-		print 'http error',e
+		raise Exception("Something went wrong")

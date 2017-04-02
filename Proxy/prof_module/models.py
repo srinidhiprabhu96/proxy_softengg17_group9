@@ -13,8 +13,12 @@ class Course(models.Model):
     taken_by = models.ManyToManyField(User, related_name="%(app_label)s_%(class)s_stud")
 
 class RollNumberToken(models.Model):
-    roll_number = models.CharField(max_length=10)
+    roll_number = models.ForeignKey(User, on_delete=models.CASCADE, related_name="%(app_label)s_%(class)s_stud")
     face_token = models.CharField(max_length=50)
+    
+class Facesets(models.Model):
+    faceset_token = models.CharField(max_length=50)
+    outer_id = models.CharField(max_length=50)
 
 class Attendance(models.Model):
     IS_PRESENT = (
