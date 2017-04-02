@@ -15,18 +15,29 @@ class RollNumberToken(models.Model):
     roll_number = models.CharField(max_length=10)
     face_token = models.CharField(max_length=50)
 
+class Attendance(models.Model):
+    IS_PRESENT = (
+		('0', 'ABSENT'),
+		('1', 'PRESENT'),
+	)
+    course_id = models.CharField(max_length=10)	# Use foreign key if possible
+    student = models.ForeignKey(User, on_delete=models.CASCADE, related_name="%(app_label)s_%(class)s_stud")
+    date = models.DateField(null=True)	# Date is a string of the form YYYY-MM-DD
+    is_present = models.CharField(max_length=1, choices = IS_PRESENT, default='0')
+
+class Query(models.Model):
+    STATUS = (
+		('0', 'IN PROGRESS'),
+		('1', 'ACCEPTED'),
+		('2', 'DECLINED'),
+	)
+    course_id = models.CharField(max_length=10)
+    student = models.ForeignKey(User, on_delete=models.CASCADE, related_name="%(app_label)s_%(class)s_stud")
+    date = models.DateField(null=True)
+    query = models.CharField(max_length=500)
+    status = models.CharField(max_length=1, choices = STATUS, default='0')
 
 
-# class Queries(models.Model):
-# 	STATUS = (
-# 		('0', 'REJECTED'),
-# 		('1', 'ACCEPTED'),
-# 	)
-#     course_id = models.CharField(max_length=10, primary_key=True)
-#     message = models.CharField(max_length=200)
-#     query_by = models.ManyToManyField(User, related_name="%(app_label)s_%(class)s_stud")
-#     status = models.CharField(max_length=1, choices = STATUS_TYPE, default='0')
-#
 # class TrainingData(models.Model):
 #     stud = models.ForeignKey(User, on_delete=models.CASCADE, related_name="%(app_label)s_%(class)s_stud")
 #     image = models.FileField(upload_to='trainingdata')     # extend to many images

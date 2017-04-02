@@ -1,7 +1,11 @@
 <html>
-<head>
-    <title>Student Course Page</title>
-</head>
+	<head>
+   		<title>Student Course Page</title>
+    	<style>
+			.error {color: red;}
+			.info {color: green;}
+		</style>
+	</head>
 <body>
 
     <h1>{{course_id}} Student Course Page</h1>
@@ -10,6 +14,13 @@
     <br>
     <a href="/raise_query/{{course_id}}/"><button>Raise Query</button></a>
     <br>
-    <a href="/stud_home/"><button>Back to home</button></a>
+    <a href="/view_queries/{{course_id}}/"><button>View Queries</button></a>
+    <a href="/stud_home/"><button>Back to home</button></a><br>
+    
+    	{% if messages %}
+			{% for message in messages %}
+				<span {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</span><br>
+			{% endfor %}
+		{% endif %}
 </body>
 </html>
