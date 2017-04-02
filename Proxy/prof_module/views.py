@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.http import HttpResponse, Http404
 from django.template.loader import get_template
 from django.shortcuts import render,redirect
@@ -17,6 +18,8 @@ from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
 from django.conf import settings
 import datetime
+import subprocess
+from api_wrappers import *
 
 @csrf_exempt
 def prof_home(request):
@@ -126,6 +129,17 @@ def take_attendance(request, c_id):
 				# print i.name
 				path = default_storage.save(request.user.username+'/'+c_id+'/'+datetime.date.today().strftime('%Y/%m/%d')+'/'+i.name, ContentFile(i.read()))
 				paths += [os.path.join(settings.MEDIA_ROOT, path)]
+				
+				## Added by SP - search in faceset
+			args = []
+			args.append("python")
+			args.append("searchFace.py")
+			args.append(c_id)
+			args = args + paths
+			#print args
+			subprocess.Popen(args)	# Creates a new thread which handles the updating of attendance.
+				## End of added by SP
+				
 			messages.success(request, 'Files uploaded successfully!')
 		else:
 			messages.error(request, 'Unable to upload files. Try again.')

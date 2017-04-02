@@ -2,6 +2,7 @@
 import urllib2
 import urllib
 import time
+import binascii
 
 api_key = "f4EgW60XiioU-gWYEmNqy9Vsvdq_gMap"	# API Key to use Face++ services
 api_secret = "_QBW4ClvR0wjugjLInRvOd7KN4obJd1l"	# API secret to use Face++ services
@@ -123,7 +124,14 @@ def searchFace(course_number,image_path=None,face_token=None):
 		raise Exception("Enter a face_token or image_path")
 	data.append('--%s--\r\n' % boundary)
 	
-	make_request(search_url,data,boundary)
+	#print "Making request"
+	try:
+		response = make_request(search_url,data,boundary)
+		response = ast.literal_eval(response)
+		#print response
+		return response
+	except:
+		print "Something went wrong1"
 
 # This function is to be called to get a face token, prior to any operation that needs a face token(such as add face to faceset.	
 def detectFace(image_path):
@@ -156,8 +164,44 @@ def detectFace(image_path):
 		#print type(response)
 		if "faces" in response:	# Assuming only 1 face in the training image
 			token = response["faces"][0]["face_token"]
-			print token
+			#print token
 			return token
+		else:
+			"No faces"
+	except:
+		print "Something went wrong"
+		
+def detectMultipleFaces(image_path):
+	global api_key
+	global api_secret
+	global detect_url
+	boundary = '----------%s' % hex(int(time.time() * 1000))
+	data = []
+	data.append('--%s' % boundary)
+	data.append('Content-Disposition: form-data; name="%s"\r\n' % 'api_key')
+	data.append(api_key)
+	data.append('--%s' % boundary)
+	data.append('Content-Disposition: form-data; name="%s"\r\n' % 'api_secret')
+	data.append(api_secret)
+	data.append('--%s' % boundary)
+	data.append('Content-Disposition: form-data; name="%s"; filename="image.jpg"' % 'image_file')
+	data.append('Content-Type: %s\r\n' % 'application/octet-stream')
+	fp = open(image_path,'rb')
+	if fp:
+		data.append(fp.read())
+		fp.close()
+	else:
+		raise Exception("Image not found")
+	data.append('--%s--\r\n' % boundary)
+	
+	try:
+		response = make_request(detect_url,data,boundary)
+		response = ast.literal_eval(response)
+		#print response
+		#print type(response)
+		if "faces" in response:	# Assuming only 1 face in the training image
+			faces = response["faces"]
+			return faces
 		else:
 			"No faces"
 	except:
@@ -168,6 +212,8 @@ def detectFace(image_path):
 def make_request(url,data,boundary):
 	# From this part onward it is the same.
 	http_body='\r\n'.join(data)
+	#if isinstance(, unicode):
+	#	myStr = encObject.encode('utf-8') 
 	#print http_body
 	print "Building request"
 	#buld http request
