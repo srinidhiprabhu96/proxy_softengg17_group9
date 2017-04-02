@@ -41,6 +41,14 @@ def stud_course(request, c_id):
 
 def stud_daily_report(request):
 	# add context as third arg to render
+	if request.user.is_authenticated and not request.user.is_staff:
+		attendances = Attendance.objects.filter(student=request.user).order_by('-date')
+		if len(attendances) == 0:
+			#messages.error(request,"No history to display")
+			return render(request, 'view_queries.html')
+		else:
+			return render(request, 'view_queries.html', {'attendances':attendances})
+	# Handle errors	
 	return render(request, 'stud_daily_report.html')
 
 def view_queries(request, c_id):
