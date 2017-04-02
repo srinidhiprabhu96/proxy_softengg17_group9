@@ -9,10 +9,11 @@
     <p>This is the daily report for course {{course_id}} on {{date}}</p>
 
     {% for i in attendance%}
-    <span>i.student.first_name - i.is_present</span><br>
+    <span>{{i.student.first_name}} - {{i.is_present}}</span><br>
     {% endfor %}
+    <br>
 
-    <a href="/prof_course">
+    <a href="/prof_course/{{course_id}}">
       <button>Back to coursepage</button>
     </a>
 </body>

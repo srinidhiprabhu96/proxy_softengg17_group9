@@ -67,6 +67,7 @@ def daily_report(request, c_id, y, m, d):
 			query_set = Attendance.objects.filter(course_id=c_id,prof=request.user,date=date_obj)
 			return render(request, 'daily_report.html',{'course_id':c_id, 'date':date_str, 'attendance':query_set})
 		except Exception as e:
+			raise e
 			raise Http404("You don't teach the course!")
 	elif not request.user.is_staff:
 		raise Http404("You don't have the required permissions!")
