@@ -67,7 +67,7 @@ def daily_report(request, c_id, y, m, d):
 			query_set = Attendance.objects.filter(course_id=c_id,prof=request.user,date=date_obj)
 			return render(request, 'daily_report.html',{'course_id':c_id, 'date':date_str, 'attendance':query_set})
 		except Exception as e:
-			raise e
+			# raise e
 			raise Http404("You don't teach the course!")
 	elif not request.user.is_staff:
 		raise Http404("You don't have the required permissions!")
@@ -77,7 +77,26 @@ def daily_report(request, c_id, y, m, d):
 
 def prof_history(request, c_id):
 	# add context as third arg to render
-	return render(request, 'prof_history.html')
+	if request.user.is_authenticated() and request.user.is_staff:
+		try:
+			query_set = Attendance.objects.filter(course_id=c_id,prof=request.user)
+			dates = []
+			for i in query_set:
+				tmp_date = i.date.strftime('%Y/%m/%d')
+				if tmp_date not in dates:
+					dates.append(tmp_date)
+			dates.sort(reverse=True)
+			print dates
+			return render(request, 'prof_history.html',{'course_id':c_id, 'dates':dates})
+		except Exception as e:
+			# raise e
+			raise Http404("You don't teach the course!")
+	elif not request.user.is_staff:
+		raise Http404("You don't have the required permissions!")
+	else:
+		return redirect('/login/')
+	return render(request, 'daily_report.html')
+	return render(request, 'prof_history.html', {'course_id':c_id, })
 
 def upload_class_photos(request, c_id):
 	if request.user.is_authenticated() and request.user.is_staff:

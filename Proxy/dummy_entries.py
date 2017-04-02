@@ -3,6 +3,7 @@ from django.contrib.auth.hashers import make_password
 from auth_module.models import *
 from prof_module.models import *
 from stud_module.models import *
+import datetime
 
 prof = User(username='prof@iitm.ac.in',first_name='Prof',email='prof@iitm.ac.in',password=make_password('123567'),is_staff=True)
 prof.save()
@@ -16,7 +17,7 @@ c2 = Course(course_id='CS1300',course_name='Intro to CSE',taught_by=prof)
 c1.save()
 c2.save()
 
-a1 = Attendance(course_id='CS1100',student=s1,prof=prof,is_present='0')
+a1 = Attendance(course_id='CS1100',student=s1,prof=prof,is_present='0',date=datetime.date(2017,4,1))
 a2 = Attendance(course_id='CS1100',student=s2,prof=prof,is_present='1')
 a3 = Attendance(course_id='CS1300',student=s1,prof=prof,is_present='1')
 a4 = Attendance(course_id='CS1300',student=s2,prof=prof,is_present='0')
