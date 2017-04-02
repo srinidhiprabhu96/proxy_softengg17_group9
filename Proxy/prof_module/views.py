@@ -16,6 +16,7 @@ import os
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
 from django.conf import settings
+import datetime
 
 @csrf_exempt
 def prof_home(request):
@@ -54,8 +55,24 @@ def prof_course(request, c_id):
 
 # def store_stud: doubt - where to create new student
 
-def daily_report(request, c_id):
+def daily_report(request, c_id, y, m, d):
 	# add context as third arg to render
+	if request.user.is_authenticated() and request.user.is_staff:
+		try:
+			date_str = d+'/'+m+'/'+y
+			date_obj = datetime.date(int(y),int(m),int(d))
+		except Exception as e:
+			raise Http404("Invalid date!")
+		try:
+			query_set = Attendance.objects.filter(course_id=c_id,prof=request.user,date=date_obj)
+			return render(request, 'daily_report.html',{'course_id':c_id, 'date':date_str, 'attendance':query_set})
+		except Exception as e:
+			raise e
+			raise Http404("You don't teach the course!")
+	elif not request.user.is_staff:
+		raise Http404("You don't have the required permissions!")
+	else:
+		return redirect('/login/')
 	return render(request, 'daily_report.html')
 
 def prof_history(request, c_id):
@@ -80,7 +97,7 @@ def take_attendance(request, c_id):
 			paths = []
 			for i in images:
 				# print i.name
-				path = default_storage.save(request.user.username+'/'+i.name, ContentFile(i.read()))
+				path = default_storage.save(request.user.username+'/'+c_id+'/'+datetime.date.today().strftime('%Y/%m/%d')+'/'+i.name, ContentFile(i.read()))
 				paths += [os.path.join(settings.MEDIA_ROOT, path)]
 			messages.success(request, 'Files uploaded successfully!')
 		else:
