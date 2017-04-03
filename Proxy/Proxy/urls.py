@@ -20,7 +20,8 @@ from stud_module.views import *
 from auth_module.views import *
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
+    # url(r'^admin/', admin.site.urls),
+    url(r'^$', login_page),	
     url(r'^signup/$',signup),
     url(r'^login/$',login_page),
     url(r'^auth1/$',auth),
