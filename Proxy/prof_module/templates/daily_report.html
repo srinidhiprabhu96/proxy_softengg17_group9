@@ -8,7 +8,16 @@
     <p>Hello, {{user.first_name}}</p>
     <p>This is the daily report for course {{course_id}} on {{date}}</p>
 
-    {% for i in attendance%}
+    <p>Uploaded Images</p>
+    {% load static %}
+    {% for i in files %}
+    {% with user.username|add:'/'|add:course_id|add:'/'|add:date_url|add:'/'|add:i as image_static %}
+    <img src="{% static image_static %}" alt="{{i}}" style="height: 30%;"/>
+    {% endwith %}
+    {% endfor %}
+
+    <p>Marked Attendance</p>
+    {% for i in attendance %}
     <span>{{i.student.first_name}} - {{i.is_present}} -
       <form action="/daily_report/{{course_id}}/{{date_url}}/" method="post" style="display:inline;">
         <input type="hidden" name="id" value="{{i.id}}" />

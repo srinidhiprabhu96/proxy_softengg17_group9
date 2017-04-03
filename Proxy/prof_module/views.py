@@ -20,6 +20,9 @@ from django.conf import settings
 import datetime
 import subprocess
 from api_wrappers import *
+from glob import glob
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 @csrf_exempt
 def prof_home(request):
@@ -79,20 +82,22 @@ def daily_report(request, c_id, y, m, d):
 			else:
 				obj.is_present = '0'
 			obj.save()
+		date_str = y+'/'+m+'/'+d
+		# print os.path.join(BASE_DIR, 'media/'+request.user.username+'/'+c_id+'/'+date_str+'/*')
+		l =  glob(os.path.join(BASE_DIR, 'media/'+request.user.username+'/'+c_id+'/'+date_str+'/*'))
+		files = []
+		for i in l:
+			files.append(os.path.basename(i))
 		try:
-			date_str = y+'/'+m+'/'+d
 			date_obj = datetime.date(int(y),int(m),int(d))
 		except Exception as e:
 			raise Http404("Invalid date!")
 		try:
 			query_set = Attendance.objects.filter(course_id=c_id,prof=request.user,date=date_obj)
-			return render(request, 'daily_report.html',{'course_id':c_id, 'date':date_obj, 'date_url':date_str, 'attendance':query_set})
+			return render(request, 'daily_report.html',{'course_id':c_id, 'date':date_obj, 'date_url':date_str, 'files':files, 'attendance':query_set})
 		except Exception as e:
-			# raise e
-			#raise Http404("You don't teach the course!")
-			cr = Course.objects.filter(course_id=c_id, taught_by=request.user)
-			if not cr.exists():
-				raise Http404("You don't teach the course!")
+			raise e
+			raise Http404("You don't teach the course!")
 	elif not request.user.is_staff:
 		messages.error(request,"You don't have the required permissions!")
 		return redirect('/login/')
@@ -128,10 +133,7 @@ def prof_history(request, c_id):
 			return render(request, 'prof_history.html',{'course_id':c_id})
 		except Exception as e:
 			# raise e
-			#raise Http404("You don't teach the course!")
-			cr = Course.objects.filter(course_id=c_id, taught_by=request.user)
-			if not cr.exists():
-				raise Http404("You don't teach the course!")
+			raise Http404("You don't teach the course!")
 	elif not request.user.is_staff:
 		messages.error(request,"You don't have the required permissions!")
 		return redirect('/login/')
