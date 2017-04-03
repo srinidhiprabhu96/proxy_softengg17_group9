@@ -23,7 +23,7 @@
 				{% for item in attendances %}
 				<tr>
 					<td>{{item.date}}</td>
-					<td>{{item.course_id}}</td>
+					<td>{{item.Course}}</td>
 					{% if item.is_present == '1' %}
 						<td><span class="present">Present</span></td>
 					{% else %}

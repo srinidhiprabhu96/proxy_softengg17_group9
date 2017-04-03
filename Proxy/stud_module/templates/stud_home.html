@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html>
-<body>
+	<head>
+   		<title>View queries page</title>
+    	<style>
+			.error {color: red;}
+			.info {color: green;}
+			.danger {color: red;}
+			.safe {color: green;}
+		</style>
+	</head>
+	<body>
 
 <h1>Student Home</h1>
 
@@ -11,9 +20,29 @@
 <a href="/stud_course">
       <button>Course2</button>
 </a>-->
-{% for c,d in course_percent%}
-<span>Course ID - {{c.course_id}} ; Course name - {{c.course_name}}; Percentage = {{d}}</span><a href="/stud_course/{{c.course_id}}"><button>Go to course</button></a><br>
-{% endfor %}
+	{% if course_percent %}
+		<table>
+			<tr> 
+				<!--<th>S. No</th>-->
+				<th>Course ID</th>
+				<th>Course Name</th> 
+				<th>Percentage</th>
+				{% for c,d in course_percent %}
+				<tr>
+					<td>{{c.course_id}}</td>
+					<td>{{c.course_name}}</td>
+					{% if d > 85 %}
+						<td><span class="safe">{{d}}</span></td>
+					{% else %}
+						<td><span class="danger">{{d}}</span></td>
+					{% endif %}
+				</tr>
+			{% endfor %}
+			</tr>
+		</table>
+	{% else %}
+		<span class="error"> No courses to display</span>
+	{% endif %}
 <br>
 <a href="/stud_daily_report">
       <button>View Daily Report</button>
