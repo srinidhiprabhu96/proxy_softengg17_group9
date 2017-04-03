@@ -20,10 +20,16 @@ import random
 import string
 import re
 import md5
+from django.contrib.auth import logout
 
 def signup(request):
 	return render(request,'signup.html')
-
+	
+def logout_view(request):
+	logout(request)
+	messages.info(request,"You have logged out successfully!")
+	return redirect("/login/")
+	
 @csrf_exempt
 def before_verify(request):
 	if request.method == 'POST':		# If the method is POST, it means the request is coming from the signup page.

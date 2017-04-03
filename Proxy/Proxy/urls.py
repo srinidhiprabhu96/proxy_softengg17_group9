@@ -43,4 +43,5 @@ urlpatterns = [
     url(r'^stud_history/([a-zA-Z0-9]+)/$',stud_history),
     url(r'^view_queries/([a-zA-Z0-9]+)/$',view_queries),
 	url(r'^raise_query/([a-zA-Z0-9]+)/$',raise_query),
+	url(r'^logout/$',logout_view),
 ]
