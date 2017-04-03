@@ -21,7 +21,13 @@ def stud_home(request):
 	if request.user.is_authenticated():
 		# print request.user.username
 		qs = Course.objects.filter(taken_by=request.user)
-		return render(request, 'stud_home.html', {'courses':qs})
+		percent = []
+		for a in qs:
+			totalno = Attendance.objects.filter(student=request.user,course_id=a.course_id).count()
+			presentno = Attendance.objects.filter(student=request.user,course_id=a.course_id,is_present=1).count()
+			currpercent = (100*presentno)/totalno
+			percent.append(currpercent)
+		return render(request, 'stud_home.html', {'course_percent':zip(qs,percent)})
 	else:
 		return redirect('/login/')
 
@@ -41,6 +47,14 @@ def stud_course(request, c_id):
 
 def stud_daily_report(request):
 	# add context as third arg to render
+	if request.user.is_authenticated and not request.user.is_staff:
+		attendances = Attendance.objects.filter(student=request.user).order_by('-date')
+		if len(attendances) == 0:
+			#messages.error(request,"No history to display")
+			return render(request, 'stud_daily_report.html')
+		else:
+			return render(request, 'stud_daily_report.html', {'attendances':attendances})
+	# Handle errors	
 	return render(request, 'stud_daily_report.html')
 
 def view_queries(request, c_id):
