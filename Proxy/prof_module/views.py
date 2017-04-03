@@ -135,7 +135,7 @@ def take_attendance(request, c_id):
 				path = default_storage.save(request.user.username+'/'+c_id+'/'+datetime.date.today().strftime('%Y/%m/%d')+'/'+i.name, ContentFile(i.read()))
 				paths += [os.path.join(settings.MEDIA_ROOT, path)]
 				
-				## Added by SP - search in faceset
+			## Added by SP - search in faceset
 			args = []
 			args.append("python")
 			args.append("searchFace.py")
@@ -143,7 +143,7 @@ def take_attendance(request, c_id):
 			args = args + paths
 			#print args
 			subprocess.Popen(args)	# Creates a new thread which handles the updating of attendance.
-				## End of added by SP
+			## End of added by SP
 				
 			messages.success(request, 'Files uploaded successfully!')
 		else:
