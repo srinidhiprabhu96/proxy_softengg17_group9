@@ -9,7 +9,12 @@
     <p>This is the daily report for course {{course_id}} on {{date}}</p>
 
     {% for i in attendance%}
-    <span>{{i.student.first_name}} - {{i.is_present}}</span><br>
+    <span>{{i.student.first_name}} - {{i.is_present}} -
+      <form action="/daily_report/{{course_id}}/{{date_url}}/" method="post" style="display:inline;">
+        <input type="hidden" name="id" value="{{i.id}}" />
+        <input type="submit" value="Change Attendance"/>
+      </form>
+    </span><br>
     {% endfor %}
     <br>
 
