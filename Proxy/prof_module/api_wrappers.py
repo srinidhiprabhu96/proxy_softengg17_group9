@@ -196,6 +196,7 @@ def detectMultipleFaces(image_path):
 	
 	try:
 		response = make_request(detect_url,data,boundary)
+		#print response
 		response = ast.literal_eval(response)
 		#print response
 		#print type(response)
@@ -223,7 +224,9 @@ def make_request(url,data,boundary):
 	req.add_data(http_body)
 	try:
 		#post data to server
-		resp = urllib2.urlopen(req, timeout=5)
+		#print "trying"
+		resp = urllib2.urlopen(req, timeout=20)
+		#print "resp"
 		#get response
 		qrcont=resp.read()
 		return qrcont

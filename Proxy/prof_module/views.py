@@ -166,10 +166,12 @@ def take_attendance(request, c_id):
 				paths += [os.path.join(settings.MEDIA_ROOT, path)]
 				
 			## Added by SP - search in faceset
+			date = str(datetime.date.today())	# Currently setting today's date, change the date here.
 			args = []
 			args.append("python")
 			args.append("searchFace.py")
 			args.append(c_id)
+			args.append(date)
 			args = args + paths
 			#print args
 			subprocess.Popen(args)	# Creates a new thread which handles the updating of attendance.

@@ -30,6 +30,9 @@ class Attendance(models.Model):
     prof = models.ForeignKey(User, on_delete=models.CASCADE, related_name="%(app_label)s_%(class)s_prof")
     date = models.DateField(default=datetime.date.today)	# Date is a string of the form YYYY-MM-DD
     is_present = models.CharField(max_length=1, choices = IS_PRESENT, default='0')
+    
+    class Meta:
+    	unique_together = ('course_id', 'student', 'date',)
 
 class Query(models.Model):
     STATUS = (
