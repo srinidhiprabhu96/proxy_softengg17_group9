@@ -21,6 +21,7 @@ def stud_home(request):
 	if request.user.is_authenticated():
 		# print request.user.username
 		qs = Course.objects.filter(taken_by=request.user)
+		#print qs
 		percent = []
 		for a in qs:
 			totalno = Attendance.objects.filter(student=request.user,course_id=a.course_id).count()
@@ -29,7 +30,9 @@ def stud_home(request):
 				currpercent = (100*presentno)/totalno
 				percent.append(currpercent)
 			except:
+				percent.append(0)
 				pass
+		#print percent
 		return render(request, 'stud_home.html', {'course_percent':zip(qs,percent)})
 	else:
 		return redirect('/login/')
