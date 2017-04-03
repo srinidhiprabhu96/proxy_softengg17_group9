@@ -51,9 +51,9 @@ def stud_daily_report(request):
 		attendances = Attendance.objects.filter(student=request.user).order_by('-date')
 		if len(attendances) == 0:
 			#messages.error(request,"No history to display")
-			return render(request, 'view_queries.html')
+			return render(request, 'stud_daily_report.html')
 		else:
-			return render(request, 'view_queries.html', {'attendances':attendances})
+			return render(request, 'stud_daily_report.html', {'attendances':attendances})
 	# Handle errors	
 	return render(request, 'stud_daily_report.html')
 
