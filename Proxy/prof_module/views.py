@@ -29,11 +29,8 @@ def prof_home(request):
 		qs = Course.objects.filter(taught_by=request.user)
 		return render(request, 'prof_home.html', {'courses':qs})
 	elif not request.user.is_staff:
-		# SP - remove if not needed
 		messages.error(request,"You don't have the required permissions!")
 		return redirect('/login/')
-		# SP
-		raise Http404("You don't have the required permissions!")
 	else:
 		messages.error(request,"You are not logged in.")
 		return redirect('/login/')
@@ -47,10 +44,16 @@ def prof_course(request, c_id):
 			c = Course.objects.get(course_id=c_id,taught_by=request.user)
 			return render(request, 'prof_course.html',{'course_id':c_id})
 		except Exception as e:
-			raise Http404("You don't teach the course!")
+			#raise Http404("You don't teach the course!")
+			cr = Course.objects.filter(course_id=c_id, taught_by=request.user)
+			if not cr.exists():
+				messages.error(request,"You don't teach the course!")
+				return redirect('/login/')
 	elif not request.user.is_staff:
-		raise Http404("You don't have the required permissions!")
+		messages.error(request,"You don't have the required permissions!")
+		return redirect('/login/')
 	else:
+		messages.error(request,"You are not logged in.")
 		return redirect('/login/')
 
 # @csrf_exempt
@@ -68,7 +71,10 @@ def daily_report(request, c_id, y, m, d):
 	if request.user.is_authenticated() and request.user.is_staff:
 		cr = Course.objects.filter(course_id=c_id, taught_by=request.user)
 		if not cr.exists():
-			raise Http404("You dont teach the course!")
+			cr = Course.objects.filter(course_id=c_id, taught_by=request.user)
+			if not cr.exists():
+				messages.error(request,"You don't teach the course!")
+				return redirect('/login/')
 		try:
 			date_str = d+'/'+m+'/'+y
 			date_obj = datetime.date(int(y),int(m),int(d))
@@ -79,10 +85,16 @@ def daily_report(request, c_id, y, m, d):
 			return render(request, 'daily_report.html',{'course_id':c_id, 'date':date_str, 'attendance':query_set})
 		except Exception as e:
 			# raise e
-			raise Http404("You don't teach the course!")
+			#raise Http404("You don't teach the course!")
+			cr = Course.objects.filter(course_id=c_id, taught_by=request.user)
+			if not cr.exists():
+				messages.error(request,"You don't teach the course!")
+				return redirect('/login/')
 	elif not request.user.is_staff:
-		raise Http404("You don't have the required permissions!")
+		messages.error(request,"You don't have the required permissions!")
+		return redirect('/login/')
 	else:
+		messages.error(request,"You are not logged in.")
 		return redirect('/login/')
 
 def prof_history(request, c_id):
@@ -90,7 +102,11 @@ def prof_history(request, c_id):
 	if request.user.is_authenticated() and request.user.is_staff:
 		cr = Course.objects.filter(course_id=c_id, taught_by=request.user)
 		if not cr.exists():
-			raise Http404("You dont teach the course!")
+			#raise Http404("You dont teach the course!")
+			cr = Course.objects.filter(course_id=c_id, taught_by=request.user)
+			if not cr.exists():
+				messages.error(request,"You don't teach the course!")
+				return redirect('/login/')
 		try:
 			query_set = Attendance.objects.filter(course_id=c_id,prof=request.user)
 			dates = []
@@ -102,30 +118,44 @@ def prof_history(request, c_id):
 			return render(request, 'prof_history.html',{'course_id':c_id, 'dates':dates})
 		except Exception as e:
 			# raise e
-			raise Http404("You don't teach the course!")
+			#raise Http404("You don't teach the course!")
+			cr = Course.objects.filter(course_id=c_id, taught_by=request.user)
+			if not cr.exists():
+				messages.error(request,"You don't teach the course!")
+				return redirect('/login/')
 	elif not request.user.is_staff:
-		raise Http404("You don't have the required permissions!")
+		messages.error(request,"You don't have the required permissions!")
+		return redirect('/login/')
 	else:
+		messages.error(request,"You are not logged in.")
 		return redirect('/login/')
 
 def upload_class_photos(request, c_id):
 	if request.user.is_authenticated() and request.user.is_staff:
 		cr = Course.objects.filter(course_id=c_id, taught_by=request.user)
 		if not cr.exists():
-			raise Http404("You dont teach the course!")
+			messages.error(request,"You don't teach the course!")
+			return redirect('/login/')
 		return render(request, 'upload_class_photos.html', {'course_id':c_id})
 	elif not request.user.is_staff:
-		raise Http404("You don't have the required permissions!")
+		messages.error(request,"You don't have the required permissions!")
+		return redirect('/login/')
 	else:
+		messages.error(request,"You are not logged in.")
 		return redirect('/login/')
 
 @csrf_exempt
 def take_attendance(request, c_id):
 	# add context as third arg to render
-	cr = Course.objects.filter(course_id=c_id, taught_by=request.user)
+	"""cr = Course.objects.filter(course_id=c_id, taught_by=request.user)
 	if not cr.exists():
-		raise Http404("You dont teach the course!")
+		messages.error(request,"You don't teach the course!")
+		return redirect('/login/')"""
 	if request.user.is_authenticated() and request.user.is_staff and request.method == 'POST':
+		cr = Course.objects.filter(course_id=c_id, taught_by=request.user)
+		if not cr.exists():
+			messages.error(request,"You don't teach the course!")
+			return redirect('/login/')
 		form = ClassImagesForm(request.POST, request.FILES)
 		if form.is_valid:
 			images = request.FILES.getlist('myfiles')
@@ -150,10 +180,14 @@ def take_attendance(request, c_id):
 			messages.error(request, 'Unable to upload files. Try again.')
 		return redirect('/upload_class_photos/'+c_id+'/')
 	elif not request.user.is_staff:
-		raise Http404("You don't have the required permissions!")
+		messages.error(request,"You don't have the required permissions!")
+		return redirect('/login/')
 	elif request.method != 'POST':
-		raise Http404("You haven't uploaded any images!")
+		#raise Http404("You haven't uploaded any images!")
+		messages.error(request,"You haven't uploaded any images!")
+		return redirect('/login/')
 	else:
+		messages.error(request,"You are not logged in.")
 		return redirect('/login/')
 
 def prof_queries(request, c_id):
@@ -168,8 +202,12 @@ def prof_queries(request, c_id):
 			return render(request, 'prof_queries.html',{'course_id':c_id, 'queries':query_set})
 		except Exception as e:
 			# raise e
-			raise Http404("You don't teach the course!")
+			#raise Http404("You don't teach the course!")
+			messages.error(request,"You don't teach the course!")
+			return redirect('/login/')
 	elif not request.user.is_staff:
-		raise Http404("You don't have the required permissions!")
+		messages.error(request,"You don't have the required permissions!")
+		return redirect('/login/')
 	else:
+		messages.error(request,"You are not logged in.")
 		return redirect('/login/')
