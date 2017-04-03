@@ -97,6 +97,7 @@ def daily_report(request, c_id, y, m, d):
 		messages.error(request,"You are not logged in.")
 		return redirect('/login/')
 
+@csrf_exempt
 def prof_history(request, c_id):
 	# add context as third arg to render
 	if request.user.is_authenticated() and request.user.is_staff:
@@ -108,14 +109,21 @@ def prof_history(request, c_id):
 				messages.error(request,"You don't teach the course!")
 				return redirect('/login/')
 		try:
-			query_set = Attendance.objects.filter(course_id=c_id,prof=request.user)
-			dates = []
-			for i in query_set:
-				tmp_date = i.date.strftime('%Y/%m/%d')
-				if tmp_date not in dates:
-					dates.append(tmp_date)
-			dates.sort(reverse=True)
-			return render(request, 'prof_history.html',{'course_id':c_id, 'dates':dates})
+			# query_set = Attendance.objects.filter(course_id=c_id,prof=request.user)
+			# dates = []
+			# for i in query_set:
+			# 	tmp_date = i.date.strftime('%Y/%m/%d')
+			# 	if tmp_date not in dates:
+			# 		dates.append(tmp_date)
+			# dates.sort(reverse=True)
+			if request.method == 'POST':
+				date = request.POST.get('date')
+				d = date[0:2]
+				m = date[3:5]
+				y = date[6:10]
+				date = y+'/'+m+'/'+d
+				return redirect('/daily_report/'+c_id+'/'+date)
+			return render(request, 'prof_history.html',{'course_id':c_id})
 		except Exception as e:
 			# raise e
 			#raise Http404("You don't teach the course!")
@@ -164,7 +172,7 @@ def take_attendance(request, c_id):
 				# print i.name
 				path = default_storage.save(request.user.username+'/'+c_id+'/'+datetime.date.today().strftime('%Y/%m/%d')+'/'+i.name, ContentFile(i.read()))
 				paths += [os.path.join(settings.MEDIA_ROOT, path)]
-				
+
 			## Added by SP - search in faceset
 			date = str(datetime.date.today())	# Currently setting today's date, change the date here.
 			args = []
@@ -176,7 +184,7 @@ def take_attendance(request, c_id):
 			#print args
 			subprocess.Popen(args)	# Creates a new thread which handles the updating of attendance.
 			## End of added by SP
-				
+
 			messages.success(request, 'Files uploaded successfully!')
 		else:
 			messages.error(request, 'Unable to upload files. Try again.')
