@@ -11,8 +11,8 @@
 <a href="/stud_course">
       <button>Course2</button>
 </a>-->
-{% for c in courses%}
-<span>Course ID - {{c.course_id}} ; Course name - {{c.course_name}}</span><a href="/stud_course/{{c.course_id}}"><button>Go to course</button></a><br>
+{% for c,d in course_percent%}
+<span>Course ID - {{c.course_id}} ; Course name - {{c.course_name}}; Percentage = {{d}}</span><a href="/stud_course/{{c.course_id}}"><button>Go to course</button></a><br>
 {% endfor %}
 <br>
 <a href="/stud_daily_report">
