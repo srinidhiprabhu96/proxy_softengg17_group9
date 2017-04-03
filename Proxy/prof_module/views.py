@@ -29,8 +29,13 @@ def prof_home(request):
 		qs = Course.objects.filter(taught_by=request.user)
 		return render(request, 'prof_home.html', {'courses':qs})
 	elif not request.user.is_staff:
+		# SP - remove if not needed
+		messages.error(request,"You don't have the required permissions!")
+		return redirect('/login/')
+		# SP
 		raise Http404("You don't have the required permissions!")
 	else:
+		messages.error(request,"You are not logged in.")
 		return redirect('/login/')
 
 
