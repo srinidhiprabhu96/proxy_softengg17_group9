@@ -1,0 +1,36 @@
+.box1{
+	height: 100px;
+	margin: 5px 10px 0 10px;
+	background-color: lightblue;
+	border-top-left-radius: 10px;
+  	border-top-right-radius: 10px;
+  	border-bottom-left-radius: 10px;
+  	border-bottom-right-radius: 10px;
+}
+.box1 .head{
+	margin: 5px 10px 15px 500px;
+}
+.box1 .head1{
+	margin: 5px 10px 10px 550px;
+}
+.box1 .head2{
+	margin: 5px 10px 10px 450px;
+}
+.box1 .head3{
+	margin: 5px 10px 10px 550px;
+}
+.box1 .head4{
+	margin: 5px 10px 10px 650px;
+}
+#button1{
+	margin: 5px 10px 15px 550px;
+}
+#button2{
+	margin: -25px 10px 15px 570px;
+}
+#button3{
+	margin: 125px 10px 15px 550px;
+}
+#message{
+	margin: 25px 10px 15px 540px;
+}
