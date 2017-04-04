@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html>
-	<head>
-   		<title>View queries page</title>
-    	<style>
-			.error {color: red;}
-			.info {color: green;}
-			.danger {color: red;}
-			.safe {color: green;}
-		</style>
-	</head>
-	<body>
+<head>
+    <title>Student home</title>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static "css/jquery-ui.min.css" %}">
+    <script type="text/javascript" src="{% static "js/jquery.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/jquery-ui.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/datepicker.js" %}"></script>
+</head>
+
+
+
+<body>
 
 <h1>Student Home</h1>
 
@@ -20,33 +23,21 @@
 <a href="/stud_course">
       <button>Course2</button>
 </a>-->
-	{% if course_percent %}
-		<table>
-			<tr> 
-				<!--<th>S. No</th>-->
-				<th>Course ID</th>
-				<th>Course Name</th> 
-				<th>Percentage</th>
-				{% for c,d in course_percent %}
-				<tr>
-					<td>{{c.course_id}}</td>
-					<td>{{c.course_name}}</td>
-					{% if d > 85 %}
-						<td><span class="safe">{{d}}</span></td>
-					{% else %}
-						<td><span class="danger">{{d}}</span></td>
-					{% endif %}
-				</tr>
-			{% endfor %}
-			</tr>
-		</table>
-	{% else %}
-		<span class="error"> No courses to display</span>
-	{% endif %}
+{% for c,d in course_percent%}
+<span>Course ID - {{c.course_id}} ; Course name - {{c.course_name}}; Percentage = {{d}}</span><a href="/stud_course/{{c.course_id}}"><button>Go to course</button></a><br>
+{% endfor %}
 <br>
-<a href="/stud_daily_report">
+<!--<a href="/stud_daily_report">
       <button>View Daily Report</button>
-</a>
+</a>-->
 
+<form action="/stud_home/" method="post">
+      <p>Date: <input type="text" name="date" id="datepicker"></p>
+      <input type="submit" value="Submit"><br>
+    </form>
+
+<br>
+    <br>
+    <a href="/logout/"><button>Logout</button></a>
 </body>
 </html>

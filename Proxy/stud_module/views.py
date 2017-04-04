@@ -17,60 +17,93 @@ import datetime
 
 @csrf_exempt
 def stud_home(request):
-	# add context as third arg to render
-	if request.user.is_authenticated():
-		# print request.user.username
-		qs = Course.objects.filter(taken_by=request.user)
-		percent = []
+	user = request.user
+	if user.is_authenticated() and not user.is_staff:	# Display the page only if the user is logged in and is a student
+		qs = Course.objects.filter(taken_by=user)
+		percent = []	# For student's attendance percentage
 		for a in qs:
-			totalno = Attendance.objects.filter(student=request.user,course_id=a.course_id).count()
-			presentno = Attendance.objects.filter(student=request.user,course_id=a.course_id,is_present=1).count()
-			currpercent = (100*presentno)/totalno
-			percent.append(currpercent)
+			totalno = Attendance.objects.filter(student=user,course_id=a.course_id).count()
+			presentno = Attendance.objects.filter(student=user,course_id=a.course_id,is_present=1).count()
+			try:
+				currpercent = (100*presentno)/totalno
+				percent.append(currpercent)
+			except:
+				percent.append(0)
+				pass
+		if request.method == 'POST':
+			date = request.POST.get('date')
+			d = date[0:2]
+			m = date[3:5]
+			y = date[6:10]
+			date = y+'/'+m+'/'+d
+			return redirect('/stud_daily_report/'+date)	
 		return render(request, 'stud_home.html', {'course_percent':zip(qs,percent)})
+	elif user.is_staff:
+		messages.error(request,"You are not a student!")
+		return redirect('/login/')
 	else:
+		messages.error(request,"You are not logged in.")
 		return redirect('/login/')
 
 @csrf_exempt
 def stud_course(request, c_id):
-	# add context as third arg to render
-	if request.user.is_authenticated:
-		try:
-			c = Course.objects.get(course_id=c_id,taken_by=request.user)
+	user = request.user
+	if user.is_authenticated and not user.is_staff:
+		try:										# Check if the student takes the course
+			c = Course.objects.get(course_id=c_id,taken_by=user)	
 			return render(request, 'stud_course.html',{'course_id':c_id})
 		except Exception as e:
-			raise Http404("You don't take the course!")
+			messages.error(request,"You are not registered for the course!")
+			return redirect('/login/')
+	elif user.is_staff:
+		messages.error(request,"You are not a student!")
+		return redirect('/login/')
 	else:
+		messages.error(request,"You are not logged in.")
 		return redirect('/login/')
 
-# def store_stud: doubt - where to create new student
-
-def stud_daily_report(request):
-	# add context as third arg to render
-	if request.user.is_authenticated and not request.user.is_staff:
-		attendances = Attendance.objects.filter(student=request.user).order_by('-date')
+# Needs to be modified to have calendar and images, to be implemented by Vinod
+def stud_daily_report(request,y,m,d):
+	user = request.user
+	if user.is_authenticated and not user.is_staff:
+		#attendances = Attendance.objects.filter(student=user).order_by('-date')
+		try:
+			date_obj = datetime.date(int(y),int(m),int(d))
+		except Exception as e:
+			raise Http404("Invalid date!")
+		attendances = Attendance.objects.filter(student=user,date=date_obj)
 		if len(attendances) == 0:
 			#messages.error(request,"No history to display")
-			return render(request, 'view_queries.html')
+			return render(request, 'stud_daily_report.html')
 		else:
-			return render(request, 'view_queries.html', {'attendances':attendances})
-	# Handle errors	
-	return render(request, 'stud_daily_report.html')
+			return render(request, 'stud_daily_report.html', {'attendances':attendances})
+	elif user.is_staff:
+		messages.error(request,"You are not a student!")
+		return redirect('/login/')
+	else:
+		messages.error(request,"You are not logged in.")
+		return redirect('/login/')
 
+# Better if we can put date here also
 def view_queries(request, c_id):
-	# add context as third arg to render
-	if request.user.is_authenticated and not request.user.is_staff:
-		queries = Query.objects.filter(course_id=c_id, student=request.user)
+	user = request.user
+	if user.is_authenticated and not user.is_staff:
+		queries = Query.objects.filter(course_id=c_id, student=user).order_by('-date')	# Gets the student's queries.
 		if len(queries) == 0:
-			#messages.error(request,"No history to display")
+			#messages.error(request,"No queries to display")
 			return render(request, 'view_queries.html',{'course':c_id})
 		else:
 			return render(request, 'view_queries.html', {'queries':queries, 'course':c_id})
-	# Handle errors
-	return render(request, 'view_queries.html')
+	elif user.is_staff:
+		messages.error(request,"You are not a student!")
+		return redirect('/login/')
+	else:
+		messages.error(request,"You are not logged in.")
+		return redirect('/login/')
 
 @csrf_exempt	
 def query(request, c_id):
+	user = request.user
 	if request.method == "POST":
 		if request.user.is_authenticated and not request.user.is_staff:
 			# Use a form for handling boundary cases.
@@ -83,20 +116,37 @@ def query(request, c_id):
 			pass # Handle error here
 	return render(request, 'stud_course.html',{'course_id':c_id})
 
+# Add a date field in raise query also
 def raise_query(request, c_id):
-	# add context as third arg to render
-	return render(request, 'raise_query.html',{'course':c_id})
-
+	user = request.user
+	if request.user.is_authenticated and not request.user.is_staff:
+		try:										# Check if the student takes the course
+			c = Course.objects.get(course_id=c_id,taken_by=user)	
+			return render(request, 'raise_query.html',{'course':c_id})
+		except Exception as e:
+			messages.error(request,"You are not registered for the course!")
+			return redirect('/login/')
+	elif user.is_staff:
+		messages.error(request,"You are not a student!")
+		return redirect('/login/')
+	else:
+		messages.error(request,"You are not logged in.")
+		return redirect('/login/')
+	
+# Add a date field in stud history also
 def stud_history(request, c_id):
-	# add context as third arg to render
-	print c_id
+	user = request.user
 	if request.user.is_authenticated and not request.user.is_staff:
 		# Control reaches here if the user is a student and is authenticated.
-		att = Attendance.objects.filter(course_id=c_id,student=request.user)	#Handle the request.user thing better
+		att = Attendance.objects.filter(course_id=c_id,student=request.user).order_by('-date')	# Gets the attendances sorted by most recent first
 		if len(att) == 0:
 			#messages.error(request,"No history to display")
 			return render(request, 'stud_history.html',{'course':c_id})
 		else:
 			return render(request, 'stud_history.html', {'attendance':att, 'course':c_id})
-	# Handle the error case here
-	return render(request, 'stud_history.html')
+	elif user.is_staff:
+		messages.error(request,"You are not a student!")
+		return redirect('/login/')
+	else:
+		messages.error(request,"You are not logged in.")
+		return redirect('/login/')
