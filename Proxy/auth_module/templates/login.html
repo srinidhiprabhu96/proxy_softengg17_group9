@@ -27,7 +27,9 @@
         </div>
       </div>
       <<div class="form">
-        <div class="thumbnail"><img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/169963/hat.svg"/>
+        <div class="thumbnail">
+          {% load static %}
+          <img src="{% static "hat.svg" %}" alt="Hat"/>
         </div>
        </form>
         <form action="/auth1/" method="post">

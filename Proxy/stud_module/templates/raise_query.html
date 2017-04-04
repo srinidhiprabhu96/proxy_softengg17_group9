@@ -6,8 +6,26 @@
 			.error {color: red;}
 		</style>
 	</head>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+	{% load static %}
+	<link rel="stylesheet" href="{% static "css/style.css"%}">
+	{% load static %}
+	<link rel="stylesheet" href="{% static "css/bootstrap.css"%}">
+	{% load static %}
+	<link rel="stylesheet" href="{% static "css/bootstrap.css.map"%}">
+	{% load static %}
+	<link rel="stylesheet" href="{% static "css/bootstrap.min.css"%}">
+	{% load static %}
+	<link rel="stylesheet" href="{% static "css/bootstrap.min.css.map"%}">
+	{% load static %}
+	<script src="{% static "js/bootstrap.min.js" %}"></script>
+	{% load static %}
+	<script src="{% static "js/bootstrap.js" %}"></script>	
 	<body>
-		
+		<div class="box1">
+            <h1 class="head3">Course queries</h1>
+            <p class="head4">{{course}}</p>
+    	</div>
 		<p>Hello, {{user.first_name}}<br> Raise your query for {{course}} here.</p>
 		<!--<h1>Raise query</h1>-->
 		<form action="/query/{{course}}/" method="post" id="queryform">
@@ -15,10 +33,10 @@
 			<input type="submit" value="Submit"><br>
 		</form>
 		<br>
-		<a href="/stud_course/{{course}}"><button>Back to course page</button></a>
+		<a href="/stud_course/{{course}}"><button type="button" class="btn btn-info">Back to course page</button></a>
 		<br>
 		<br>
-		<a href="/logout/"><button>Logout</button></a>
+		<a href="/logout/"><button button type="button" class="btn btn-warning" id="button2">Logout</button></a>
 
 	</body>
 </html>
