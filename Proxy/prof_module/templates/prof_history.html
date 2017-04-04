@@ -1,10 +1,10 @@
 <html>
 <head>
     <title>History</title>
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <!-- <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script> -->
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static "css/jquery-ui.min.css" %}">
-    <script type="text/javascript" src="{% static "js/jquery.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/jquery.min.js" %}"></script>
     <script type="text/javascript" src="{% static "js/jquery-ui.min.js" %}"></script>
     <script type="text/javascript" src="{% static "js/datepicker.js" %}"></script>
 </head>
@@ -13,8 +13,8 @@
     <h1>History</h1>
 
     <form action="/prof_history/{{course_id}}/" method="post">
-      <p>Date: <input type="text" name="date" id="datepicker"></p>
-      <input type="submit" value="Submit"><br>
+      Date: <input type="text" name="date" id="datepicker">
+      <input type="submit" value="Submit">
     </form>
 
     <!-- {% for i in dates %}

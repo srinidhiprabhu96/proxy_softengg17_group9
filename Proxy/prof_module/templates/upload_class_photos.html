@@ -1,6 +1,11 @@
 <html>
 <head>
     <title>{{course_id}} Course Page</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static "css/jquery-ui.min.css" %}">
+    <script type="text/javascript" src="{% static "js/jquery.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/jquery-ui.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/datepicker.js" %}"></script>
 </head>
 <body>
 
@@ -8,9 +13,9 @@
     <p>Hello, {{user.first_name}}</p>
 
     <form action="/take_attendance/{{course_id}}/" method="post" enctype="multipart/form-data">
-			Select the images you want to upload:
-			<input type="file" name="myfiles" multiple="multiple" accept="image/*"><br>
-			<input type="submit" value="Submit"><br>
+      Select date: <input type="text" name="date" id="datepicker"><br>
+      Select the images you want to upload:<input type="file" name="myfiles" multiple="multiple" accept="image/*"><br>
+			<input type="submit" value="Submit">
 		</form>
 
     {% if messages %}

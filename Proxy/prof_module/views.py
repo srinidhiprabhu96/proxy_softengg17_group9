@@ -173,9 +173,13 @@ def take_attendance(request, c_id):
 				# print i.name
 				path = default_storage.save(request.user.username+'/'+c_id+'/'+datetime.date.today().strftime('%Y/%m/%d')+'/'+i.name, ContentFile(i.read()))
 				paths += [os.path.join(settings.MEDIA_ROOT, path)]
+			date_str = request.POST.get('date')
+			d = date_str[0:2]
+			m = date_str[3:5]
+			y = date_str[6:10]
 
 			## Added by SP - search in faceset
-			date = str(datetime.date.today())	# Currently setting today's date, change the date here.
+			date = y+'-'+m+'-'+d	# Currently setting today's date, change the date here.  -- Changed
 			args = []
 			args.append("python")
 			args.append("searchFace.py")
