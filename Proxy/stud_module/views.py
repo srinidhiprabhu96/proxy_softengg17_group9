@@ -13,6 +13,7 @@ from auth_module.models import *
 from auth_module.forms import *
 from stud_module.models import *
 from prof_module.models import *
+from django.template import RequestContext
 import datetime
 
 @csrf_exempt

@@ -13,8 +13,8 @@ s2 = User(username='stud2@smail.iitm.ac.in',first_name='Student2',email='stud2@s
 s1.save()
 s2.save()
 
-c1 = Course(course_id='CS1100',course_name='C programming',taught_by=prof)
-c2 = Course(course_id='CS1300',course_name='Intro to CSE',taught_by=prof)
+c1 = Course(course_id='CS1100',course_name='C programming',taught_by=prof,taken_by=[s1,s2])
+c2 = Course(course_id='CS1300',course_name='Intro to CSE',taught_by=prof,taken_by=[s1,s2])
 c1.save()
 c2.save()
 
