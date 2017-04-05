@@ -1,18 +1,58 @@
+<!DOCTYPE html> 
 <html>
 <head>
     <title>Homepage</title>
 </head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    {% load static %}
+    <link rel="stylesheet" href="{% static "css/style.css"%}">
+    {% load static %}
+    <link rel="stylesheet" href="{% static "css/bootstrap.css"%}">
+    {% load static %}
+    <link rel="stylesheet" href="{% static "css/bootstrap.css.map"%}">
+    {% load static %}
+    <link rel="stylesheet" href="{% static "css/bootstrap.min.css"%}">
+    {% load static %}
+    <link rel="stylesheet" href="{% static "css/bootstrap.min.css.map"%}">
+    {% load static %}
+    <script src="{% static "js/bootstrap.min.js" %}"></script>
+    {% load static %}
+    <script src="{% static "js/bootstrap.js" %}"></script>
 <body>
-	
-    <h1>Homepage</h1>
-    <p>Hello, {{user.first_name}}</p>
-    {% for c in courses%}
-    <span>Course ID - {{c.course_id}} ; Course name - {{c.course_name}}</span><a href="/prof_course/{{c.course_id}}"><button>Go to course</button></a><br>
-    {% endfor %}
-    <br>
-    <br>
-    <br>
-    <a href="/logout/"><button>Logout</button></a>
+	<div class="box1">
+            <h1 class="head">Easy Attendance</h1>
+            <p class="head1">{{user.first_name}} home page</p>
+        </div>
+    <div>
+              <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Course ID</th>
+                        <th>Course name</th>
+                        <th>Course Page</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for c in courses%}
+                        <tr>
+                            <td>{{c.course_id}}</td>
+                            <td>{{c.course_name}}</td>
+                            <td>
+                                <a href="/prof_course/{{c.course_id}}">
+                                    <button type="button" class="btn btn-info">Go to course</button>
+                                </a>
+                            </td>
+                        </tr><br>
+                    {% endfor %}<br>    
+                </tbody>
+              </table>
+
+  
+           
+            <br>
+            <br>
+            <a href="/logout/"><button type="button" class="btn btn-warning" id="button2">Logout</button></a>
+        </div>
 
 </body>
 </html>
