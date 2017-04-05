@@ -1,0 +1,7 @@
+.error {color: red;}
+.info {color: green;}
+.present {color: green;}
+.absent {color: red;}
+.progress {color: blue;}
+.rejected {color: red;}
+.accepted {color: green;}

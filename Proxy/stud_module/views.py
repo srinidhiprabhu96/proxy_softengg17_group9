@@ -13,6 +13,7 @@ from auth_module.models import *
 from auth_module.forms import *
 from stud_module.models import *
 from prof_module.models import *
+from django.template import RequestContext
 import datetime
 
 @csrf_exempt
@@ -56,20 +57,30 @@ def stud_course(request, c_id):
 		return redirect('/login/')
 
 # Needs to be modified to have calendar and images, to be implemented by Vinod
+@csrf_exempt
 def stud_daily_report(request):
 	user = request.user
-	if user.is_authenticated and not user.is_staff:
-		attendances = Attendance.objects.filter(student=user).order_by('-date')
-		if len(attendances) == 0:
-			#messages.error(request,"No history to display")
-			return render(request, 'stud_daily_report.html')
+	if request.method == "POST":
+		if user.is_authenticated and not user.is_staff:
+			date = request.POST['date']
+			str_date = date
+			#print date
+			date = datetime.datetime.strptime(str_date,'%d/%m/%Y').date()
+			#print date
+			attendances = Attendance.objects.filter(student=user,date=date)
+			if len(attendances) == 0:
+				#messages.error(request,"No history to display")
+				return render(request, 'stud_daily_report.html',{'date':str_date})
+			else:
+				return render(request, 'stud_daily_report.html', {'attendances':attendances, 'date':str_date})
+		elif user.is_staff:
+			messages.error(request,"You are not a student!")
+			return redirect('/login/')
 		else:
-			return render(request, 'stud_daily_report.html', {'attendances':attendances})
-	elif user.is_staff:
-		messages.error(request,"You are not a student!")
-		return redirect('/login/')
+			messages.error(request,"You are not logged in.")
+			return redirect('/login/')
 	else:
-		messages.error(request,"You are not logged in.")
+		messages.error(request,"You are not allowed to view this page.")
 		return redirect('/login/')
 
 # Better if we can put date here also
