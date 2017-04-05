@@ -1,0 +1,14 @@
+<html>
+<head>
+    <title>Student queries Page</title>
+</head>
+<body>
+
+    <h1>Student Queries Page</h1>
+    <p>Hello, {{user.first_name}}</p>
+    {% for c in queries%}
+	<span>Course ID - {{c.course_id}} ; Date - {{c.date}}; Description - {{c.text}}; ApprovedOrNot - {{c.isApproved}}</span></a><br>
+	{% endfor %}
+<br>
+</body>
+</html>

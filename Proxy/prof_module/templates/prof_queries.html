@@ -62,5 +62,25 @@
         <span class="error"> No queries to display</span>
     {% endif %}
     </div>
+
+<!-- Needs to be incorporated   <h1>Queries</h1>
+    {% for q in queries %}
+    <span>{{q.date}} ; {{q.student.first_name}} ; {{q.query}} ; {{q.status}}</span>
+    <form action="/prof_queries/{{course_id}}/" method="post" style="display:inline;">
+      <input type="hidden" name="query" value="{{q.id}} 1" />
+      <input type="submit" {% if q.status == '1' %}disabled{% endif %} value="Accept"/>
+    </form>
+    <form action="/prof_queries/{{course_id}}/" method="post" style="display:inline;">
+      <input type="hidden" name="query" value="{{q.id}} 2" />
+      <input type="submit" {% if q.status == '2' %}disabled{% endif %} value="Decline"/>
+    </form>
+    <br>
+    {% endfor %}
+    <br>
+    <a href="/prof_course/{{course_id}}"><button>Back to course page</button></a>
+    <br>
+    <br>
+    <a href="/logout/"><button>Logout</button></a>
+-->
 </body>
 </html>
