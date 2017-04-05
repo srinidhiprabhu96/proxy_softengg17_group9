@@ -15,6 +15,10 @@ from stud_module.models import *
 from prof_module.models import *
 from django.template import RequestContext
 import datetime
+from glob import glob
+import os
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 @csrf_exempt
 def stud_home(request):
@@ -56,7 +60,6 @@ def stud_course(request, c_id):
 		messages.error(request,"You are not logged in.")
 		return redirect('/login/')
 
-# Needs to be modified to have calendar and images, to be implemented by Vinod
 @csrf_exempt
 def stud_daily_report(request):
 	user = request.user
@@ -133,19 +136,40 @@ def raise_query(request, c_id):
 		return redirect('/login/')
 	
 # Add a date field in stud history also
+@csrf_exempt
 def stud_history(request, c_id):
 	user = request.user
-	if request.user.is_authenticated and not request.user.is_staff:
-		# Control reaches here if the user is a student and is authenticated.
-		att = Attendance.objects.filter(course_id=c_id,student=request.user).order_by('-date')	# Gets the attendances sorted by most recent first
-		if len(att) == 0:
-			#messages.error(request,"No history to display")
-			return render(request, 'stud_history.html',{'course':c_id})
+	if request.method == "POST":
+		if request.user.is_authenticated and not request.user.is_staff:
+			# Control reaches here if the user is a student and is authenticated.
+			date = request.POST['date']
+			str_date = date
+			date = datetime.datetime.strptime(str_date,'%d/%m/%Y').date()
+			date_path = datetime.datetime.strftime(date,"%Y/%m/%d")
+			try:
+				prof_name = Course.objects.get(course_id=c_id).taught_by.username
+			except:
+				messages.error(request,"You are not registered for the course!")
+				return redirect('/login/')
+				
+			l =  glob(os.path.join(BASE_DIR, 'media/'+prof_name+'/'+c_id+'/'+date_path+'/*'))
+			files = []
+			for i in l:
+				files.append(prof_name+"/"+c_id+"/"+date_path+"/"+os.path.basename(i))
+			
+			att = Attendance.objects.filter(course_id=c_id,student=request.user,date=date)
+			if len(att) == 0:
+				#messages.error(request,"No history to display")
+				return render(request, 'stud_history.html',{'course':c_id})
+			else:
+				is_present = att[0].is_present
+				return render(request, 'stud_history.html', {'attendance':is_present, 'course':c_id, 'files':files, 'date':str_date})
+		elif user.is_staff:
+			messages.error(request,"You are not a student!")
+			return redirect('/login/')
 		else:
-			return render(request, 'stud_history.html', {'attendance':att, 'course':c_id})
-	elif user.is_staff:
-		messages.error(request,"You are not a student!")
-		return redirect('/login/')
+			messages.error(request,"You are not logged in.")
+			return redirect('/login/')
 	else:
-		messages.error(request,"You are not logged in.")
+		messages.error(request,"You are not allowed to view this page.")
 		return redirect('/login/')

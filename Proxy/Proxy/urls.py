@@ -39,7 +39,7 @@ urlpatterns = [
     url(r'^query/([a-zA-Z0-9]+)/$',query),
 	url(r'^stud_home/$',stud_home),
     url(r'^stud_course/([a-zA-Z0-9]+)/$',stud_course),
-    url(r'^stud_daily_report/([0-9]{4})/([0-9]{2})/([0-9]{2})$',stud_daily_report),
+    url(r'^stud_daily_report/$',stud_daily_report),
     url(r'^stud_history/([a-zA-Z0-9]+)/$',stud_history),
     url(r'^view_queries/([a-zA-Z0-9]+)/$',view_queries),
 	url(r'^raise_query/([a-zA-Z0-9]+)/$',raise_query),
