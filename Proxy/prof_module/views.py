@@ -205,6 +205,7 @@ def take_attendance(request, c_id):
 		messages.error(request,"You are not logged in.")
 		return redirect('/login/')
 
+@csrf_exempt
 def prof_queries(request, c_id):
 	# add context as third arg to render
 	if request.user.is_authenticated() and request.user.is_staff:
@@ -212,11 +213,17 @@ def prof_queries(request, c_id):
 			cr = Course.objects.filter(course_id=c_id, taught_by=request.user)
 			if not cr.exists():
 				raise Http404("You dont teach the course!")
+			if request.method == 'POST':
+				res = request.POST.get('query').split()
+				temp_query = Query.objects.get(id= res[0])
+				temp_query.status = res[1]
+				temp_query.save()
+
 			query_set = Query.objects.filter(course_id=c_id).order_by('-date')
 
 			return render(request, 'prof_queries.html',{'course_id':c_id, 'queries':query_set})
 		except Exception as e:
-			# raise e
+			raise e
 			#raise Http404("You don't teach the course!")
 			raise Http404("You don't teach the course!")
 	elif not request.user.is_staff:
