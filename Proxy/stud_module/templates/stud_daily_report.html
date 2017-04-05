@@ -1,14 +1,44 @@
 <html>
-<head>
-    <title>Daily Report Page</title>
-</head>
-<body>
+	<head>
+   		<title>View queries page</title>
+    	<style>
+			.error {color: red;}
+			.info {color: green;}
+			.present {color: red;}
+			.absent {color: green;}
+		</style>
+	</head>
+	<body>
 
-    <h1>Student Daily Report Page</h1>
-    <p>Hello, {{user.first_name}}</p>
-    {% for c in attendances%}
-	<span>Course ID - {{c.course_id}} ; Course name - {{c.course_name}}; Date - {{c.date}}; PresentOrNot - {{c.isPresent}}</span></a><br>
-	{% endfor %}
-<br>
-</body>
+	<h1>Daily Report of {{user.first_name}}</h1>
+
+	{% if attendances %}
+		<table>
+			<tr> 
+				<!--<th>S. No</th>-->
+				<th>Date</th>
+				<th>Course</th> 
+				<th>PresentOrNot</th>
+				{% for item in attendances %}
+				<tr>
+					<td>{{item.date}}</td>
+					<td>{{item.Course}}</td>
+					{% if item.IS_PRESENT == '1' %}
+						<td><span class="present">Present</span></td>
+					{% else %}
+						<td><span class="absent">Absent</span></td>
+					{% endif %}
+				</tr>
+			{% endfor %}
+			</tr>
+		</table>
+	{% else %}
+		<span class="error"> No attendances to display</span>
+	{% endif %}
+	<br>
+	<a href="/stud_home/"><button>Back to home page</button></a>
+	<br>
+    <br>
+    <a href="/logout/"><button>Logout</button></a>
+	</body>
 </html>

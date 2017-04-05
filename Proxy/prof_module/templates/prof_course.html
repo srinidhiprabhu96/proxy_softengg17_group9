@@ -6,14 +6,18 @@
 
     <h1>{{course_id}} Course Page</h1>
     <p>Hello, {{user.first_name}}</p>
-    <a href="/take_attendance/{{course_id}}/"><button>Take Attendance</button></a>
+    <a href="/upload_class_photos/{{course_id}}/"><button>Take Attendance</button></a>
     <br>
-    <a href="/daily_report/{{course_id}}/"><button>View Daily Report</button></a>
+    <a href="/daily_report/{{course_id}}/{% now "Y\/m\/d" %}"><button>View Today's Report</button></a>
     <br>
     <a href="/prof_history/{{course_id}}/"><button>View History</button></a><br>
-    <a href="/add_stud/{{course_id}}/"><button>Add student</button></a>
+    <!-- <a href="/add_stud/{{course_id}}/"><button>Add student</button></a> -->
+    <a href="/prof_queries/{{course_id}}/"><button>View Queries</button></a>
     <br>
     <br>
     <a href="/prof_home/"><button>Back to home</button></a>
+    <br>
+    <br>
+    <a href="/logout/"><button>Logout</button></a>
 </body>
 </html>

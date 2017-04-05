@@ -20,7 +20,8 @@ from stud_module.views import *
 from auth_module.views import *
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
+    # url(r'^admin/', admin.site.urls),
+    url(r'^$', login_page),	
     url(r'^signup/$',signup),
     url(r'^login/$',login_page),
     url(r'^auth1/$',auth),
@@ -29,16 +30,18 @@ urlpatterns = [
     url(r'^finish-signup/$',finish_signup),
     url(r'^prof_home/$',prof_home),
     url(r'^prof_course/([a-zA-Z0-9]+)/$',prof_course),
-    url(r'^add_stud/([a-zA-Z0-9]+)/$',add_stud),
-    url(r'^daily_report/([a-zA-Z0-9]+)/$',daily_report),
+    # url(r'^add_stud/([a-zA-Z0-9]+)/$',add_stud),
+    url(r'^daily_report/([a-zA-Z0-9]+)/([0-9]{4})/([0-9]{2})/([0-9]{2})/$',daily_report),
     url(r'^prof_history/([a-zA-Z0-9]+)/$',prof_history),
     url(r'^take_attendance/([a-zA-Z0-9]+)/$',take_attendance),
-    url(r'^prof_queries/$',prof_queries),
+    url(r'^upload_class_photos/([a-zA-Z0-9]+)/$',upload_class_photos),
+    url(r'^prof_queries/([a-zA-Z0-9]+)/$',prof_queries),
+    url(r'^query/([a-zA-Z0-9]+)/$',query),
 	url(r'^stud_home/$',stud_home),
     url(r'^stud_course/([a-zA-Z0-9]+)/$',stud_course),
     url(r'^stud_daily_report/$',stud_daily_report),
     url(r'^stud_history/([a-zA-Z0-9]+)/$',stud_history),
-    url(r'^stud_queries/$',stud_queries),
-	url(r'^savequery/$',save_query),
+    url(r'^view_queries/([a-zA-Z0-9]+)/$',view_queries),
 	url(r'^raise_query/([a-zA-Z0-9]+)/$',raise_query),
+	url(r'^logout/$',logout_view),
 ]
