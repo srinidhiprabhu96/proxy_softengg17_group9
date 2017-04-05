@@ -109,8 +109,13 @@ def query(request, c_id):
 	if request.method == "POST":
 		if request.user.is_authenticated and not request.user.is_staff:
 			# Use a form for handling boundary cases.
+			print request.POST
 			text = request.POST['query']
-			q = Query(course_id=c_id,student=request.user,date=datetime.date.today(),query=text)
+			date_str = request.POST['date']
+			print date_str
+			date = datetime.datetime.strptime(date_str,"%d/%m/%Y")
+			print date
+			q = Query(course_id=c_id,student=request.user,date=date,query=text)
 			q.save()
 			messages.info(request,"Request successfully raised")
 			return render(request, 'stud_course.html',{'course_id':c_id})
@@ -121,18 +126,23 @@ def query(request, c_id):
 # Add a date field in raise query also
 def raise_query(request, c_id):
 	user = request.user
-	if request.user.is_authenticated and not request.user.is_staff:
-		try:										# Check if the student takes the course
-			c = Course.objects.get(course_id=c_id,taken_by=user)	
-			return render(request, 'raise_query.html',{'course':c_id})
-		except Exception as e:
-			messages.error(request,"You are not registered for the course!")
+	if request.method == "GET":
+		date = request.GET['date']
+		if request.user.is_authenticated and not request.user.is_staff:
+			try:										# Check if the student takes the course
+				c = Course.objects.get(course_id=c_id,taken_by=user)	
+				return render(request, 'raise_query.html',{'course':c_id,'date':date})
+			except Exception as e:
+				messages.error(request,"You are not registered for the course!")
+				return redirect('/login/')
+		elif user.is_staff:
+			messages.error(request,"You are not a student!")
 			return redirect('/login/')
-	elif user.is_staff:
-		messages.error(request,"You are not a student!")
-		return redirect('/login/')
+		else:
+			messages.error(request,"You are not logged in.")
+			return redirect('/login/')
 	else:
-		messages.error(request,"You are not logged in.")
+		messages.error(request,"You are not allowed to view this page.")
 		return redirect('/login/')
 	
 # Add a date field in stud history also
@@ -160,7 +170,7 @@ def stud_history(request, c_id):
 			att = Attendance.objects.filter(course_id=c_id,student=request.user,date=date)
 			if len(att) == 0:
 				#messages.error(request,"No history to display")
-				return render(request, 'stud_history.html',{'course':c_id})
+				return render(request, 'stud_history.html',{'course':c_id, 'date':str_date})
 			else:
 				is_present = att[0].is_present
 				return render(request, 'stud_history.html', {'attendance':is_present, 'course':c_id, 'files':files, 'date':str_date})

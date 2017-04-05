@@ -20,14 +20,18 @@
 	<script src="{% static "js/bootstrap.min.js" %}"></script>
 	{% load static %}
 	<script src="{% static "js/bootstrap.js" %}"></script>	
+	{% load static %}
+	<script type="text/javascript" src="{% static "js/datepicker.js" %}"></script>
 	<body>
 		<div class="box1">
             <h1 class="head3">Course queries</h1>
             <p class="head4">{{course}}</p>
     	</div>
-		<p>Hello, {{user.first_name}}<br> Raise your query for {{course}} here.</p>
+		<p>Hello, {{user.first_name}}<br> Raise your query for {{course}}  on {{date}} here.</p>
 		<!--<h1>Raise query</h1>-->
 		<form action="/query/{{course}}/" method="post" id="queryform">
+			Date: <input type="text" name="date" id="datepicker" value="{{date}}" readonly="readonly"><br>
+			Query:<br>
 			<textarea name="query" form="queryform" maxlength="500" cols="50" rows="10"></textarea><br>
 			<input type="submit" value="Submit"><br>
 		</form>

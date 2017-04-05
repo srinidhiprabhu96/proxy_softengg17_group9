@@ -33,11 +33,16 @@
 		{% for i in files %}
 		<img src="{% static i %}" style="height: 30%;"/>
 		{% endfor %}
+		<br>
 		{% if attendance == "1" %}
 			<span class="present"> You were marked present</span>
 		{% else %}
 			<span class="error"> You were marked absent </span>
 		{% endif %}
+		<br>
+		<a href="/raise_query/{{course}}?date={{date}}"><button type="button" class="btn btn-primary" id="button1">Raise Query</button></a>
+    	<br>
+    	<br>
 	{% else %}
 		<span class="error"> No history to display </span>
 	{% endif %}
