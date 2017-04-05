@@ -13,6 +13,7 @@ from auth_module.models import *
 from auth_module.forms import *
 from stud_module.models import *
 from prof_module.models import *
+from django.template import RequestContext
 import datetime
 
 @csrf_exempt
@@ -30,13 +31,6 @@ def stud_home(request):
 			except:
 				percent.append(0)
 				pass
-		if request.method == 'POST':
-			date = request.POST.get('date')
-			d = date[0:2]
-			m = date[3:5]
-			y = date[6:10]
-			date = y+'/'+m+'/'+d
-			return redirect('/stud_daily_report/'+date)	
 		return render(request, 'stud_home.html', {'course_percent':zip(qs,percent)})
 	elif user.is_staff:
 		messages.error(request,"You are not a student!")
@@ -63,15 +57,10 @@ def stud_course(request, c_id):
 		return redirect('/login/')
 
 # Needs to be modified to have calendar and images, to be implemented by Vinod
-def stud_daily_report(request,y,m,d):
+def stud_daily_report(request):
 	user = request.user
 	if user.is_authenticated and not user.is_staff:
-		#attendances = Attendance.objects.filter(student=user).order_by('-date')
-		try:
-			date_obj = datetime.date(int(y),int(m),int(d))
-		except Exception as e:
-			raise Http404("Invalid date!")
-		attendances = Attendance.objects.filter(student=user,date=date_obj)
+		attendances = Attendance.objects.filter(student=user).order_by('-date')
 		if len(attendances) == 0:
 			#messages.error(request,"No history to display")
 			return render(request, 'stud_daily_report.html')

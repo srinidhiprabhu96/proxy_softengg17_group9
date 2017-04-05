@@ -1,26 +1,44 @@
 <html>
 	<head>
    		<title>Student Course Page</title>
-    	<style>
-			.error {color: red;}
-			.info {color: green;}
-		</style>
+        <style>
+            .error {color: red;}
+            .info  {color: green;}
+        </style>
 	</head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+{% load static %}
+<link rel="stylesheet" href="{% static "css/style.css"%}">
+{% load static %}
+<link rel="stylesheet" href="{% static "css/bootstrap.css"%}">
+{% load static %}
+<link rel="stylesheet" href="{% static "css/bootstrap.css.map"%}">
+{% load static %}
+<link rel="stylesheet" href="{% static "css/bootstrap.min.css"%}">
+{% load static %}
+<link rel="stylesheet" href="{% static "css/bootstrap.min.css.map"%}">
+{% load static %}
+<script src="{% static "js/bootstrap.min.js" %}"></script>
+{% load static %}
+<script src="{% static "js/bootstrap.js" %}"></script>
 <body>
-
-    <h1>{{course_id}} Student Course Page</h1>
-    <p>Hello, {{user.first_name}}</p>
-    <a href="/stud_history/{{course_id}}/"><button>View History</button></a>
+    <div class="box1">
+            <h1 class="head2">{{course_id}} Student Course Page</h1>
+            <p class="head1">Hello, {{user.first_name}}</p>
+    </div>
+    <a href="/stud_history/{{course_id}}/"><button type="button" class="btn btn-primary" id="button3">View History</button></a>
     <br>
-    <a href="/raise_query/{{course_id}}/"><button>Raise Query</button></a>
+    <a href="/raise_query/{{course_id}}/"><button type="button" class="btn btn-primary" id="button1">Raise Query</button></a>
     <br>
-    <a href="/view_queries/{{course_id}}/"><button>View Queries</button></a>
-    <a href="/stud_home/"><button>Back to home</button></a><br>
-    
-    	{% if messages %}
-			{% for message in messages %}
-				<span {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</span><br>
-			{% endfor %}
-		{% endif %}
+    <a href="/view_queries/{{course_id}}/" ><button type="button" class="btn btn-primary" id="button1">View Queries</button></a>
+    <a href="/stud_home/"><button type="button" class="btn btn-info">Back to home</button></a><br>
+    {% if messages %}
+		{% for message in messages %}
+			<span id="message" {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</span><br>
+		{% endfor %}
+	{% endif %}
+	<br>
+    <br>
+    <a href="/logout/"><button type="button" class="btn btn-warning" id="button2">Logout</button></a>
 </body>
 </html>

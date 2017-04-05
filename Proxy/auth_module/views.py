@@ -4,10 +4,10 @@ from django.shortcuts import render,redirect
 from django.contrib import messages
 from django.template import Template, Context, RequestContext
 import string
-import smtplib
 from email.mime.text import MIMEText
 from email.mime.application import MIMEApplication
 from email.mime.multipart import MIMEMultipart
+import smtplib
 from django.views.decorators.csrf import csrf_exempt
 from auth_module.forms import *
 from auth_module.models import *
@@ -20,10 +20,17 @@ import random
 import string
 import re
 import md5
+import subprocess
+from django.contrib.auth import logout
 
 def signup(request):
 	return render(request,'signup.html')
-
+	
+def logout_view(request):
+	logout(request)
+	messages.info(request,"You have logged out successfully!")
+	return redirect("/login/")
+	
 @csrf_exempt
 def before_verify(request):
 	if request.method == 'POST':		# If the method is POST, it means the request is coming from the signup page.
@@ -40,8 +47,10 @@ def before_verify(request):
 			if match:		# If the email is already present, just resend the mail.
 				row = match
 				if row.status == '0':
-					sendEmail(row.name,row.email,row.code,row.account)
-					messages.info(request,"Verification mail resent!")
+					#sendEmail(row.name,row.email,row.code,row.account)
+					args = ["python","sendEmail.py",row.name,row.email,row.code,row.account]
+					subprocess.Popen(args)	# Creates a new thread which handles the updating of attendance.
+					messages.info(request,"Verification mail resent! Please check your inbox after some time.")
 				else:
 					messages.info(request,"This e-mail is already in use.")
 				return render(request,'verify.html')
@@ -67,12 +76,16 @@ def before_verify(request):
 			# Control reaches here if it's either a student or prof account.
 			code = generateCode()
 			signupobject = SignUp(name=name,email=email,code=code,account=account_label)
-			mailSent = sendEmail(name,email,code,account_label)
-
+			args = ["python","sendEmail.py",name,email,code,account_label]
+			subprocess.Popen(args)	# Creates a new thread which handles the updating of attendance.
+			messages.info(request,"Verification mail resent! Please check your inbox after some time.")
+			
+			"""
 			if not mailSent:
 				# If there is some error while sending the mail, display an error message.
 				messages.error(request,"Something went wrong, please try again!")
 				return redirect("/signup/")
+			"""
 
 			# Save the signup object only once mail is sent.
 			signupobject.save()
@@ -109,6 +122,15 @@ def after_verify(request):
 
 	# Redirect to signup page if request method is not GET.
 	return redirect("/signup/")
+
+def generateCode():
+	code = ''
+	codeLength = 32		# For more security, so that guessing the code is difficult.
+	flag = 1
+	while flag != 0:		# Loop to ensure that the generated code doesn't exist already.
+		code = get_random_string(length= codeLength, allowed_chars=u'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789')
+		flag = len(SignUp.objects.filter(code=code))
+	return code
 
 @csrf_exempt
 def finish_signup(request):
@@ -149,46 +171,6 @@ def finish_signup(request):
 		context['email'] = email
 		return render(request,'password_signup_page.html',Context(context))
 	return redirect("/signup/")
-
-# This function is being used instead of Django's inbuilt function because the mails weren't being sent when we used Django's inbuilt mail-sender. This needs to be looked into.
-def sendEmail(name,email,code,account_label):
-	# print "Hi in sendEmail"
-	try:
-		userEmail='softwareengineeringroup9@gmail.com'
-		userPassword = 'zecykaz2'
-		content = MIMEMultipart()
-		content['SUBJECT'] = 'Proxy E-mail verification'
-		content['FROM'] = userEmail
-		content['TO'] = email
-		if account_label == '1':
-			message = "You will be given professor rights in your account."
-		else:
-			message = "You will be given student rights in your account."
-		# print message
-		p=MIMEText("Hello "+name+",\n\nThis is a verification mail from Group 9.\n"+message+"\nPlease click on the below link to verify your email ID.\n\nhttp://127.0.0.1:8000/verification/?code=" + code)
-		content.attach(p)
-		mail=smtplib.SMTP('smtp.gmail.com',587) #smtp server and its port number
-		mail.ehlo()
-		mail.starttls()
-		mail.ehlo()
-		mail.login(userEmail,userPassword)
-		mail.sendmail(userEmail,content['TO'],content.as_string())
-		mail.quit()
-		return True
-	except:
-		return False
-
-
-def generateCode():
-	code = ''
-	codeLength = 32		# For more security, so that guessing the code is difficult.
-	flag = 1
-	while flag != 0:		# Loop to ensure that the generated code doesn't exist already.
-		code = get_random_string(length= codeLength, allowed_chars=u'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789')
-		flag = len(SignUp.objects.filter(code=code))
-	return code
-
-
 
 def login_page(request):
 	return render(request, 'login.html')
