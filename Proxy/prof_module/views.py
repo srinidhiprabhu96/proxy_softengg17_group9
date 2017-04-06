@@ -75,13 +75,13 @@ def daily_report(request, c_id, y, m, d):
 		cr = Course.objects.filter(course_id=c_id, taught_by=request.user)
 		if not cr.exists():
 			raise Http404("You don't teach the course!")
-		if request.method == 'POST':
-			obj = Attendance.objects.get(id = request.POST.get('id'))
-			if obj.is_present == '0':
-				obj.is_present = '1'
-			else:
-				obj.is_present = '0'
-			obj.save()
+		# if request.method == 'POST':
+		# 	obj = Attendance.objects.get(id = request.POST.get('id'))
+		# 	if obj.is_present == '0':
+		# 		obj.is_present = '1'
+		# 	else:
+		# 		obj.is_present = '0'
+		# 	obj.save()
 		date_str = y+'/'+m+'/'+d
 		# print os.path.join(BASE_DIR, 'media/'+request.user.username+'/'+c_id+'/'+date_str+'/*')
 		l =  glob(os.path.join(BASE_DIR, 'media/'+request.user.username+'/'+c_id+'/'+date_str+'/*'))
@@ -216,12 +216,27 @@ def prof_queries(request, c_id):
 			if request.method == 'POST':
 				res = request.POST.get('query').split()
 				temp_query = Query.objects.get(id= res[0])
-				temp_query.status = res[1]
+				temp_query.status = '1'
 				temp_query.save()
+				try:
+					temp_att = Attendance.objects.get(course_id=c_id,student=temp_query.student,date=temp_query.date)
+				except Exception as e:
+					raise e
+				temp_att.is_present = res[1]
+				temp_att.save()
+
 
 			query_set = Query.objects.filter(course_id=c_id).order_by('-date')
-
-			return render(request, 'prof_queries.html',{'course_id':c_id, 'queries':query_set})
+			print query_set
+			att_set = []
+			for q in query_set:
+				try:
+					att = Attendance.objects.get(course_id=c_id,student=q.student,date=q.date)
+				except Exception as e:
+					raise e
+				att_set.append(att.is_present)
+				print att
+			return render(request, 'prof_queries.html',{'course_id':c_id, 'list':zip(query_set,att_set)})
 		except Exception as e:
 			raise e
 			#raise Http404("You don't teach the course!")

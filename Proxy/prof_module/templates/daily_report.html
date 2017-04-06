@@ -17,12 +17,14 @@
     {% endfor %}
 
     <p>Marked Attendance</p>
+
+    <span><b>Student - Attendance</b></span><br>
     {% for i in attendance %}
-    <span>{{i.student.first_name}} - {{i.is_present}} -
-      <form action="/daily_report/{{course_id}}/{{date_url}}/" method="post" style="display:inline;">
+    <span>{{i.student.first_name}} - {{i.is_present}}
+      <!-- <form action="/daily_report/{{course_id}}/{{date_url}}/" method="post" style="display:inline;">
         <input type="hidden" name="id" value="{{i.id}}" />
         <input type="submit" value="Change Attendance"/>
-      </form>
+      </form> -->
     </span><br>
     {% endfor %}
     <br>

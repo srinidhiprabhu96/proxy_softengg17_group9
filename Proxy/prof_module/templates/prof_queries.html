@@ -5,15 +5,16 @@
 <body>
 
     <h1>Queries</h1>
-    {% for q in queries %}
-    <span>{{q.date}} ; {{q.student.first_name}} ; {{q.query}} ; {{q.status}}</span>
+    <span><b>Date ; Student Name ; Query ; Attendance ; Query Status</b></span><br>
+    {% for q,a in list %}
+    <span>{{q.date}} ; {{q.student.first_name}} ; {{q.query}} ; {{a}} ;  {{q.status}} </span>
     <form action="/prof_queries/{{course_id}}/" method="post" style="display:inline;">
       <input type="hidden" name="query" value="{{q.id}} 1" />
-      <input type="submit" {% if q.status == '1' %}disabled{% endif %} value="Accept"/>
+      <input type="submit" {% if a == '1' %}disabled{% endif %} value="Mark Present"/>
     </form>
     <form action="/prof_queries/{{course_id}}/" method="post" style="display:inline;">
-      <input type="hidden" name="query" value="{{q.id}} 2" />
-      <input type="submit" {% if q.status == '2' %}disabled{% endif %} value="Decline"/>
+      <input type="hidden" name="query" value="{{q.id}} 0" />
+      <input type="submit" {% if a == '0' %}disabled{% endif %} value="Mark Absent"/>
     </form>
     <br>
     {% endfor %}
