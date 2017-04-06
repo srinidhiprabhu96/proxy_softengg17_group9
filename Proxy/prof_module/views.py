@@ -130,7 +130,9 @@ def prof_history(request, c_id):
 				y = date[6:10]
 				date = y+'/'+m+'/'+d
 				return redirect('/daily_report/'+c_id+'/'+date)
-			return render(request, 'prof_history.html',{'course_id':c_id})
+			else:
+				raise Http404("You Haven't entered any date!")
+			# return render(request, 'prof_history.html',{'course_id':c_id})
 		except Exception as e:
 			# raise e
 			raise Http404("You don't teach the course!")
