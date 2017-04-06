@@ -29,14 +29,13 @@
             <h1 class="head">Professor View Query</h1>
             <p class="head1">{{user.first_name}} view query page</p>
         </div>
-        <div>
+        <!-- <div>
     {% if queries %}
         <table class = "table table-hover">
-            <tr> 
-                <!--<th>S. No</th>-->
+            <tr>
                 <th>Date</th>
                 <th>Student</th>
-                <th>Course</th> 
+                <th>Course</th>
                 <th>Description</th>
                 <th>Attendance Status</th>
                 {% for item in queries %}
@@ -61,18 +60,19 @@
     {% else %}
         <span class="error"> No queries to display</span>
     {% endif %}
-    </div>
+    </div> -->
 
-<!-- Needs to be incorporated   <h1>Queries</h1>
-    {% for q in queries %}
-    <span>{{q.date}} ; {{q.student.first_name}} ; {{q.query}} ; {{q.status}}</span>
+    <h1>Queries</h1>
+    <span><b>Date ; Student Name ; Query ; Attendance ; Query Status</b></span><br>
+    {% for q,a in list %}
+    <span>{{q.date}} ; {{q.student.first_name}} ; {{q.query}} ; {{a}} ;  {{q.status}} </span>
     <form action="/prof_queries/{{course_id}}/" method="post" style="display:inline;">
       <input type="hidden" name="query" value="{{q.id}} 1" />
-      <input type="submit" {% if q.status == '1' %}disabled{% endif %} value="Accept"/>
+      <input type="submit" {% if a == '1' %}disabled{% endif %} value="Mark Present"/>
     </form>
     <form action="/prof_queries/{{course_id}}/" method="post" style="display:inline;">
-      <input type="hidden" name="query" value="{{q.id}} 2" />
-      <input type="submit" {% if q.status == '2' %}disabled{% endif %} value="Decline"/>
+      <input type="hidden" name="query" value="{{q.id}} 0" />
+      <input type="submit" {% if a == '0' %}disabled{% endif %} value="Mark Absent"/>
     </form>
     <br>
     {% endfor %}
@@ -81,6 +81,6 @@
     <br>
     <br>
     <a href="/logout/"><button>Logout</button></a>
--->
+
 </body>
 </html>

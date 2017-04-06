@@ -21,22 +21,37 @@
 <script src="{% static "js/bootstrap.min.js" %}"></script>
 {% load static %}
 <script src="{% static "js/bootstrap.js" %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static "css/jquery-ui.min.css" %}">
+    <script type="text/javascript" src="{% static "js/jquery.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/jquery-ui.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/datepicker.js" %}"></script>
+</head>
 <body>
     <div class="box1">
             <h1 class="head2">{{course_id}} Professor Course Page</h1>
             <p class="head1">Hello, {{user.first_name}}</p>
     </div>
-    <a href="/upload_class_photos/{{course_id}}/"><button type="button" class="btn btn-primary" id="button3">Take Attendance</button></a>
     <br>
-   <a href="/daily_report/{{course_id}}/{% now "Y\/m\/d" %}"><button type="button" class="btn btn-primary" id="button3">View Daily Report</button></a>
     <br>
-    <a href="/prof_history/{{course_id}}/"><button type="button" class="btn btn-primary" id="button3">View History</button></a>
+    <a href="/upload_class_photos/{{course_id}}/"><button type="button" class="btn btn-primary"  id="button2">Take Attendance</button></a>
     <br>
+    <br>
+    <a href="/daily_report/{{course_id}}/{% now "Y\/m\/d" %}"><button type="button" class="btn btn-primary"  id="button2">View Today's Report</button></a>
+    <br>
+    <br>
+    <!-- <a href="/prof_history/{{course_id}}/"><button>View History</button></a><br> -->
+    <form action="/prof_history/{{course_id}}/" method="post"  id="button2">
+      View history on date: <input type="text" name="date" id="datepicker">
+      <input type="submit" value="Submit" class="btn btn-primary" >
+    </form>
     <!-- <a href="/add_stud/{{course_id}}/"><button>Add student</button></a> -->
-    <a href="/prof_queries/{{course_id}}/"><button type="button" class="btn btn-primary" id="button3">View Queries</button></a>
+    <br>
+    <a href="/prof_queries/{{course_id}}/"><button type="button" class="btn btn-primary"  id="button2">View Queries</button></a>
     <br>
     <br>
-    <a href="/prof_home/"><button type="button" class="btn btn-info" id="button2">Back to home</button></a>
+    <br>
+    <br>
+    <a href="/prof_home/"><button type="button" class="btn btn-info"  id="button2">Back to home</button></a>
     <br>
     <br>
     <a href="/logout/"><button type="button" class="btn btn-warning" id="button2">Logout</button></a>
