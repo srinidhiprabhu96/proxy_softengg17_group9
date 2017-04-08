@@ -12,7 +12,7 @@
   text-align: center;
 }
 .form .thumbnail {
-  background: #EF3B3A;
+  background: #ADD8E6;
   width: 150px;
   height: 150px;
   margin: 0 auto 30px;
@@ -43,7 +43,7 @@
 }
 .form button {
   outline: 0;
-  background: #EF3B3A;
+  background: #ADD8E6;
   width: 100%;
   border: 0;
   padding: 15px;
@@ -51,7 +51,7 @@
   border-top-right-radius: 3px;
   border-bottom-left-radius: 3px;
   border-bottom-right-radius: 3px;
-  color: #FFFFFF;
+  color: #000000;
   font-size: 14px;
   -webkit-transition: all 0.3 ease;
   transition: all 0.3 ease;
@@ -104,8 +104,6 @@
   color: #EF3B3A;
 }
 
-/* END Form */
-/* Demo Purposes */
 body {
   background: #ccc;
   font-family: "Roboto", sans-serif;
@@ -123,15 +121,5 @@ body:before {
   height: 100%;
 }
 
-#video {
-  z-index: -99;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  min-width: 100%;
-  min-height: 100%;
-  width: auto;
-  height: auto;
-  -webkit-transform: translateX(-50%) translateY(-50%);
-  transform: translateX(-50%) translateY(-50%);
-}
+.error {color: red;}
+.info  {color: green;}
