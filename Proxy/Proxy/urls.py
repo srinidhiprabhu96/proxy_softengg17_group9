@@ -24,7 +24,7 @@ urlpatterns = [
     url(r'^$', login_page),	
     url(r'^signup/$',signup),
     url(r'^login/$',login_page),
-    url(r'^auth1/$',auth),
+    url(r'^auth/$',auth),
     url(r'^verify/$',before_verify),
     url(r'^verification/',after_verify),
     url(r'^finish-signup/$',finish_signup),
