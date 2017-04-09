@@ -7,21 +7,24 @@ html, body {
 .box3{
 	background-color:#EEEDED;	
 	margin-top:-20px; 
+	text-align:center;
 }
 .box1{
-	height: 100px;
+	height: 7em;
 	background-color: lightblue;
 	border-top-left-radius: 7px;
   	border-top-right-radius: 7px;
   	border-bottom-left-radius: 7px;
   	border-bottom-right-radius: 7px;
+  	text-align:center;
 }
 .box1 form{
 	background-color:#EEEDED;
 }
-.box1 .head{
-	margin: 5px 10px 15px 750px;
+/*.box1 .head{
+	margin: 5em 10em 15em 25em;
 }
+*/
 .box1 .head1{
 	margin: 5px 10px 10px 825px;
 }
@@ -37,12 +40,14 @@ html, body {
 .box1 .head4{
 	margin: 5px 10px 10px 820px;
 }
-.box1 .head6{
-	margin: 5px 10px 15px 680px;
-}
+/*.box1 .head6{
+	margin: 0em 1em 15px 680px;
+}*/
+/*
 .box1 .head7{
 	margin: 5px 10px 10px 835px;
 }
+*/
 #button1{
 	margin: 5px 10px 15px 650px;
 }
@@ -55,14 +60,17 @@ html, body {
 	margin: 125px 10px 15px 550px;
 }
 #button10{
-	margin: -38px 10px 15px 750px;
+	/*margin: -38px 10px 15px 750px;*/
+	float:right;
+	margin: -3em 1em 0em 0em;
 }
 #button11{
 	margin: -62px 10px 15px 750px;
 }
 
 #button12{
-	margin: -88px 10px 15px 1550px;
+	/*margin: -88px 10px 15px 1550px;*/
+	float:right;
 }
 
 #button13{
@@ -73,7 +81,9 @@ html, body {
 	margin: 600px 10px 15px 50px;
 }
 #button15{
-	margin: 530px 10px 15px 50px;
+	/*margin: 530px 10px 15px 50px;*/
+	/*float:left;*/
+	/*margin: 3em 100em 0em 1em;*/
 }
 .box2 .image{
 	color:#0227f8;
@@ -103,6 +113,7 @@ html, body {
 	font-weight: bold;
 	margin-left: -700px;
 }
+
 .error {color: red;}
 .info {color: green;}
 .progress 
