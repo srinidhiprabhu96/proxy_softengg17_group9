@@ -2,7 +2,8 @@ html, body {
     background-color:#EEEDED;
 }
 .box2{
-	background-color:#EEEDED;	
+	background-color:#EEEDED;
+	text-align:center;	
 }
 .box3{
 	background-color:#EEEDED;	
@@ -75,6 +76,9 @@ html, body {
 #button15{
 	margin: 530px 10px 15px 50px;
 }
+#button2{
+	margin: -25px 10px 15px 750px;
+}
 .box2 .image{
 	color:#0227f8;
 	font-weight:bold;
@@ -102,6 +106,14 @@ html, body {
 #Date{
 	font-weight: bold;
 	margin-left: -700px;
+}
+#Date2{
+	font-weight: bold;
+	margin-left: 60em;
+}
+#Date3{
+	font-weight: bold;
+	/*margin-left: 0em;*/
 }
 .error {color: red;}
 .info {color: green;}

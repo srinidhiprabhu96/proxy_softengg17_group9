@@ -10,19 +10,12 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
 {% load static %}
 <link rel="stylesheet" href="{% static "css/prof_style.css"%}">
-{% load static %}
 <link rel="stylesheet" href="{% static "css/bootstrap.css"%}">
-{% load static %}
 <link rel="stylesheet" href="{% static "css/bootstrap.css.map"%}">
-{% load static %}
 <link rel="stylesheet" href="{% static "css/bootstrap.min.css"%}">
-{% load static %}
 <link rel="stylesheet" href="{% static "css/bootstrap.min.css.map"%}">
-{% load static %}
 <script src="{% static "js/bootstrap.min.js" %}"></script>
-{% load static %}
 <script src="{% static "js/bootstrap.js" %}"></script>
-{% load static %}
     <link rel="stylesheet" type="text/css" href="{% static "css/jquery-ui.min.css" %}">
     <script type="text/javascript" src="{% static "js/jquery.min.js" %}"></script>
     <script type="text/javascript" src="{% static "js/jquery-ui.min.js" %}"></script>
@@ -37,9 +30,9 @@
 </div> 
 <div class = "box2"> 
     <form action="/take_attendance/{{course_id}}/" method="post" enctype="multipart/form-data">
-      Select date: <input type="text" name="date" id="datepicker"><br>
-      Select the images you want to upload:<input type="file" name="myfiles" multiple="multiple" accept="image/*"><br>
-			<input type="submit" type="button" class="btn btn-success" id="button2" value="Submit">
+      <span id = "Date2">Select date: </span><input type="text" name="date" id="datepicker"><br>
+      <span id = "Date3">Select the images you want to upload:<input style = "margin-left : 58em" type="file" name="myfiles" multiple="multiple" accept="image/*"><br></span>
+			<input type="submit" type="button" class="btn btn-success" id="button16" value="Submit">
 		</form>
 
     {% if messages %}
