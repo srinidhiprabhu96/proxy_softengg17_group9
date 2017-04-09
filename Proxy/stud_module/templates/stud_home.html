@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
 		{% load static %}
 		<link rel="stylesheet" href="{% static "css/stud_style.css"%}">
 		<link rel="stylesheet" href="{% static "css/bootstrap.css"%}">
@@ -20,11 +19,16 @@
 		<div class="box1">
 			<h1 class="head">Easy Attendance</h1>
 			<p class="head1">Student home page</p>
-			<a href="/logout/"><button type="button" class="btn btn-warning" id="button2">Logout</button></a>
-		</div >
+			<nav id="button2" class="nav navbar-nav navbar-right">
+    			<a href="/logout/"><button class="btn btn-warning navbar-btn">Logout</button></a>
+			</nav>
+		</div>
 		<div class="box2">
-			
-			
+		    <br>
+			<form action="/stud_daily_report/" method="post">
+				  <span id="Date">Date:</span><input type="text" name="date" id="datepicker">
+				  <input class="btn btn-success" type="submit" value="View daywise report">
+			</form>
 			  <table class="table table-hover">
     			<thead>
       			 	<tr>
@@ -54,10 +58,6 @@
 			</a> Put this format for the daywise report button -->
 			<br>
     		<br>
-    		<form action="/stud_daily_report/" method="post">
-				  Date: <input type="text" name="date" id="datepicker">
-				  <input type="submit" value="View daywise report">
-			</form>
 		</div>
 	</body>
 </html>
