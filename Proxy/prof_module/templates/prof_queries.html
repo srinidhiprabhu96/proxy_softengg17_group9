@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-        <title>View queries page</title>
+        <title>Professor view queries page</title>
         <style>
             .error {color: red;}
             .change {color: blue;}
@@ -27,7 +27,7 @@
 <body>
     <div class="box1">
             <h1 class="head">Professor View Query</h1>
-            <p class="head7">{{user.first_name}} view query page</p>
+            <p class="head7">{{user.first_name}}'s view query page</p>
             <nav id="button10" class="nav navbar-nav navbar-right">
                     <a href="/logout/"><button class="btn btn-warning navbar-btn">Logout</button></a>
             </nav>
@@ -65,24 +65,21 @@
     {% endif %}
     </div> -->
     <div class = "box3">
+    <div>
     <h1>Queries</h1>
     <!--<span><b>Date ; Student Name ; Query ; Attendance ; Query Status</b></span><br>//-->
-    {% for q,a in list %}
     <table class = "table table-hover">
-    <col width="30">
-    <col width="30">
-    <col width="300">
-    <col width="30">
-    <col width="30">
-    <col width="30">
+     <tr style="font-weight:bold">
+        <td>Date</td>
+        <td>Student Name</td>
+        <td>Query</td>
+        <td>Attendance</td>
+        <td>Query Status</td>
+        <td>Change</td>
     </tr>
-        <th>Date</th>
-        <th>Student Name</th>
-        <th>Query</th>
-        <th>Attendance</th>
-        <th>Query Status</th>
-        <th>Change</th>
-        <tr>
+    {% for q,a in list %}
+    <tr>
+   
             <td>{{q.date}}</td>
             <td>{{q.student.first_name}}</td>
             <td>{{q.query}}</td>
@@ -96,17 +93,13 @@
       <input type="hidden" name="query" value="{{q.id}} 0" />
       <input type="submit" {% if a == '0' %}disabled{% endif %} value="Mark Absent"/>
     </form></td>
-        </tr>
     </tr>    
-    </table>        
-    <!--<span>{{q.date}} ; {{q.student.first_name}} ; {{q.query}} ; {{a}} ;  {{q.status}} </span>//-->
-    
     <br>
     {% endfor %}
+    </table>
     <br>
     <a href="/prof_course/{{course_id}}"><button type="button" class="btn btn-info" id="button15">Back to course page</button></a>
-    <br>
-    <br>
+    </div>
     </div>
 </body>
 </html>
