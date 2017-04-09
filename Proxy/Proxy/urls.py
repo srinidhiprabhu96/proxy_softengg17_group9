@@ -21,7 +21,7 @@ from auth_module.views import *
 
 urlpatterns = [
     # url(r'^admin/', admin.site.urls),
-    url(r'^$', login_page),	
+    url(r'^$', login_page),
     url(r'^signup/$',signup),
     url(r'^login/$',login_page),
     url(r'^auth/$',auth),
@@ -44,4 +44,5 @@ urlpatterns = [
     url(r'^view_queries/([a-zA-Z0-9]+)/$',view_queries),
 	url(r'^raise_query/([a-zA-Z0-9]+)/$',raise_query),
 	url(r'^logout/$',logout_view),
+	url(r'^view_images/$',view_images),
 ]

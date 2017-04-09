@@ -1,0 +1,11 @@
+<html>
+<head>
+  <title>View images</title>
+</head>
+<body>
+  {% load static %}
+  {% for i in list %}
+  <img src="{% static i %}" style="height: 30%;"/><br>
+  {% endfor %}
+</body>
+</html>
