@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Professor View History</title>
+    <style>
+            .error {color: red;}
+            .change {color: blue;}
+            .reject {color: red;}
+            .accept {color: green;}
+        </style>
+    <!-- <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script> -->
+    
+</head>
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    {% load static %}
+    <link rel="stylesheet" href="{% static "css/prof_style.css"%}">
+    <link rel="stylesheet" href="{% static "css/bootstrap.css"%}">
+    <link rel="stylesheet" href="{% static "css/bootstrap.css.map"%}">
+    <link rel="stylesheet" href="{% static "css/bootstrap.min.css"%}">
+    <link rel="stylesheet" href="{% static "css/bootstrap.min.css.map"%}">
+    <script src="{% static "js/bootstrap.min.js" %}"></script>
+    <script src="{% static "js/bootstrap.js" %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static "css/jquery-ui.min.css" %}">
+    <script type="text/javascript" src="{% static "js/jquery.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/jquery-ui.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/datepicker.js" %}"></script>
+<body>
+<div class = "box1">
+    <h1 class = "head">Professor View History</h1>
+    <p class = "head1">Hello , {{user.first_name}}</p>
+</div>
+    <form action="/prof_history/{{course_id}}/" method="post">
+      Date: <input type="text" name="date" id="datepicker">
+      <input type="submit" value="Submit" type="button" class="btn btn-success" id="button2" >
+    </form>
+
+    <!-- {% for i in dates %}
+    <a href="/daily_report/{{course_id}}/{{i}}">{{i}}</a><br>
+    {% endfor %}
+    <br> -->
+    <br>
+    <a href="/prof_course/{{course_id}}"><button type="button" class="btn btn-info" id="button2">Back to course home</button></a>
+    <br>
+    <br>
+    <a href="/logout/"><button type="button" class="btn btn-warning" id="button2">Logout</button></a>
+</body>
+</html>

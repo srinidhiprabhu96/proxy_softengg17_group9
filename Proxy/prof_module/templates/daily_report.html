@@ -8,7 +8,7 @@
 </head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
 {% load static %}
-<link rel="stylesheet" href="{% static "css/style.css"%}">
+<link rel="stylesheet" href="{% static "css/prof_style.css"%}">
 {% load static %}
 <link rel="stylesheet" href="{% static "css/bootstrap.css"%}">
 {% load static %}
@@ -29,10 +29,11 @@
 <body>
 <div class = "box1">
     <h1 class = "head2">Daily Report</h1>
-    <p class = "head1">Hello, {{user.first_name}}</p>
+    <p class = "head4">Hello, {{user.first_name}}</p>
     
-    <p class = "head1">This is the daily report for course {{course_id}} on {{date}}</p>
+    <p class = "head5">This is the daily report for course {{course_id}} on {{date}}</p>
 </div>
+<div class="box2">
     <p>Uploaded Images</p>
     {% load static %}
     {% for i in files %}
@@ -58,5 +59,6 @@
     <br>
     <br>
     <a href="/logout/"><button type="button" class="btn btn-warning" id="button2">Logout</button></a>
+    </div>
 </body>
 </html>

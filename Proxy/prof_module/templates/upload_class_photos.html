@@ -9,7 +9,7 @@
 </head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
 {% load static %}
-<link rel="stylesheet" href="{% static "css/style.css"%}">
+<link rel="stylesheet" href="{% static "css/prof_style.css"%}">
 {% load static %}
 <link rel="stylesheet" href="{% static "css/bootstrap.css"%}">
 {% load static %}
@@ -30,8 +30,9 @@
 <body>
 <div class = "box1">
     <h1 class = "head2">{{course_id}} Course Page</h1>
-    <p class = "head1">Hello, {{user.first_name}}</p>
-</div>  
+    <p class = "head7">Hello, {{user.first_name}}</p>
+</div> 
+<div class = "box2"> 
     <form action="/take_attendance/{{course_id}}/" method="post" enctype="multipart/form-data">
       Select date: <input type="text" name="date" id="datepicker"><br>
       Select the images you want to upload:<input type="file" name="myfiles" multiple="multiple" accept="image/*"><br>
@@ -48,5 +49,6 @@
     <br>
     <br>
     <a href="/logout/"><button type="button" class="btn btn-warning" id="button2">Logout</button></a>
+    </div>
 </body>
 </html>
