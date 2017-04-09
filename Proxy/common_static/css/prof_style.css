@@ -48,13 +48,33 @@ html, body {
 }
 
 #button2{
-	margin:-25px 10px 15px 750px;
+	margin: -25px 10px 15px 750px;
 }
 
 #button3{
 	margin: 125px 10px 15px 550px;
 }
+#button10{
+	margin: -38px 10px 15px 750px;
+}
+#button11{
+	margin: -62px 10px 15px 750px;
+}
 
+#button12{
+	margin: -88px 10px 15px 1550px;
+}
+
+#button13{
+	margin: -25px 10px 15px 50px;
+}
+
+#button14{
+	margin: 600px 10px 15px 50px;
+}
+#button15{
+	margin: 530px 10px 15px 50px;
+}
 .box2 .image{
 	color:#0227f8;
 	font-weight:bold;
@@ -74,12 +94,15 @@ html, body {
 	background-size : 200px 200px; 
 	cursor:pointer;
 	border:none;
-	margin: -525px 10px 15px 1250px;
+	margin: -465px 10px 15px 1250px;
 }
 #message{
 	margin: 25px 10px 15px 540px;
 }
-
+#Date{
+	font-weight: bold;
+	margin-left: -700px;
+}
 .error {color: red;}
 .info {color: green;}
 .progress 
