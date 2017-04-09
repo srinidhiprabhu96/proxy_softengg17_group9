@@ -1,7 +1,7 @@
 <!DOCTYPE html> 
 <html>
 <head>
-    <title>Homepage</title>
+    <title>Professor Homepage</title>
 </head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
     {% load static %}
@@ -15,18 +15,18 @@
 <body>
 	<div class="box1">
             <h1 class="head">Easy Attendance</h1>
-            <p class="head1">{{user.first_name}} home page</p>
+            <p class="head1">{{user.first_name}}'s home page</p>
             <nav id="button10" class="nav navbar-nav navbar-right">
                     <a href="/logout/"><button class="btn btn-warning navbar-btn">Logout</button></a>
             </nav>
         </div>
     <div class="box2">
-              <table class="table table-hover">
+              <table class="table table-hover" style="text-align:center">
                 <thead>
-                    <tr>
-                        <th>Course ID</th>
-                        <th>Course name</th>
-                        <th>Course Page</th>
+                    <tr style="font-weight:bold">
+                        <td>Course ID</td>
+                        <td>Course name</td>
+                        <td>Course Page</td>
                     </tr>
                 </thead>
                 <tbody>

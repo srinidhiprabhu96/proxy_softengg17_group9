@@ -10,6 +10,8 @@
 {% load static %}
 <link rel="stylesheet" href="{% static "css/prof_style.css"%}">
 {% load static %}
+<link rel="stylesheet" href="{% static "css/options_colors.css"%}">
+{% load static %}
 <link rel="stylesheet" href="{% static "css/bootstrap.css"%}">
 {% load static %}
 <link rel="stylesheet" href="{% static "css/bootstrap.css.map"%}">
@@ -28,7 +30,7 @@
     <script type="text/javascript" src="{% static "js/datepicker.js" %}"></script>
 <body>
 <div class = "box1">
-    <h1 class = "head2">Daily Report</h1>
+    <h1 class = "head2">{{course_id}} Daily Report Page</h1>
     <p class = "head4">Hello, {{user.first_name}}</p>
     
     <p class = "head5">This is the daily report for course {{course_id}} on {{date}}</p>
@@ -37,30 +39,43 @@
             </nav>
 </div>
 <div class="box2">
-    <p>Uploaded Images</p>
-    {% load static %}
-    {% for i in files %}
-    {% with user.username|add:'/'|add:course_id|add:'/'|add:date_url|add:'/'|add:i as image_static %}
-    <img src="{% static image_static %}" alt="{{i}}" style="height: 30%;"/>
-    {% endwith %}
-    {% endfor %}
-
-    <p>Marked Attendance</p>
-
-    <span><b>Student - Attendance</b></span><br>
-    {% for i in attendance %}
-    <span>{{i.student.first_name}} - {{i.is_present}}
-      <!-- <form action="/daily_report/{{course_id}}/{{date_url}}/" method="post" style="display:inline;">
-        <input type="hidden" name="id" value="{{i.id}}" />
-        <input type="submit" value="Change Attendance"/>
-      </form> -->
-    </span><br>
-    {% endfor %}
+	<br>
+	{% if attendance %}
+		<h3>Uploaded Images</h3>
+		{% load static %}
+		{% for i in files %}
+		{% with user.username|add:'/'|add:course_id|add:'/'|add:date_url|add:'/'|add:i as image_static %}
+		<img src="{% static image_static %}" alt="{{i}}" style="height: 30%;"/>
+		{% endwith %}
+		{% endfor %}
+		<br>
+		<h3>Marked Attendance</h3>
+		<table class="table table-hover" style="width:50em;text-align:center;margin-left:14em">
+                <thead>
+                    <tr style="font-weight:bold">
+                        <td>Student</td>
+                        <td>Present or Not</td>
+                    </tr>
+                </thead>
+		{% for i in attendance %}
+		<tr>
+			<td>{{i.student.first_name}}</td>
+			{% if i.is_present == '1' %}
+				<td class="present">Present</td>
+			{% else %}
+				<td class="absent">Absent</td>
+			{% endif %}
+		</tr>
+		<!--<span>{{i.student.first_name}} - {{i.is_present}
+		</span><br>-->
+		{% endfor %}
+		</table>
+    {% else %}
+    	No attendance to display for {{date}}.
+    {% endif %}
     <br>
-
+    <br>
     <a href="/prof_course/{{course_id}}"><button type="button" class="btn btn-info" id="button2">Back to course home</button></a>
-    <br>
-    <br>
-    </div>
+</div>
 </body>
 </html>

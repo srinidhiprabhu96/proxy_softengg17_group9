@@ -26,21 +26,27 @@ html, body {
 	margin: 5em 10em 15em 25em;
 }
 */
+/*
 .box1 .head1{
 	margin: 5px 10px 10px 825px;
 }
+*/
+/*
 .box1 .head2{
 	margin: 5px 10px 10px 750px;
 }
+*/
 .box1 .head3{
 	margin: 5px 10px 10px 550px;
 }
+/*
 .box1 .head5{
 	margin: 5px 10px 10px 690px;
 }
 .box1 .head4{
 	margin: 5px 10px 10px 820px;
 }
+*/
 /*.box1 .head6{
 	margin: 0em 1em 15px 680px;
 }*/
@@ -52,14 +58,14 @@ html, body {
 #button1{
 	margin: 5px 10px 15px 650px;
 }
-
+/*
 #button2{
 	margin: -25px 10px 15px 750px;
 }
 
 #button3{
 	margin: 125px 10px 15px 550px;
-}
+}*/
 #button10{
 	/*margin: -38px 10px 15px 750px;*/
 	float:right;
@@ -68,9 +74,9 @@ html, body {
 #button11{
 	margin: -62px 10px 15px 750px;
 }
-
+/*
 #button12{
-	/*margin: -88px 10px 15px 1550px;*/
+	/*margin: -88px 10px 15px 1550px;
 	float:right;
 }
 
@@ -84,15 +90,15 @@ html, body {
 #button15{
 	/*margin: 530px 10px 15px 50px;*/
 	/*float:left;*/
-	/*margin: 3em 100em 0em 1em;*/
+	/*margin: 3em 100em 0em 1em;
 }
 #button2{
 	margin: -25px 10px 15px 750px;
-}
+}*/
 .box2 .image{
-	color:#0227f8;
+	color:black;
 	font-weight:bold;
-	margin: 25px 10px -5px -170px;
+	text-align:bottom;
 }
 
 #button7{
@@ -100,7 +106,8 @@ html, body {
 	background-size : 200px 200px; 
 	cursor:pointer;
 	border:none;
-	margin: 125px 10px 15px 550px;
+	float:left;
+	margin: 0em 0em 0em 10em;
 }
 
 #button8{
@@ -108,25 +115,29 @@ html, body {
 	background-size : 200px 200px; 
 	cursor:pointer;
 	border:none;
-	margin: -465px 10px 15px 1250px;
+	float:right;
+	margin: 0em 10em 0em 0em;
+	/*margin: -465px 10px 15px 1250px;*/
 }
 #message{
 	margin: 25px 10px 15px 540px;
 }
+/*
 #Date{
 	font-weight: bold;
 	margin-left: -700px;
 }
-
+*/
+/*
 #Date2{
 	font-weight: bold;
 	margin-left: 60em;
 }
 #Date3{
 	font-weight: bold;
-	/*margin-left: 0em;*/
+	/*margin-left: 0em;
 }
-
+*/
 .error {color: red;}
 .info {color: green;}
 .progress 
