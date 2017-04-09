@@ -11,7 +11,7 @@
     </head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
     {% load static %}
-    <link rel="stylesheet" href="{% static "css/style.css"%}">
+    <link rel="stylesheet" href="{% static "css/prof_style.css"%}">
     {% load static %}
     <link rel="stylesheet" href="{% static "css/bootstrap.css"%}">
     {% load static %}
@@ -27,8 +27,11 @@
 <body>
     <div class="box1">
             <h1 class="head">Professor View Query</h1>
-            <p class="head1">{{user.first_name}} view query page</p>
-        </div>
+            <p class="head7">{{user.first_name}} view query page</p>
+            <nav id="button10" class="nav navbar-nav navbar-right">
+                    <a href="/logout/"><button class="btn btn-warning navbar-btn">Logout</button></a>
+            </nav>
+    </div>
         <!-- <div>
     {% if queries %}
         <table class = "table table-hover">
@@ -61,26 +64,49 @@
         <span class="error"> No queries to display</span>
     {% endif %}
     </div> -->
-
+    <div class = "box3">
     <h1>Queries</h1>
-    <span><b>Date ; Student Name ; Query ; Attendance ; Query Status</b></span><br>
+    <!--<span><b>Date ; Student Name ; Query ; Attendance ; Query Status</b></span><br>//-->
     {% for q,a in list %}
-    <span>{{q.date}} ; {{q.student.first_name}} ; {{q.query}} ; {{a}} ;  {{q.status}} </span>
-    <form action="/prof_queries/{{course_id}}/" method="post" style="display:inline;">
+    <table class = "table table-hover">
+    <col width="30">
+    <col width="30">
+    <col width="300">
+    <col width="30">
+    <col width="30">
+    <col width="30">
+    </tr>
+        <th>Date</th>
+        <th>Student Name</th>
+        <th>Query</th>
+        <th>Attendance</th>
+        <th>Query Status</th>
+        <th>Change</th>
+        <tr>
+            <td>{{q.date}}</td>
+            <td>{{q.student.first_name}}</td>
+            <td>{{q.query}}</td>
+            <td>{{a}}</td>
+            <td>{{q.status}}</td>
+            <td><form action="/prof_queries/{{course_id}}/" method="post" style="display:inline;">
       <input type="hidden" name="query" value="{{q.id}} 1" />
       <input type="submit" {% if a == '1' %}disabled{% endif %} value="Mark Present"/>
     </form>
     <form action="/prof_queries/{{course_id}}/" method="post" style="display:inline;">
       <input type="hidden" name="query" value="{{q.id}} 0" />
       <input type="submit" {% if a == '0' %}disabled{% endif %} value="Mark Absent"/>
-    </form>
+    </form></td>
+        </tr>
+    </tr>    
+    </table>        
+    <!--<span>{{q.date}} ; {{q.student.first_name}} ; {{q.query}} ; {{a}} ;  {{q.status}} </span>//-->
+    
     <br>
     {% endfor %}
     <br>
-    <a href="/prof_course/{{course_id}}"><button>Back to course page</button></a>
+    <a href="/prof_course/{{course_id}}"><button type="button" class="btn btn-info" id="button15">Back to course page</button></a>
     <br>
     <br>
-    <a href="/logout/"><button>Logout</button></a>
-
+    </div>
 </body>
 </html>

@@ -23,14 +23,19 @@ import md5
 import subprocess
 from django.contrib.auth import logout
 
+
+# View that displays the page for signup.
 def signup(request):
 	return render(request,'signup.html')
-	
+
+# When the logout button is clicked, this function is invoked(see urls.py).	
 def logout_view(request):
-	logout(request)
+	logout(request)		# The current user is logged out.
 	messages.info(request,"You have logged out successfully!")
+	# Redirect to the login page.
 	return redirect("/login/")
-	
+
+# This function is called when the user clicks on the signup button.	
 @csrf_exempt
 def before_verify(request):
 	if request.method == 'POST':		# If the method is POST, it means the request is coming from the signup page.
@@ -90,16 +95,22 @@ def before_verify(request):
 			# Save the signup object only once mail is sent.
 			signupobject.save()
 			return render(request,'verify.html')
+		else:
+			messages.error(request,"Please enter an e-mail ID of the form \"abc@smail.iitm.ac.in\" or \"xyz@iitm.ac.in\"")
+			return redirect("/signup/")	
 
 	# If it's not POST, just redirect to signup page.
-	messages.error(request,"Please enter an e-mail ID of the form \"abc@smail.iitm.ac.in\" or \"xyz@iitm.ac.in\"")
+	messages.error(request,"Please use the signup page to get a verification mail.")
 	return redirect("/signup/")
 
 # The method called when the user clicks on the verification link.
 def after_verify(request):
-	if request.method == 'GET':
+	if request.method == 'GET':		# Use get request to send the verification code.
+		if not 'code' in request.GET.keys():
+			return redirect("/signup/")
 		verify_code = request.GET['code']
 		try:
+			# There must be atmost 1 row
 			row = SignUp.objects.get(code=verify_code)		# We get either no rows or 1 row because code is ensured to be unique.
 		except:
 			row = None
@@ -109,13 +120,14 @@ def after_verify(request):
 			context['code_not_found'] = True
 
 		else:
-			# There must be only 1 element in row.
+			# Verifying the mail and sending to password signup page.
 			if row.status == '0':
 				context = {}
 				context['code_not_found'] = False
 				context['name'] = row.name
 				context['email'] = row.email
 			else:
+				# If already verified, mention so.
 				context = {}
 				context['verified'] = True
 		return render(request,'password_signup_page.html',Context(context))
@@ -123,6 +135,7 @@ def after_verify(request):
 	# Redirect to signup page if request method is not GET.
 	return redirect("/signup/")
 
+# Generates a 32 character code that is not present in the SignUp table
 def generateCode():
 	code = ''
 	codeLength = 32		# For more security, so that guessing the code is difficult.
@@ -132,6 +145,7 @@ def generateCode():
 		flag = len(SignUp.objects.filter(code=code))
 	return code
 
+# This method is called when the confirm signup button is clicked.
 @csrf_exempt
 def finish_signup(request):
 	if request.method == 'POST':
@@ -142,7 +156,6 @@ def finish_signup(request):
 		confirm = request.POST['confirm_password']
 		if password == confirm:
 
-			# Add hashed password here.
 			hashed = make_password(password)		#Used for hashing the password. # Use a similar function check_password while trying to login.
 			try:
 				row = SignUp.objects.get(email=email)	# Since email is unique
@@ -172,27 +185,24 @@ def finish_signup(request):
 		return render(request,'password_signup_page.html',Context(context))
 	return redirect("/signup/")
 
+# Initially, the website goes to the login page.
 def login_page(request):
 	return render(request, 'login.html')
 
+# Used for authenticating a user while logging in.
 @csrf_exempt
 def auth(request):
 	if request.method == 'POST':
-		# print request.POST
 		form = LoginForm(request.POST)
-		# print form
 		if form.is_valid():		# Get the entered data as a form.
 			# Get form fields.
 			e_mail = str(form.cleaned_data['email'])
 			raw_password = str(form.cleaned_data['password'])
 			try:
-				#user_obj = User.objects.get(email = e_mail)
-				#is_password = user_obj.check_password(raw_password)
-				#print is_password
-				user = authenticate(username=e_mail, password=raw_password)
+				user = authenticate(username=e_mail, password=raw_password)	# Check if the user exists
 				if user:
 					if user.is_active:
-						login(request,user)
+						login(request,user)	# Make the user login, so that he can access subsequent pages before logging out.
 						if user.is_staff:
 							return redirect('/prof_home/')
 						else:

@@ -1,0 +1,114 @@
+html, body {
+    background-color:#EEEDED;
+}
+.box2{
+	background-color:#EEEDED;	
+}
+.box3{
+	background-color:#EEEDED;	
+	margin-top:-20px; 
+}
+.box1{
+	height: 100px;
+	background-color: lightblue;
+	border-top-left-radius: 7px;
+  	border-top-right-radius: 7px;
+  	border-bottom-left-radius: 7px;
+  	border-bottom-right-radius: 7px;
+}
+.box1 form{
+	background-color:#EEEDED;
+}
+.box1 .head{
+	margin: 5px 10px 15px 750px;
+}
+.box1 .head1{
+	margin: 5px 10px 10px 825px;
+}
+.box1 .head2{
+	margin: 5px 10px 10px 750px;
+}
+.box1 .head3{
+	margin: 5px 10px 10px 550px;
+}
+.box1 .head5{
+	margin: 5px 10px 10px 690px;
+}
+.box1 .head4{
+	margin: 5px 10px 10px 820px;
+}
+.box1 .head6{
+	margin: 5px 10px 15px 680px;
+}
+.box1 .head7{
+	margin: 5px 10px 10px 835px;
+}
+#button1{
+	margin: 5px 10px 15px 650px;
+}
+
+#button2{
+	margin: -25px 10px 15px 750px;
+}
+
+#button3{
+	margin: 125px 10px 15px 550px;
+}
+#button10{
+	margin: -38px 10px 15px 750px;
+}
+#button11{
+	margin: -62px 10px 15px 750px;
+}
+
+#button12{
+	margin: -88px 10px 15px 1550px;
+}
+
+#button13{
+	margin: -25px 10px 15px 50px;
+}
+
+#button14{
+	margin: 600px 10px 15px 50px;
+}
+#button15{
+	margin: 530px 10px 15px 50px;
+}
+.box2 .image{
+	color:#0227f8;
+	font-weight:bold;
+	margin: 25px 10px -5px -170px;
+}
+
+#button7{
+	background: url(index.jpeg) no-repeat;
+	background-size : 200px 200px; 
+	cursor:pointer;
+	border:none;
+	margin: 125px 10px 15px 550px;
+}
+
+#button8{
+	background: url(qmark.jpeg) no-repeat;
+	background-size : 200px 200px; 
+	cursor:pointer;
+	border:none;
+	margin: -465px 10px 15px 1250px;
+}
+#message{
+	margin: 25px 10px 15px 540px;
+}
+#Date{
+	font-weight: bold;
+	margin-left: -700px;
+}
+.error {color: red;}
+.info {color: green;}
+.progress 
+{
+	font-color:#ffffff;
+	background-color:#0000FF;
+}
+.rejected {color: red;}
+.accepted {color: green;}

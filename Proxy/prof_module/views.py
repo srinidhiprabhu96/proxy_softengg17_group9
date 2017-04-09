@@ -234,10 +234,11 @@ def prof_queries(request, c_id):
 			for q in query_set:
 				try:
 					att = Attendance.objects.get(course_id=c_id,student=q.student,date=q.date)
+					att_set.append(att.is_present)
 				except Exception as e:
-					raise e
-				att_set.append(att.is_present)
-				print att
+					pass
+				
+				#print att
 			return render(request, 'prof_queries.html',{'course_id':c_id, 'list':zip(query_set,att_set)})
 		except Exception as e:
 			raise e
