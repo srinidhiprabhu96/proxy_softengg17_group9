@@ -2,11 +2,9 @@
 	<head>
    		<title>Daily report of student</title>
    		{% load static %}
-    	<link rel="stylesheet" href="{% static "css/stud_style.css"%}">
+    	<link rel="stylesheet" href="{% static "css/stud.css"%}">
 		<link rel="stylesheet" href="{% static "css/bootstrap.css"%}">
 		<link rel="stylesheet" href="{% static "css/bootstrap.css.map"%}">
-		<link rel="stylesheet" href="{% static "css/bootstrap.min.css"%}">
-		<link rel="stylesheet" href="{% static "css/bootstrap.min.css.map"%}">
 		<script src="{% static "js/bootstrap.min.js" %}"></script>
 		<script src="{% static "js/bootstrap.js" %}"></script>
 		<link rel="stylesheet" type="text/css" href="{% static "css/jquery-ui.min.css" %}">
@@ -15,18 +13,19 @@
 	</head>
 	<body>
 	    <div class="box1">
-			<h1 class="head5">Daily Report of {{user.first_name}} on {{date}}</h1>
-			<nav id="button5" class="nav navbar-nav navbar-right">
+			<h1>Daily Report of {{user.first_name}} on {{date}}</h1>
+			<p>For all courses</p>
+			<nav id="button10" class="nav navbar-nav navbar-right">
 				<a href="/logout/"><button class="btn btn-warning navbar-btn">Logout</button></a>
 			</nav>
 		</div>
-		<div class="box3">
+		<div class="box2">
 			{% if attendances %}
-			<table class="table table-hover">
+			<br><br>
+			<table class="table table-hover" style="text-align: center" >
 				<tr> 
-					<!--<th>S. No</th>-->
-					<th>Course</th> 
-					<th>Attendance status</th>
+					<th style="text-align: center">Course</th> 
+					<th style="text-align: center">Attendance status</th>
 					{% for item in attendances %}
 					<tr>
 						<td>{{item.course_id}}</td>
@@ -42,7 +41,9 @@
 			{% else %}
 				<span class="error"> No attendances to display</span>
 			{% endif %}
-			<a href="/stud_home/"><button id="home1" type="button" class="btn btn-info">Back to home page</button></a>
+			<br><br>
+			<a href="/stud_home/"><button type="button" class="btn btn-info">Back to home page</button></a>
+			<br><br>
 		</div>
 	</body>
 </html>

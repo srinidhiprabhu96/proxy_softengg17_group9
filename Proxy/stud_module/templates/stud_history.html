@@ -3,7 +3,7 @@
 		<title>Attendance history for {{user.first_name}}</title>
 	</head>
 		{% load static %}
-		<link rel="stylesheet" href="{% static "css/stud_style.css"%}">
+		<link rel="stylesheet" href="{% static "css/stud.css"%}">
 		<link rel="stylesheet" href="{% static "css/bootstrap.css"%}">
 		<link rel="stylesheet" href="{% static "css/bootstrap.css.map"%}">
 		<link rel="stylesheet" href="{% static "css/bootstrap.min.css"%}">
@@ -13,14 +13,15 @@
 		<link rel="stylesheet" href="{% static "css/options_color.css"%}">
 		<body>
     <div class="box1">
-            <h1 class="head2">Attendance History for {{user.first_name}}</h1>
-            <p class="head1">History for the course {{course}} on {{date}}</p>
-            <nav id="button12" class="nav navbar-nav navbar-right">
+            <h1>Attendance History for {{user.first_name}}</h1>
+            <p >History for the course {{course}} on {{date}}</p>
+            <nav id="button10" class="nav navbar-nav navbar-right">
     			<a href="/logout/"><button class="btn btn-warning navbar-btn">Logout</button></a>
 			</nav>
     </div>
-    <div class="box3">
+    <div class="box2">
 			{% if attendance %}
+			<br><br>
 				 <p>Uploaded Images</p>
 				{% load static %}
 				{% for i in files %}
@@ -32,14 +33,13 @@
 				{% else %}
 					<span class="error"> You were marked absent </span>
 				{% endif %}
-				<br>
-				<a href="/raise_query/{{course}}?date={{date}}"><button type="button" class="btn btn-primary" 
-				id="button101">Raise Query</button></a>
+				<br><br>
+				<a href="/raise_query/{{course}}?date={{date}}"><button type="button" class="btn btn-primary">Raise Query</button></a><br><br>
 			{% else %}
 				<span class="error"> No history to display </span>
 			{% endif %}
 			<br>
-			<a href="/stud_course/{{course}}"><button id="home2" type="button" class="btn btn-info">Back to course page</button></a>
+			<a href="/stud_course/{{course}}"><button type="button" class="btn btn-info">Back to course page</button></a><br><br>
 			<br>
 			{% if messages %}
 			{% for message in messages %}
