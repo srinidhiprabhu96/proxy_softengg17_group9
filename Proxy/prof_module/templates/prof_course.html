@@ -1,30 +1,18 @@
 <html>
 <head>
         <title>Professor Course Page</title>
-        <style>
-            .error {color: red;}
-            .info  {color: green;}
-        </style>
     </head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
 {% load static %}
 <link rel="stylesheet" href="{% static "css/prof_style.css"%}">
-{% load static %}
 <link rel="stylesheet" href="{% static "css/bootstrap.css"%}">
-{% load static %}
 <link rel="stylesheet" href="{% static "css/bootstrap.css.map"%}">
-{% load static %}
-<link rel="stylesheet" href="{% static "css/bootstrap.min.css"%}">
-{% load static %}
-<link rel="stylesheet" href="{% static "css/bootstrap.min.css.map"%}">
-{% load static %}
 <script src="{% static "js/bootstrap.min.js" %}"></script>
-{% load static %}
 <script src="{% static "js/bootstrap.js" %}"></script>
-    <link rel="stylesheet" type="text/css" href="{% static "css/jquery-ui.min.css" %}">
-    <script type="text/javascript" src="{% static "js/jquery.min.js" %}"></script>
-    <script type="text/javascript" src="{% static "js/jquery-ui.min.js" %}"></script>
-    <script type="text/javascript" src="{% static "js/datepicker.js" %}"></script>
+<link rel="stylesheet" type="text/css" href="{% static "css/jquery-ui.min.css" %}">
+<script type="text/javascript" src="{% static "js/jquery.min.js" %}"></script>
+<script type="text/javascript" src="{% static "js/jquery-ui.min.js" %}"></script>
+<script type="text/javascript" src="{% static "js/datepicker.js" %}"></script>
 </head>
 <body>
     <div class="box1">
@@ -43,7 +31,7 @@
     <!-- Daily report seems redundant-->
     <br>
     <br>
-    <a href="/daily_report/{{course_id}}/{% now "Y\/m\/d" %}"><button type="button" class="btn btn-primary"  id="button12">View Today's Report</button></a>
+    <a href="/daily_report/{{course_id}}/{% now "Y\/m\/d" %}"><button type="button" class="btn btn-primary">View Today's Report</button></a>
     <br>
     <br>
     <br>
