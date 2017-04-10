@@ -32,7 +32,7 @@ def signup(request):
 	
 def logout_view(request):
 	log = logging.getLogger('auth_module')
-	log.debug("Logging out")
+	log.debug(request.user.first_name + " Logging out")
 	logout(request)
 	messages.info(request,"You have logged out successfully!")
 	return redirect("/login/")
