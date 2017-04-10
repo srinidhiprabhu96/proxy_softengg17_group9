@@ -26,11 +26,14 @@
 			<form action="/query/{{course}}/" method="post" id="queryform">
 				<span style="font-weight: bold;">Date:<input type="text" name="date" id="datepicker" value="{{date}}" readonly="readonly"><br><br>
 				<p style="font-weight: bold;">Query:</p>
-				<textarea class="area" name="query" form="queryform" maxlength="500" cols="50" rows="11"></textarea><br><br>
+				<textarea class="area" name="query" form="queryform" maxlength="500" cols="50" rows="10"></textarea><br><br>
 				<input id="home5" class="btn btn-success" type="submit" value="Submit"><br>
 			</form>
-			<br><br>
-			<a href="/stud_course/{{course}}"><button id="home4" type="button" class="btn btn-info">Back to course page</button></a><br><br>
+			<!--<a href="/stud_course/{{course}}"><button id="home4" type="button" class="btn btn-info">Back to course page</button></a><br><br>-->
+			<form action="/stud_history/{{course}}/" method="post">
+				<span style="visibility:hidden"><span style="font-weight: bold;">Date:<input type="text" name="date" id="datepicker" value="{{date}}" readonly="readonly"></span></span><br>
+				<input id="home4" class="btn btn-success" type="submit" value="Back to view history"><br>
+			</form>
 		</div>
 	</body>
 </html>
