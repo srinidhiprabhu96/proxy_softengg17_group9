@@ -22,11 +22,15 @@ import subprocess
 from api_wrappers import *
 from glob import glob
 
+import logging
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 @csrf_exempt
 def prof_home(request):
 	# add context as third arg to render
+	log = logging.getLogger('prof_module')
+	log.debug("Professor logged in")
 	if request.user.is_authenticated() and request.user.is_staff:
 		# print request.user.username
 		qs = Course.objects.filter(taught_by=request.user)
@@ -42,6 +46,8 @@ def prof_home(request):
 @csrf_exempt
 def prof_course(request, c_id):
 	# add context as third arg to render
+	log = logging.getLogger('prof_module')
+	log.debug("Professor went to course page")
 	if request.user.is_authenticated() and request.user.is_staff:
 		try:
 			c = Course.objects.get(course_id=c_id,taught_by=request.user)
@@ -70,6 +76,8 @@ def prof_course(request, c_id):
 
 @csrf_exempt
 def daily_report(request, c_id, y, m, d):
+	log = logging.getLogger('prof_module')
+	log.debug("Professor saw the daily report")
 	# add context as third arg to render
 	if request.user.is_authenticated() and request.user.is_staff:
 		cr = Course.objects.filter(course_id=c_id, taught_by=request.user)
@@ -107,6 +115,8 @@ def daily_report(request, c_id, y, m, d):
 
 @csrf_exempt
 def prof_history(request, c_id):
+	log = logging.getLogger('prof_module')
+	log.debug("Professor saw the history of a course")
 	# add context as third arg to render
 	if request.user.is_authenticated() and request.user.is_staff:
 		cr = Course.objects.filter(course_id=c_id, taught_by=request.user)
@@ -142,6 +152,8 @@ def prof_history(request, c_id):
 		return redirect('/login/')
 
 def upload_class_photos(request, c_id):
+	log = logging.getLogger('prof_module')
+	log.debug("Professor uploaded class photos")
 	if request.user.is_authenticated() and request.user.is_staff:
 		cr = Course.objects.filter(course_id=c_id, taught_by=request.user)
 		if not cr.exists():
@@ -190,6 +202,9 @@ def take_attendance(request, c_id):
 			subprocess.Popen(args)	# Creates a new thread which handles the updating of attendance.
 			## End of added by SP
 
+			log = logging.getLogger('prof_module')
+			log.debug("Professor uploaded files and took attendance")
+
 			messages.success(request, 'Files uploaded successfully!')
 		else:
 			messages.error(request, 'Unable to upload files. Try again.')
@@ -207,6 +222,8 @@ def take_attendance(request, c_id):
 
 def prof_queries(request, c_id):
 	# add context as third arg to render
+	log = logging.getLogger('prof_module')
+	log.debug("Professor saw queries")
 	if request.user.is_authenticated() and request.user.is_staff:
 		try:
 			cr = Course.objects.filter(course_id=c_id, taught_by=request.user)

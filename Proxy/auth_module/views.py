@@ -23,10 +23,16 @@ import md5
 import subprocess
 from django.contrib.auth import logout
 
+import logging
+
 def signup(request):
+	log = logging.getLogger('auth_module')
+	log.debug("Signing up")	
 	return render(request,'signup.html')
 	
 def logout_view(request):
+	log = logging.getLogger('auth_module')
+	log.debug("Logging out")
 	logout(request)
 	messages.info(request,"You have logged out successfully!")
 	return redirect("/login/")
