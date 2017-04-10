@@ -45,13 +45,3 @@ html, body {
 #message{
 	margin: 25px 10px 15px 540px;
 }
-
-.error {color: red;}
-.info {color: green;}
-.progress 
-{
-	font-color:#ffffff;
-	background-color:#0000FF;
-}
-.rejected {color: red;}
-.accepted {color: green;}

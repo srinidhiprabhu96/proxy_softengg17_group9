@@ -36,10 +36,10 @@
 						<td>{{item.date}}</td>
 						<td>{{item.query}}</td>
 						{% if item.status == '1' %}
-							<td><p class="info">Accepted</p></td>
+							<td><p class="info">Query processed</p></td>
 						{% else %}
 							{% if item.status == '0' %}
-								<td><span class="progress">In Progress</span></td>
+								<td><span style="color: blue">In Progress</span></td>
 							{% else %}
 								<td><span class="error">Rejected</span></td>
 							{% endif %}
@@ -49,7 +49,7 @@
 				</tr>
 			</table>
 		{% else %}
-			<span class="error"> No queries to display</span>
+			<span class="error"> No queries to display</span><br><br><br>
 		{% endif %}
 		<br>
 		<a href="/stud_course/{{course}}"><button id="home1" type="button" class="btn btn-info" id="button1">Back to course page</button></a><br><br>

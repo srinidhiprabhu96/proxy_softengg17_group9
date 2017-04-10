@@ -21,44 +21,10 @@
                     <a href="/logout/"><button class="btn btn-warning navbar-btn">Logout</button></a>
             </nav>
     </div>
-        <!-- <div>
-    {% if queries %}
-        <table class = "table table-hover">
-            <tr>
-                <th>Date</th>
-                <th>Student</th>
-                <th>Course</th>
-                <th>Description</th>
-                <th>Attendance Status</th>
-                {% for item in queries %}
-                <tr>
-                    <td>{{item.date}}</td>
-                    <td>{{item.student}}</td>
-                    <td>{{item.course_id}}</td>
-                    <td>{{item.query}}</td>
-                    {% if item.status == '1' %}
-                        <td><span class="accepted">Accepted</span></td>
-                    {% else %}
-                        {% if item.status == '0' %}
-                            <td><span class="progress">In Progress</span></td>
-                        {% else %}
-                            <td><span class="rejected">Rejected</span></td>
-                        {% endif %}
-                    {% endif %}
-                </tr>
-            {% endfor %}
-            </tr>
-        </table>
-    {% else %}
-        <span class="error"> No queries to display</span>
-    {% endif %}
-    </div> -->
     <div class = "box3">
     <div>
     <h1>Queries</h1>
-    <!--<span><b>Date ; Student Name ; Query ; Attendance ; Query Status</b></span><br>//-->
     <table class = "table table-hover">
-      <!-- <tr> -->
     <col width="60">
     <col width="50">
     <col width="300">
@@ -88,22 +54,22 @@
             {% if q.status == '1' %}
                 <td class="present">Query Processed</td>
             {% else %}
-                <td class="progress" ">In progress</td>
+                <td style="color: blue">In progress</td>
             {% endif %}
             <td><form action="/prof_queries/{{course_id}}/" method="post" style="display:inline;">
                   <input type="hidden" name="query" value="{{q.id}} 1" />
-                  <input type="submit" {% if a == '1' %}disabled{% endif %} value="Mark Present"/>
+                  <input class="btn btn-success" type="submit" {% if a == '1' %}disabled{% endif %} value="Mark Present"/><br><br>
                 </form>
                 <form action="/prof_queries/{{course_id}}/" method="post" style="display:inline;">
                   <input type="hidden" name="query" value="{{q.id}} 0" />
-                  <input type="submit" {% if a == '0' %}disabled{% endif %} value="Mark Absent"/>
+                  <input class="btn btn-danger" type="submit" {% if a == '0' %}disabled{% endif %} value="Mark Absent"/>
                 </form></td>
             <td>
               <form action="/view_images/" method="post" style="display:inline;">
                 <!-- <input type="hidden" name="username" value="{{user.username}}" /> -->
                 <input type="hidden" name="course" value="{{course_id}}" />
                 <input type="hidden" name="date" value="{{q.date}}" />
-                <input type="submit"  value="View images"/></form>
+                <input class="btn btn-primary" type="submit"  value="View images"/></form>
             </td>
         </tr>
         {% endfor %}
