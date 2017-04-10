@@ -22,20 +22,26 @@ import re
 import md5
 import subprocess
 from django.contrib.auth import logout
+import logging
 
 
 # View that displays the page for signup.
+
 def signup(request):
+	log = logging.getLogger('auth_module')
+	log.debug("Signing up")
 	return render(request,'signup.html')
 
-# When the logout button is clicked, this function is invoked(see urls.py).	
+# When the logout button is clicked, this function is invoked(see urls.py).
 def logout_view(request):
+	log = logging.getLogger('auth_module')
+	log.debug(request.user.first_name + " Logging out")
 	logout(request)		# The current user is logged out.
 	messages.info(request,"You have logged out successfully!")
 	# Redirect to the login page.
 	return redirect("/login/")
 
-# This function is called when the user clicks on the signup button.	
+# This function is called when the user clicks on the signup button.
 @csrf_exempt
 def before_verify(request):
 	if request.method == 'POST':		# If the method is POST, it means the request is coming from the signup page.
@@ -84,7 +90,7 @@ def before_verify(request):
 			args = ["python","sendEmail.py",name,email,code,account_label]
 			subprocess.Popen(args)	# Creates a new thread which handles the updating of attendance.
 			messages.info(request,"Verification mail resent! Please check your inbox after some time.")
-			
+
 			"""
 			if not mailSent:
 				# If there is some error while sending the mail, display an error message.
@@ -97,7 +103,7 @@ def before_verify(request):
 			return render(request,'verify.html')
 		else:
 			messages.error(request,"Please enter an e-mail ID of the form \"abc@smail.iitm.ac.in\" or \"xyz@iitm.ac.in\"")
-			return redirect("/signup/")	
+			return redirect("/signup/")
 
 	# If it's not POST, just redirect to signup page.
 	messages.error(request,"Please use the signup page to get a verification mail.")
@@ -202,6 +208,8 @@ def auth(request):
 				user = authenticate(username=e_mail, password=raw_password)	# Check if the user exists
 				if user:
 					if user.is_active:
+						log = logging.getLogger('auth_module')
+						log.debug(user.first_name + " Logging in")
 						login(request,user)	# Make the user login, so that he can access subsequent pages before logging out.
 						if user.is_staff:
 							return redirect('/prof_home/')
