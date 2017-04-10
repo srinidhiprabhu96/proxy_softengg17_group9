@@ -30,7 +30,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 def prof_home(request):
 	# add context as third arg to render
 	log = logging.getLogger('prof_module')
-	log.debug(request.user.first_name + " Professor logged in")
+	log.debug(request.user.first_name + " Professor went to his home page")
 	if request.user.is_authenticated() and request.user.is_staff:
 		# print request.user.username
 		qs = Course.objects.filter(taught_by=request.user)
@@ -76,8 +76,6 @@ def prof_course(request, c_id):
 
 @csrf_exempt
 def daily_report(request, c_id, y, m, d):
-	log = logging.getLogger('prof_module')
-	log.debug(request.user.first_name + " Professor saw the daily report of " + c_id)
 	# add context as third arg to render
 	if request.user.is_authenticated() and request.user.is_staff:
 		cr = Course.objects.filter(course_id=c_id, taught_by=request.user)
@@ -91,6 +89,8 @@ def daily_report(request, c_id, y, m, d):
 				obj.is_present = '0'
 			obj.save()
 		date_str = y+'/'+m+'/'+d
+		log = logging.getLogger('prof_module')
+		log.debug(request.user.first_name + " Professor saw the daily report of " + c_id + " corresponding to the date " + date_str)
 		# print os.path.join(BASE_DIR, 'media/'+request.user.username+'/'+c_id+'/'+date_str+'/*')
 		l =  glob(os.path.join(BASE_DIR, 'media/'+request.user.username+'/'+c_id+'/'+date_str+'/*'))
 		files = []
@@ -203,7 +203,7 @@ def take_attendance(request, c_id):
 			## End of added by SP
 
 			log = logging.getLogger('prof_module')
-			log.debug(request.user.first_name + " Professor uploaded files for " + c_id + " and took attendance")
+			log.debug(request.user.first_name + " Professor uploaded files for " + c_id + " and took attendance for date " + date)
 
 			messages.success(request, 'Files uploaded successfully!')
 		else:

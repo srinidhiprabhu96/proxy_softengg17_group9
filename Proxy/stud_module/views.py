@@ -21,7 +21,7 @@ import logging
 @csrf_exempt
 def stud_home(request):
 	log = logging.getLogger('stud_module')
-	log.debug(request.user.first_name + " Student logged in")
+	log.debug(request.user.first_name + " Student went to his home page")
 	user = request.user
 	if user.is_authenticated() and not user.is_staff:	# Display the page only if the user is logged in and is a student
 		qs = Course.objects.filter(taken_by=user)
