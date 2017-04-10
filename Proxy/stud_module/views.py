@@ -21,7 +21,7 @@ import logging
 @csrf_exempt
 def stud_home(request):
 	log = logging.getLogger('stud_module')
-	log.debug("Student logged in")
+	log.debug(request.user.first_name + " Student logged in")
 	user = request.user
 	if user.is_authenticated() and not user.is_staff:	# Display the page only if the user is logged in and is a student
 		qs = Course.objects.filter(taken_by=user)
@@ -46,7 +46,7 @@ def stud_home(request):
 @csrf_exempt
 def stud_course(request, c_id):
 	log = logging.getLogger('stud_module')
-	log.debug("Student went to course page")
+	log.debug(request.user.first_name + " Student went to " + c_id + " course page")
 	user = request.user
 	if user.is_authenticated and not user.is_staff:
 		try:										# Check if the student takes the course
@@ -65,7 +65,7 @@ def stud_course(request, c_id):
 # Needs to be modified to have calendar and images, to be implemented by Vinod
 def stud_daily_report(request):
 	log = logging.getLogger('stud_module')
-	log.debug("Student saw the daily report")
+	log.debug(request.user.first_name + " Student saw the daily report")
 	user = request.user
 	if user.is_authenticated and not user.is_staff:
 		attendances = Attendance.objects.filter(student=user).order_by('-date')
@@ -84,7 +84,7 @@ def stud_daily_report(request):
 # Better if we can put date here also
 def view_queries(request, c_id):
 	log = logging.getLogger('stud_module')
-	log.debug("Student viewed his queries")
+	log.debug(request.user.first_name + " Student viewed " + c_id + " queries")
 	user = request.user
 	if user.is_authenticated and not user.is_staff:
 		queries = Query.objects.filter(course_id=c_id, student=user).order_by('-date')	# Gets the student's queries.
@@ -111,7 +111,7 @@ def query(request, c_id):
 			q.save()
 			messages.info(request,"Request successfully raised")
 			log = logging.getLogger('stud_module')
-			log.debug("Student submitted query ")
+			log.debug(request.user.first_name + " Student submitted query for " + c_id)
 			return render(request, 'stud_course.html',{'course_id':c_id})
 		else:
 			pass # Handle error here
@@ -138,7 +138,7 @@ def raise_query(request, c_id):
 def stud_history(request, c_id):
 	user = request.user
 	log = logging.getLogger('stud_module')
-	log.debug("Student saw his history ")
+	log.debug(request.user.first_name + " Student saw his history for " + c_id)
 	if request.user.is_authenticated and not request.user.is_staff:
 		# Control reaches here if the user is a student and is authenticated.
 		att = Attendance.objects.filter(course_id=c_id,student=request.user).order_by('-date')	# Gets the attendances sorted by most recent first

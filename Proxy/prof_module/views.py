@@ -30,7 +30,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 def prof_home(request):
 	# add context as third arg to render
 	log = logging.getLogger('prof_module')
-	log.debug("Professor logged in")
+	log.debug(request.user.first_name + " Professor logged in")
 	if request.user.is_authenticated() and request.user.is_staff:
 		# print request.user.username
 		qs = Course.objects.filter(taught_by=request.user)
@@ -47,7 +47,7 @@ def prof_home(request):
 def prof_course(request, c_id):
 	# add context as third arg to render
 	log = logging.getLogger('prof_module')
-	log.debug("Professor went to course page")
+	log.debug(request.user.first_name + " Professor went to " + c_id + " course page")
 	if request.user.is_authenticated() and request.user.is_staff:
 		try:
 			c = Course.objects.get(course_id=c_id,taught_by=request.user)
@@ -77,7 +77,7 @@ def prof_course(request, c_id):
 @csrf_exempt
 def daily_report(request, c_id, y, m, d):
 	log = logging.getLogger('prof_module')
-	log.debug("Professor saw the daily report")
+	log.debug(request.user.first_name + " Professor saw the daily report of " + c_id)
 	# add context as third arg to render
 	if request.user.is_authenticated() and request.user.is_staff:
 		cr = Course.objects.filter(course_id=c_id, taught_by=request.user)
@@ -116,7 +116,7 @@ def daily_report(request, c_id, y, m, d):
 @csrf_exempt
 def prof_history(request, c_id):
 	log = logging.getLogger('prof_module')
-	log.debug("Professor saw the history of a course")
+	log.debug(request.user.first_name + " Professor saw the history of a " + c_id + " course")
 	# add context as third arg to render
 	if request.user.is_authenticated() and request.user.is_staff:
 		cr = Course.objects.filter(course_id=c_id, taught_by=request.user)
@@ -153,7 +153,7 @@ def prof_history(request, c_id):
 
 def upload_class_photos(request, c_id):
 	log = logging.getLogger('prof_module')
-	log.debug("Professor uploaded class photos")
+	log.debug(request.user.first_name + " Professor uploaded class photos for " + c_id)
 	if request.user.is_authenticated() and request.user.is_staff:
 		cr = Course.objects.filter(course_id=c_id, taught_by=request.user)
 		if not cr.exists():
@@ -203,7 +203,7 @@ def take_attendance(request, c_id):
 			## End of added by SP
 
 			log = logging.getLogger('prof_module')
-			log.debug("Professor uploaded files and took attendance")
+			log.debug(request.user.first_name + " Professor uploaded files for " + c_id + " and took attendance")
 
 			messages.success(request, 'Files uploaded successfully!')
 		else:
@@ -223,7 +223,7 @@ def take_attendance(request, c_id):
 def prof_queries(request, c_id):
 	# add context as third arg to render
 	log = logging.getLogger('prof_module')
-	log.debug("Professor saw queries")
+	log.debug(request.user.first_name + " Professor saw queries for " + c_id)
 	if request.user.is_authenticated() and request.user.is_staff:
 		try:
 			cr = Course.objects.filter(course_id=c_id, taught_by=request.user)
