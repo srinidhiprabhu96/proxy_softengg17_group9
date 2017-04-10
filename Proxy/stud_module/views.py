@@ -21,8 +21,12 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+import logging
+
 @csrf_exempt
 def stud_home(request):
+	log = logging.getLogger('stud_module')
+	log.debug(request.user.first_name + " Student went to his home page")
 	user = request.user
 	if user.is_authenticated() and not user.is_staff:	# Display the page only if the user is logged in and is a student
 		qs = Course.objects.filter(taken_by=user)
@@ -46,10 +50,12 @@ def stud_home(request):
 
 @csrf_exempt
 def stud_course(request, c_id):
+	log = logging.getLogger('stud_module')
+	log.debug(request.user.first_name + " Student went to " + c_id + " course page")
 	user = request.user
 	if user.is_authenticated and not user.is_staff:
 		try:										# Check if the student takes the course
-			c = Course.objects.get(course_id=c_id,taken_by=user)	
+			c = Course.objects.get(course_id=c_id,taken_by=user)
 			return render(request, 'stud_course.html',{'course_id':c_id})
 		except Exception as e:
 			messages.error(request,"You are not registered for the course!")
@@ -63,6 +69,8 @@ def stud_course(request, c_id):
 
 @csrf_exempt
 def stud_daily_report(request):
+	log = logging.getLogger('stud_module')
+	log.debug(request.user.first_name + " Student saw the daily report")
 	user = request.user
 	if request.method == "POST":
 		if user.is_authenticated and not user.is_staff:
@@ -93,10 +101,12 @@ def stud_daily_report(request):
 
 # Better if we can put date here also
 def view_queries(request, c_id):
+	log = logging.getLogger('stud_module')
+	log.debug(request.user.first_name + " Student viewed " + c_id + " queries")
 	user = request.user
 	if user.is_authenticated and not user.is_staff:
 		try:										# Check if the student takes the course
-			c = Course.objects.get(course_id=c_id,taken_by=user)	
+			c = Course.objects.get(course_id=c_id,taken_by=user)
 		except Exception as e:
 			messages.error(request,"You are not registered for the course!")
 			return redirect('/login/')
@@ -113,7 +123,7 @@ def view_queries(request, c_id):
 		messages.error(request,"You are not logged in.")
 		return redirect('/login/')
 
-@csrf_exempt	
+@csrf_exempt
 def query(request, c_id):
 	user = request.user
 	if request.method == "POST":
@@ -131,6 +141,8 @@ def query(request, c_id):
 			q = Query(course_id=c_id,student=request.user,date=date,query=text)
 			q.save()
 			messages.info(request,"Request successfully raised")
+			log = logging.getLogger('stud_module')
+			log.debug(request.user.first_name + " Student submitted query for " + c_id)
 			return render(request, 'stud_course.html',{'course_id':c_id})
 		elif user.is_staff:
 			messages.error(request,"You are not a student!")
@@ -152,7 +164,7 @@ def raise_query(request, c_id):
 			raise Http404("Enter a valid date")
 		if request.user.is_authenticated and not request.user.is_staff:
 			try:										# Check if the student takes the course
-				c = Course.objects.get(course_id=c_id,taken_by=user)	
+				c = Course.objects.get(course_id=c_id,taken_by=user)
 				return render(request, 'raise_query.html',{'course':c_id,'date':date})
 			except Exception as e:
 				messages.error(request,"You are not registered for the course!")
@@ -166,7 +178,7 @@ def raise_query(request, c_id):
 	else:
 		messages.error(request,"You are not allowed to view this page.")
 		return redirect('/login/')
-	
+
 # Add a date field in stud history also
 @csrf_exempt
 def stud_history(request, c_id):
@@ -186,13 +198,15 @@ def stud_history(request, c_id):
 			except:
 				messages.error(request,"You are not registered for the course!")
 				return redirect('/login/')
-				
+
 			l =  glob(os.path.join(BASE_DIR, 'media/'+prof_name+'/'+c_id+'/'+date_path+'/*'))
 			files = []
 			for i in l:
 				files.append(prof_name+"/"+c_id+"/"+date_path+"/"+os.path.basename(i))
-			
+
 			att = Attendance.objects.filter(course_id=c_id,student=request.user,date=date)
+			log = logging.getLogger('stud_module')
+			log.debug(request.user.first_name + " Student saw his history for " + c_id + " corresponding to the date " + date_str)
 			if len(att) == 0:
 				#messages.error(request,"No history to display")
 				return render(request, 'stud_history.html',{'course':c_id, 'date':str_date})
