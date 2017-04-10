@@ -124,18 +124,16 @@ def prof_history(request, c_id):
 			# 		dates.append(tmp_date)
 			# dates.sort(reverse=True)
 			if request.method == 'POST':
-				date = request.POST.get('date')
-				d = date[0:2]
-				m = date[3:5]
-				y = date[6:10]
-				date = y+'/'+m+'/'+d
-				return redirect('/daily_report/'+c_id+'/'+date)
+				date_str = request.POST.get('date')
+				date_obj = datetime.datetime.strptime(date_str, '%d/%m/%Y')
+				date_str = date_obj.strftime('%Y/%m/%d')
+				return redirect('/daily_report/'+c_id+'/'+date_str+'/')
 			else:
 				raise Http404("You Haven't entered any date!")
 			# return render(request, 'prof_history.html',{'course_id':c_id})
 		except Exception as e:
 			# raise e
-			raise Http404("You don't teach the course!")
+			raise Http404("You entered the wrong date format!")
 	elif not request.user.is_staff:
 		messages.error(request,"You don't have the required permissions!")
 		return redirect('/login/')
@@ -169,19 +167,22 @@ def take_attendance(request, c_id):
 			raise Http404("You don't teach the course!")
 		form = ClassImagesForm(request.POST, request.FILES)
 		if form.is_valid:
+			try:
+				date_str = request.POST.get('date')
+				date_obj = datetime.datetime.strptime(date_str, '%d/%m/%Y')
+				date_str = date_obj.strftime('%Y-%m-%d')
+				date_str2 = date_obj.strftime('%Y/%m/%d')
+			except Exception as e:
+				raise Http404("You entered the wrong date format!")
 			images = request.FILES.getlist('myfiles')
 			paths = []
 			for i in images:
 				# print i.name
-				path = default_storage.save(request.user.username+'/'+c_id+'/'+datetime.date.today().strftime('%Y/%m/%d')+'/'+i.name, ContentFile(i.read()))
+				path = default_storage.save(request.user.username+'/'+c_id+'/'+date_str2+'/'+i.name, ContentFile(i.read()))
 				paths += [os.path.join(settings.MEDIA_ROOT, path)]
-			date_str = request.POST.get('date')
-			d = date_str[0:2]
-			m = date_str[3:5]
-			y = date_str[6:10]
 
 			## Added by SP - search in faceset
-			date = y+'-'+m+'-'+d	# Currently setting today's date, change the date here.  -- Changed
+			date = date_str	# Currently setting today's date, change the date here.  -- Changed
 			args = []
 			args.append("python")
 			args.append("searchFace.py")
