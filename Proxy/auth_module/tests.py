@@ -8,8 +8,10 @@ class AuthTestCase(TestCase):
 
 	def setUp(self) :
 		self.client = Client()	
-		SignUp.objects.create(name = "Stud" , email = "cs14b028@smail.iitm.ac.in" , code = "6jgfg8" , account = '0' , status = '1')
-		SignUp.objects.create(name = "Prof" , email = "prof@iitm.ac.in" , code = "y789hj" , account = '1' , status = '1')
+		u = SignUp.objects.create(name = "Stud" , email = "cs14b028@smail.iitm.ac.in" , code = "6jgfg8" , account = '0' , status = '1')
+		u.save()
+		u = SignUp.objects.create(name = "Prof" , email = "prof@iitm.ac.in" , code = "y789hj" , account = '1' , status = '1')
+		u.save()
 		u = User.objects.create(username = "teststud@smail.iitm.ac.in",first_name = "TestStud" , is_staff = '0')
 		u.set_password('123')
 		u.save()
@@ -50,8 +52,15 @@ class AuthTestCase(TestCase):
 		self.assertRedirects(response,'/stud_home/',status_code = 302,target_status_code = 200)
 		response = self.client.post("/auth/", {'email' : 'teststud@smail.iitm.ac.in' , 'password' : '456'})
 		self.assertRedirects(response,'/login/',status_code = 302,target_status_code = 200)
-		
-		
-			
-		
-			
+
+	def test_finish_signup(self) :
+		response = self.client.post("/finish-signup/", {'name' : 'Stud','email' : 'cs14b028@smail.iitm.ac.in' , 'password' : '123' , 'confirm_password' : '123'})	
+		self.assertTemplateUsed(response,'finish_signup.html')
+		response = self.client.post("/finish-signup/", {'name' : 'Stud','email' : 'cs14b028@smail.iitm.ac.in' , 'password' : '123' , 'confirm_password' : '456'})
+		self.assertTemplateUsed(response,'password_signup_page.html')
+		response = self.client.get("/finish-signup/", {'name' : 'Stud','email' : 'cs14b028@smail.iitm.ac.in' , 'password' : '123' , 'confirm_password' : '123'})				
+		self.assertRedirects(response,'/signup/',status_code = 302 , target_status_code = 200)
+
+	def test_after_verify(self) :
+		response = self.client.get("/verification/",{'code' : 'y789hj'})		
+		self.assertTemplateUsed(response,'password_signup_page.html')

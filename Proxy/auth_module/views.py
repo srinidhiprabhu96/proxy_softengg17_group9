@@ -130,7 +130,7 @@ def after_verify(request):
 				# If already verified, mention so.
 				context = {}
 				context['verified'] = True
-		return render(request,'password_signup_page.html',Context(context))
+		return render(request,'password_signup_page.html',context)
 
 	# Redirect to signup page if request method is not GET.
 	return redirect("/signup/")
@@ -182,7 +182,7 @@ def finish_signup(request):
 		context = {}
 		context['name'] = name
 		context['email'] = email
-		return render(request,'password_signup_page.html',Context(context))
+		return render(request,'password_signup_page.html',context)
 	return redirect("/signup/")
 
 # Initially, the website goes to the login page.
