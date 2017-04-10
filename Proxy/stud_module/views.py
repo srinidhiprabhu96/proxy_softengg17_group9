@@ -95,6 +95,11 @@ def stud_daily_report(request):
 def view_queries(request, c_id):
 	user = request.user
 	if user.is_authenticated and not user.is_staff:
+		try:										# Check if the student takes the course
+			c = Course.objects.get(course_id=c_id,taken_by=user)	
+		except Exception as e:
+			messages.error(request,"You are not registered for the course!")
+			return redirect('/login/')
 		queries = Query.objects.filter(course_id=c_id, student=user).order_by('-date')	# Gets the student's queries.
 		if len(queries) == 0:
 			#messages.error(request,"No queries to display")
@@ -114,25 +119,37 @@ def query(request, c_id):
 	if request.method == "POST":
 		if request.user.is_authenticated and not request.user.is_staff:
 			# Use a form for handling boundary cases.
-			print request.POST
-			text = request.POST['query']
-			date_str = request.POST['date']
-			print date_str
+			#print request.POST
+			try:
+				text = request.POST['query']
+				date_str = request.POST['date']
+			except:
+				raise Http404("Enter valid data")
+			#print date_str
 			date = datetime.datetime.strptime(date_str,"%d/%m/%Y")
-			print date
+			#print date
 			q = Query(course_id=c_id,student=request.user,date=date,query=text)
 			q.save()
 			messages.info(request,"Request successfully raised")
 			return render(request, 'stud_course.html',{'course_id':c_id})
+		elif user.is_staff:
+			messages.error(request,"You are not a student!")
+			return redirect('/login/')
 		else:
-			pass # Handle error here
-	return render(request, 'stud_course.html',{'course_id':c_id})
+			messages.error(request,"You are not logged in.")
+			return redirect('/login/')
+	else:
+		messages.error(request,"You are not allowed to view this page.")
+		return redirect('/login/')
 
 # Add a date field in raise query also
 def raise_query(request, c_id):
 	user = request.user
 	if request.method == "GET":
-		date = request.GET['date']
+		try:
+			date = request.GET['date']
+		except:
+			raise Http404("Enter a valid date")
 		if request.user.is_authenticated and not request.user.is_staff:
 			try:										# Check if the student takes the course
 				c = Course.objects.get(course_id=c_id,taken_by=user)	
@@ -157,7 +174,10 @@ def stud_history(request, c_id):
 	if request.method == "POST":
 		if request.user.is_authenticated and not request.user.is_staff:
 			# Control reaches here if the user is a student and is authenticated.
-			date = request.POST['date']
+			try:
+				date = request.POST['date']
+			except:
+				raise Http404("Enter a valid date")
 			str_date = date
 			date = datetime.datetime.strptime(str_date,'%d/%m/%Y').date()
 			date_path = datetime.datetime.strftime(date,"%Y/%m/%d")
