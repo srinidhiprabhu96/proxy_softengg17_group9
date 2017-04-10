@@ -9,11 +9,22 @@ import datetime
 from prof_module.api_wrappers import *
 from prof_module.models import *
 from django.contrib.auth.models import User
+import logging
+
+log = logging.getLogger('upload_attendance')
+hdlr = logging.FileHandler('logfile')
+hdlr.setLevel(logging.DEBUG)
+formatter = logging.Formatter("[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",datefmt="%d/%b/%Y %H:%M:%S")
+hdlr.setFormatter(formatter)
+log.addHandler(hdlr)
+log.setLevel(logging.DEBUG)
 
 course_number = sys.argv[1]
 date = sys.argv[2]
+log.info("Uploading attendance for "+course_number+" on "+date)
 image_paths = sys.argv[3:]
 date = datetime.datetime.strptime(date,'%Y-%m-%d').date()
+
 #print image_paths
 """
 course_number = "CS1100"
@@ -31,17 +42,17 @@ if len(atts) == 0:
 		for student in students_in_course:
 			a = Attendance(course_id=course.course_id,prof=course.taught_by,student=student,date=date)
 			a.save()
-		print "Attendance entries added"
+		log.info("Attendance entries added")
 	except:
-		print "Course not found"
+		log.info("Course not found")
 		sys.exit(0)
 else:
-	print "Attendance being updated"
+	log.info("Attendance being updated")
 
 for image in image_paths:
 	faces = detectMultipleFaces(image)
 	for face in faces:
-		print face["face_token"]
+		log.info("Face token "+face["face_token"]+" found in image")
 		response = searchFace(course_number,face_token=face["face_token"])
 		if response["results"][0]["confidence"] > 65.3:	# 65.3 is the threshold for error
 			token = response["results"][0]["face_token"]
@@ -53,11 +64,11 @@ for image in image_paths:
 				a = Attendance.objects.get(course_id=course_number,student=student,date=date)
 				a.is_present="1"
 				a.save()
-				print "Attendance added"
+				log.info("Attendance added for "+student.username)
 			except:
 				row = None
 		else:
-			print "Face not in course"
+			log.warning("Face not in course")
 			
 
 		
