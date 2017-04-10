@@ -13,6 +13,7 @@ from auth_module.models import *
 from auth_module.forms import *
 from stud_module.models import *
 from prof_module.models import *
+from stud_module.forms import *
 from django.template import RequestContext
 import datetime
 from glob import glob
@@ -65,17 +66,21 @@ def stud_daily_report(request):
 	user = request.user
 	if request.method == "POST":
 		if user.is_authenticated and not user.is_staff:
-			date = request.POST['date']
-			str_date = date
-			#print date
-			date = datetime.datetime.strptime(str_date,'%d/%m/%Y').date()
-			#print date
-			attendances = Attendance.objects.filter(student=user,date=date)
-			if len(attendances) == 0:
-				#messages.error(request,"No history to display")
-				return render(request, 'stud_daily_report.html',{'date':str_date})
+			form = DateForm(request.POST)
+			if form.is_valid():
+				date = request.POST['date']
+				str_date = date
+				#print date
+				date = datetime.datetime.strptime(str_date,'%d/%m/%Y').date()
+				#print date
+				attendances = Attendance.objects.filter(student=user,date=date)
+				if len(attendances) == 0:
+					#messages.error(request,"No history to display")
+					return render(request, 'stud_daily_report.html',{'date':str_date})
+				else:
+					return render(request, 'stud_daily_report.html', {'attendances':attendances, 'date':str_date})
 			else:
-				return render(request, 'stud_daily_report.html', {'attendances':attendances, 'date':str_date})
+				raise Http404("Enter a valid date")
 		elif user.is_staff:
 			messages.error(request,"You are not a student!")
 			return redirect('/login/')
