@@ -3,7 +3,7 @@
 		<title>Raise query for {{course}}</title>
 	</head>
 	{% load static %}
-	<link rel="stylesheet" href="{% static "css/stud_style.css"%}">
+	<link rel="stylesheet" href="{% static "css/stud.css"%}">
 	<link rel="stylesheet" href="{% static "css/bootstrap.css"%}">
 	<link rel="stylesheet" href="{% static "css/bootstrap.css.map"%}">
 	<link rel="stylesheet" href="{% static "css/bootstrap.min.css"%}">
@@ -13,23 +13,24 @@
 	<script type="text/javascript" src="{% static "js/datepicker.js" %}"></script>
 	<body>
 		<div class="box1">
-            <h1 class="head3">Course queries</h1>
-            <p class="head4">{{course}}</p>
-            <nav id="button12" class="nav navbar-nav navbar-right">
+            <h1 >Course queries</h1>
+            <p >{{course}}</p>
+            <nav id="button10" class="nav navbar-nav navbar-right">
 				<a href="/logout/"><button class="btn btn-warning navbar-btn">Logout</button></a>
 			</nav>
     	</div>
-    	<div class="box3">
+    	<div class="box2">
+    		<br>
 			<p>Hello, {{user.first_name}}<br> Raise your query for {{course}}  on {{date}} here.</p>
 			<!--<h1>Raise query</h1>-->
 			<form action="/query/{{course}}/" method="post" id="queryform">
-				<span id="Date">Date:<input type="text" name="date" id="datepicker" value="{{date}}" readonly="readonly"><br>
-				Query:<br>
-				<textarea class="area" name="query" form="queryform" maxlength="500" cols="50" rows="10"></textarea><br>
+				<span style="font-weight: bold;">Date:<input type="text" name="date" id="datepicker" value="{{date}}" readonly="readonly"><br><br>
+				<p style="font-weight: bold;">Query:</p>
+				<textarea class="area" name="query" form="queryform" maxlength="500" cols="50" rows="11"></textarea><br><br>
 				<input id="home5" class="btn btn-success" type="submit" value="Submit"><br>
 			</form>
-			<br>
-			<a href="/stud_course/{{course}}"><button id="home4" type="button" class="btn btn-info">Back to course page</button></a>
+			<br><br>
+			<a href="/stud_course/{{course}}"><button id="home4" type="button" class="btn btn-info">Back to course page</button></a><br><br>
 		</div>
 	</body>
 </html>

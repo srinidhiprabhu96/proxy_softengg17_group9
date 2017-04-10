@@ -1,15 +1,6 @@
 html, body {
     background-color:#EEEDED;
 }
-.box2{
-	background-color:#EEEDED;
-	text-align:center;	
-}
-.box3{
-	background-color:#EEEDED;	
-	margin-top:-20px; 
-	text-align:center;
-}
 .box1{
 	height: 7em;
 	background-color: lightblue;
@@ -25,6 +16,15 @@ html, body {
 .box1 .head3{
 	margin: 5px 10px 10px 550px;
 }
+.box2{
+	background-color:#EEEDED;
+	text-align:center;	
+}
+.box3{
+	background-color:#EEEDED;	
+	margin-top:-20px; 
+	text-align:center;
+}
 #button1{
 	margin: 5px 10px 15px 650px;
 }
@@ -32,20 +32,18 @@ html, body {
 	float:right;
 	margin: -3em 1em 0em 0em;
 }
-
-#button12{
-	float:right;
-	margin: -3em 1em 0em 0em;
-}
-
 #button11{
 	margin: -62px 10px 15px 750px;
+}
+.box2 .image{
+	color:black;
+	font-weight:bold;
+	text-align:bottom;
 }
 
 #message{
 	margin: 25px 10px 15px 540px;
 }
-
 .error {color: red;}
 .info {color: green;}
 .progress 

@@ -29,14 +29,14 @@
             </nav>
 </div> 
 <div class = "box2"> 
-	<br>
+	<br><br><br><br>
+
     <form action="/take_attendance/{{course_id}}/" method="post" enctype="multipart/form-data">
       <span id = "Date2">Select date: </span><input type="text" name="date" id="datepicker"><br><br>
       <span id = "Date3">Select the images you want to upload:</span>
-      <br><br><input style="margin-left:45em" type="file" name="myfiles" multiple="multiple" accept="image/*"><br>
+      <br><br><input style="margin-left:45em" type="file" name="myfiles" multiple="multiple" accept="image/*"><br><br>
 			<input type="submit" type="button" class="btn btn-success" id="button16" value="Submit">
-		</form>
-
+		</form><br><br>
     {% if messages %}
 			{% for message in messages %}
 				<span {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</span><br>
@@ -45,9 +45,16 @@
 	<br>
     <br>
     <br>
+
+    <br>
+    <br>
+    <br>
+    <br>
+
     <br>
     <a href="/prof_course/{{course_id}}"><button type="button" class="btn btn-info" id="button14">Back to course home</button></a>
-    
+    <br>
+    <br>
     </div>
 </body>
 </html>
