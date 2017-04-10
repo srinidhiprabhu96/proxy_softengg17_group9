@@ -1,12 +1,18 @@
-[10/Apr/2017 17:33:19] DEBUG [stud_module:24] Student1 Student logged in
-[10/Apr/2017 17:33:21] DEBUG [stud_module:49] Student1 Student went to CS1100 course page
-[10/Apr/2017 17:33:24] DEBUG [stud_module:87] Student1 Student viewed CS1100 queries
-[10/Apr/2017 17:33:26] DEBUG [stud_module:49] Student1 Student went to CS1100 course page
-[10/Apr/2017 17:33:28] DEBUG [auth_module:35] Student1 Logging out
-[10/Apr/2017 17:33:36] DEBUG [prof_module:33] Prof Professor logged in
-[10/Apr/2017 17:33:37] DEBUG [prof_module:50] Prof Professor went to CS1100 course page
-[10/Apr/2017 17:33:40] DEBUG [prof_module:226] Prof Professor saw queries for CS1100
-[10/Apr/2017 17:33:41] DEBUG [prof_module:50] Prof Professor went to CS1100 course page
-[10/Apr/2017 17:33:43] DEBUG [prof_module:80] Prof Professor saw the daily report of CS1100
-[10/Apr/2017 17:33:44] DEBUG [prof_module:50] Prof Professor went to CS1100 course page
-[10/Apr/2017 17:33:45] DEBUG [auth_module:35] Prof Logging out
+[10/Apr/2017 17:54:09] DEBUG [auth_module:202] Prof Logging in
+[10/Apr/2017 17:54:09] DEBUG [prof_module:33] Prof Professor went to his home page
+[10/Apr/2017 17:54:12] DEBUG [prof_module:50] Prof Professor went to CS1100 course page
+[10/Apr/2017 17:54:23] DEBUG [prof_module:93] Prof Professor saw the daily report of CS1100 corresponding to the date 2017/04/10
+[10/Apr/2017 17:54:30] DEBUG [prof_module:50] Prof Professor went to CS1100 course page
+[10/Apr/2017 17:54:36] DEBUG [prof_module:226] Prof Professor saw queries for CS1100
+[10/Apr/2017 17:54:38] DEBUG [prof_module:50] Prof Professor went to CS1100 course page
+[10/Apr/2017 17:54:43] DEBUG [prof_module:33] Prof Professor went to his home page
+[10/Apr/2017 17:54:48] DEBUG [auth_module:35] Prof Logging out
+[10/Apr/2017 17:54:58] DEBUG [auth_module:202] Student1 Logging in
+[10/Apr/2017 17:54:59] DEBUG [stud_module:24] Student1 Student went to his home page
+[10/Apr/2017 17:55:02] DEBUG [stud_module:68] Student1 Student saw the daily report
+[10/Apr/2017 17:55:05] DEBUG [stud_module:24] Student1 Student went to his home page
+[10/Apr/2017 17:55:28] DEBUG [stud_module:49] Student1 Student went to CS1300 course page
+[10/Apr/2017 17:55:31] DEBUG [stud_module:141] Student1 Student saw his history for CS1300
+[10/Apr/2017 17:55:34] DEBUG [stud_module:49] Student1 Student went to CS1300 course page
+[10/Apr/2017 17:55:36] DEBUG [stud_module:24] Student1 Student went to his home page
+[10/Apr/2017 17:55:38] DEBUG [auth_module:35] Student1 Logging out

@@ -198,6 +198,8 @@ def auth(request):
 				user = authenticate(username=e_mail, password=raw_password)
 				if user:
 					if user.is_active:
+						log = logging.getLogger('auth_module')
+						log.debug(user.first_name + " Logging in")
 						login(request,user)
 						if user.is_staff:
 							return redirect('/prof_home/')
