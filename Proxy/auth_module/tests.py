@@ -64,3 +64,5 @@ class AuthTestCase(TestCase):
 	def test_after_verify(self) :
 		response = self.client.get("/verification/",{'code' : 'y789hj'})		
 		self.assertTemplateUsed(response,'password_signup_page.html')
+		response = self.client.post("/verification/",{'code' : 'y789hj'})		
+		self.assertRedirects(response,'/signup/',status_code = 302 , target_status_code = 200)
