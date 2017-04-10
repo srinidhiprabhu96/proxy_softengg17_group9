@@ -268,7 +268,7 @@ def view_images(request):
 			for i in range(len(images)):
 				images[i] = request.user.username+'/'+course+'/'+date_str+'/' + images[i]
 			print images
-			return render(request, 'view_images.html', {'list':images})
+			return render(request, 'view_images.html', {'list':images,'course':course})
 		else:
 			raise Http404('You haven\'t selected the query!')
 	elif not request.user.is_staff:
