@@ -2,62 +2,57 @@
 <html>
 	<head>
 		{% load static %}
-		<link rel="stylesheet" href="{% static "css/stud_style.css"%}">
+		<link rel="stylesheet" href="{% static "css/stud.css"%}">
 		<link rel="stylesheet" href="{% static "css/bootstrap.css"%}">
 		<link rel="stylesheet" href="{% static "css/bootstrap.css.map"%}">
-		<link rel="stylesheet" href="{% static "css/bootstrap.min.css"%}">
-		<link rel="stylesheet" href="{% static "css/bootstrap.min.css.map"%}">
-		<script src="{% static "js/bootstrap.min.js" %}"></script>
-		<script src="{% static "js/bootstrap.js" %}"></script>
 		<link rel="stylesheet" type="text/css" href="{% static "css/jquery-ui.min.css" %}">
 		<script type="text/javascript" src="{% static "js/jquery.min.js" %}"></script>
 		<script type="text/javascript" src="{% static "js/jquery-ui.min.js" %}"></script>
 		<script type="text/javascript" src="{% static "js/datepicker.js" %}"></script>
+		<script src="{% static "js/bootstrap.js" %}"></script>
 		<title> Student Home </title>
     </head>
+    
     <body>
-		<div class="box1">
-			<h1 class="head">Easy Attendance</h1>
-			<p class="head1">Student home page</p>
-			<nav id="button2" class="nav navbar-nav navbar-right">
-    			<a href="/logout/"><button class="btn btn-warning navbar-btn">Logout</button></a>
-			</nav>
+    	<div class="box1">
+			<h1>Easy Attendance</h1>
+			<p>Student home page</p>
+			<nav id="button10" class="nav navbar-nav navbar-right">
+                    <a href="/logout/"><button class="btn btn-warning navbar-btn">Logout</button></a>
+            </nav>
 		</div>
+
 		<div class="box2">
 		    <br>
 			<form action="/stud_daily_report/" method="post">
-				  <span id="Date">Date:</span><input type="text" name="date" id="datepicker">
+				  <span style="font-weight:bold">Date:</span><input type="text" name="date" id="datepicker">
 				  <input class="btn btn-success" type="submit" value="View daywise report">
 			</form>
-			  <table class="table table-hover">
-    			<thead>
-      			 	<tr>
-        				<th>Course ID</th>
-        				<th>Course name</th>
-        				<th>Percentage</th>
-        				<th>Course Page</th>
-      			  	</tr>
-    			</thead>
-    			<tbody>
-      				{% for c,d in course_percent%}
-      					<tr>
-        					<td>{{c.course_id}}</td>
-        					<td>{{c.course_name}}</td>
-        					<td>{{d}}</td>
-        					<td>
-          						<a href="/stud_course/{{c.course_id}}">
-            						<button type="button" class="btn btn-info">Go to course</button>
-         					 	</a>
-        					</td>
-      					</tr><br>
-      				{% endfor %}<br>    
-    			</tbody>
-  			  </table>
-			<!-- <a href="/stud_daily_report">
-      			<button type="button" class="btn btn-primary" id="button1">View Daily Report</button>
-			</a> Put this format for the daywise report button -->
-			<br>
-    		<br>
+
+		  	<table class="table table-hover">
+				<thead>
+	  			 	<tr style="font-weight:bold">
+	    				<th  style="text-align:center" >Course ID</th>
+	    				<th  style="text-align:center" >Course name</th>
+	    				<th  style="text-align:center" >Percentage</th>
+	    				<th  style="text-align:center" >Course Page</th>
+	  			  	</tr>
+				</thead>
+				<tbody>
+	  				{% for c,d in course_percent%}
+	  					<tr>
+	    					<td>{{c.course_id}}</td>
+	    					<td>{{c.course_name}}</td>
+	    					<td>{{d}}</td>
+	    					<td>
+	      						<a href="/stud_course/{{c.course_id}}">
+	        						<button type="button" class="btn btn-info">Go to course</button>
+	     					 	</a>
+	    					</td>
+	  					</tr><br>
+	  				{% endfor %}<br>    
+				</tbody>
+			 </table>
 		</div>
 	</body>
 </html>

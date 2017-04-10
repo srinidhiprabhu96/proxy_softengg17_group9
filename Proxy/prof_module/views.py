@@ -237,13 +237,39 @@ def prof_queries(request, c_id):
 					att_set.append(att.is_present)
 				except Exception as e:
 					pass
-				
+
 				#print att
 			return render(request, 'prof_queries.html',{'course_id':c_id, 'list':zip(query_set,att_set)})
 		except Exception as e:
 			raise e
 			#raise Http404("You don't teach the course!")
 			raise Http404("You don't teach the course!")
+	elif not request.user.is_staff:
+		messages.error(request,"You don't have the required permissions!")
+		return redirect('/login/')
+	else:
+		messages.error(request,"You are not logged in.")
+		return redirect('/login/')
+
+@csrf_exempt
+def view_images(request):
+	if request.user.is_authenticated() and request.user.is_staff:
+		cr = Course.objects.filter(course_id=request.POST.get('course'), taught_by=request.user)
+		if not cr.exists():
+			raise Http404("You don't teach the course!")
+		if request.method == 'POST':
+			date_str = request.POST.get('date')
+			# user = request.POST.get('username')
+			course = request.POST.get('course')
+			date_obj = datetime.datetime.strptime(date_str, '%B %d, %Y')
+			date_str = date_obj.strftime('%Y/%m/%d')
+			images = [os.path.basename(x) for x in glob(os.path.join(BASE_DIR, 'media/'+request.user.username+'/'+course+'/'+date_str+'/*'))]
+			for i in range(len(images)):
+				images[i] = request.user.username+'/'+course+'/'+date_str+'/' + images[i]
+			print images
+			return render(request, 'view_images.html', {'list':images})
+		else:
+			raise Http404('You haven\'t selected the query!')
 	elif not request.user.is_staff:
 		messages.error(request,"You don't have the required permissions!")
 		return redirect('/login/')
