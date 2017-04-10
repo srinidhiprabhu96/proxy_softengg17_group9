@@ -206,7 +206,7 @@ def stud_history(request, c_id):
 
 			att = Attendance.objects.filter(course_id=c_id,student=request.user,date=date)
 			log = logging.getLogger('stud_module')
-			log.debug(request.user.first_name + " Student saw his history for " + c_id + " corresponding to the date " + date_str)
+			log.debug(request.user.first_name + " Student saw his history for " + c_id + " corresponding to the date " + str_date)
 			if len(att) == 0:
 				#messages.error(request,"No history to display")
 				return render(request, 'stud_history.html',{'course':c_id, 'date':str_date})
