@@ -24,7 +24,7 @@ def createFaceSetForCourses():
 		createFaceSet(item)
 	print "Created required facesets"
 
-# Assumption is that the images will be stored in the TrainingData folder and the files will be named <roll_no.>.jpg. path is the path to the training data folder		
+# Assumption is that the images will be stored in the TrainingData folder and the files will be named <roll_no.>.jpg. path is the path to the training data folder
 def UploadTrainingData(path):
 	images = os.listdir(path)
 	for image in images:
@@ -45,7 +45,7 @@ def UploadTrainingData(path):
 			except:
 				print "No user found for "+image
 				pass
-				
+
 def addFacesToFaceSet():
 	courses = Course.objects.all()
 	for course in courses:
@@ -60,7 +60,27 @@ def addFacesToFaceSet():
 				print "Student's face token not found"
 				pass
 
+# Add student whose email is 'stud_email' to the course with course ID 'courseId' which is taught by the prof whose email is 'prof_email'
+# assuming that student, course and prof are present in the database
+def studAddCourse(stud_email, courseId, prof_email):
+	s = User.objects.get(email=stud_email)
+	p = User.objects.get(email=prof_email)
+	c = Course.objects.get(course_id=courseId, taught_by=p)
+	c.taken_by.add(s)
+	c.save()
+
+# Create course which taken by the prof
+# assuming that prof is present in the database
+def profCreateCourse(prof_email, courseId, courseTitle):
+	p = User.objects.get(email=prof_email)
+	c = Course.objects.create(course_id=courseId,course_name=courseTitle,taught_by=p)
+
+
 #createFaceSet("CS3420")
-createFaceSetForCourses()	
-UploadTrainingData("TrainingData")
-addFacesToFaceSet()
+# createFaceSetForCourses()
+# UploadTrainingData("TrainingData")
+# addFacesToFaceSet()
+
+# profCreateCourse('prof@iitm.ac.in','CS1400','Course Title')
+# studAddCourse('stud1@smail.iitm.ac.in','CS1400', 'prof@iitm.ac.in')
+# studAddCourse('stud2@smail.iitm.ac.in','CS1400', 'prof@iitm.ac.in')
