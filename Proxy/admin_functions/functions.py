@@ -27,6 +27,7 @@ def createFaceSetForCourses():
 # Assumption is that the images will be stored in the TrainingData folder and the files will be named <roll_no.>.jpg. path is the path to the training data folder
 def UploadTrainingData(path):
 	images = os.listdir(path)
+	count = 0
 	for image in images:
 		if "jpg" in image or "png" in image:	# Only these 2 formats are allowed
 			user = image.lower().replace(".jpg","") + "@smail.iitm.ac.in"
@@ -41,7 +42,8 @@ def UploadTrainingData(path):
 					token = detectFace(path+"/"+image)
 					r = RollNumberToken(roll_number=user_obj,face_token=token)
 					r.save()
-					print "Token saved"
+					print "Token saved " + str(count)
+					count += 1 
 			except:
 				print "No user found for "+image
 				pass
@@ -51,11 +53,13 @@ def addFacesToFaceSet():
 	for course in courses:
 		students = course.taken_by.all()
 		#print students
+		count = 0
 		for student in students:
 			try:
 				row = RollNumberToken.objects.get(roll_number=student)
 				addFaceSet(course.course_id,[row.face_token])
-				print "Face added to faceset"
+				print "Face added to faceset "+str(count)
+				count += 1
 			except:
 				print "Student's face token not found"
 				pass
@@ -66,8 +70,11 @@ def studAddCourse(stud_email, courseId, prof_email):
 	s = User.objects.get(email=stud_email)
 	p = User.objects.get(email=prof_email)
 	c = Course.objects.get(course_id=courseId, taught_by=p)
-	c.taken_by.add(s)
-	c.save()
+	try:
+		c.taken_by.add(s)
+		c.save()
+	except:
+		pass
 
 # Create course which taken by the prof
 # assuming that prof is present in the database
@@ -75,12 +82,35 @@ def profCreateCourse(prof_email, courseId, courseTitle):
 	p = User.objects.get(email=prof_email)
 	c = Course.objects.create(course_id=courseId,course_name=courseTitle,taught_by=p)
 
-
+def addCS14studentsToCourse():
+	for i in range(1,63):
+		if i < 10:
+			studAddCourse("cs14b00"+str(i)+"@smail.iitm.ac.in","CS1400","prof@iitm.ac.in")
+		else:
+			studAddCourse("cs14b0"+str(i)+"@smail.iitm.ac.in","CS1400","prof@iitm.ac.in")
+			
+def createUser(stud_name,stud_email):
+	try:
+		u = User.objects.create(first_name=stud_name,email=stud_email,username=stud_email,is_staff="0")
+		u.set_password("123567")
+		u.save()
+	except:
+		pass
+			
+def createCS14Users():
+	for i in range(1,63):
+		if i < 10:
+			createUser("CS14B00"+str(i),"cs14b00"+str(i)+"@smail.iitm.ac.in")
+		else:
+			createUser("CS14B0"+str(i),"cs14b0"+str(i)+"@smail.iitm.ac.in")
+createFaceSet("CS1400")
 #createFaceSet("CS3420")
 # createFaceSetForCourses()
-# UploadTrainingData("TrainingData")
-# addFacesToFaceSet()
+#UploadTrainingData("TrainingData")
+addFacesToFaceSet()
 
-# profCreateCourse('prof@iitm.ac.in','CS1400','Course Title')
+#createCS14Users()
+#profCreateCourse('prof@iitm.ac.in','CS1400','CS new course')
+#addCS14studentsToCourse()
 # studAddCourse('stud1@smail.iitm.ac.in','CS1400', 'prof@iitm.ac.in')
 # studAddCourse('stud2@smail.iitm.ac.in','CS1400', 'prof@iitm.ac.in')
