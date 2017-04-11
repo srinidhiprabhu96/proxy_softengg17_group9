@@ -39,10 +39,10 @@ def sendEmail(name,email,code,account_label):
 		mail.starttls()
 		mail.ehlo()
 		mail.login(userEmail,userPassword)
-		log.debug("Generated mail content for signup")
+		log.info("Generated mail content for signup")
 		mail.sendmail(userEmail,content['TO'],content.as_string())
 		mail.quit()
-		log.debug("Mail sent successfully to "+email)
+		log.info("Mail sent successfully to "+email)
 		print "Mail sent"
 	except Exception as e:
 		log.debug(e)

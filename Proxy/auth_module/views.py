@@ -29,13 +29,13 @@ import logging
 
 def signup(request):
 	log = logging.getLogger('auth_module')
-	log.debug("Signing up")
+	log.info("Signing up")
 	return render(request,'signup.html')
 
 # When the logout button is clicked, this function is invoked(see urls.py).
 def logout_view(request):
 	log = logging.getLogger('auth_module')
-	log.debug(request.user.first_name + " Logging out")
+	log.info(request.user.first_name + " Logging out")
 	logout(request)		# The current user is logged out.
 	messages.info(request,"You have logged out successfully!")
 	# Redirect to the login page.
@@ -209,7 +209,7 @@ def auth(request):
 				if user:
 					if user.is_active:
 						log = logging.getLogger('auth_module')
-						log.debug(user.first_name + " Logging in")
+						log.info(user.first_name + " Logging in")
 						login(request,user)	# Make the user login, so that he can access subsequent pages before logging out.
 						if user.is_staff:
 							return redirect('/prof_home/')

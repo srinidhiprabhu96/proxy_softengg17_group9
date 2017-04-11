@@ -26,7 +26,7 @@ import logging
 @csrf_exempt
 def stud_home(request):
 	log = logging.getLogger('stud_module')
-	log.debug(request.user.first_name + " Student went to his home page")
+	log.info(request.user.first_name + " Student went to his home page")
 	user = request.user
 	if user.is_authenticated() and not user.is_staff:	# Display the page only if the user is logged in and is a student
 		qs = Course.objects.filter(taken_by=user)
@@ -51,7 +51,7 @@ def stud_home(request):
 @csrf_exempt
 def stud_course(request, c_id):
 	log = logging.getLogger('stud_module')
-	log.debug(request.user.first_name + " Student went to " + c_id + " course page")
+	log.info(request.user.first_name + " Student went to " + c_id + " course page")
 	user = request.user
 	if user.is_authenticated and not user.is_staff:
 		try:										# Check if the student takes the course
@@ -70,7 +70,7 @@ def stud_course(request, c_id):
 @csrf_exempt
 def stud_daily_report(request):
 	log = logging.getLogger('stud_module')
-	log.debug(request.user.first_name + " Student saw the daily report")
+	log.info(request.user.first_name + " Student saw the daily report")
 	user = request.user
 	if request.method == "POST":
 		if user.is_authenticated and not user.is_staff:
@@ -102,7 +102,7 @@ def stud_daily_report(request):
 # Better if we can put date here also
 def view_queries(request, c_id):
 	log = logging.getLogger('stud_module')
-	log.debug(request.user.first_name + " Student viewed " + c_id + " queries")
+	log.info(request.user.first_name + " Student viewed " + c_id + " queries")
 	user = request.user
 	if user.is_authenticated and not user.is_staff:
 		try:										# Check if the student takes the course
@@ -142,7 +142,7 @@ def query(request, c_id):
 			q.save()
 			messages.info(request,"Request successfully raised")
 			log = logging.getLogger('stud_module')
-			log.debug(request.user.first_name + " Student submitted query for " + c_id)
+			log.info(request.user.first_name + " Student submitted query for " + c_id)
 			return render(request, 'stud_course.html',{'course_id':c_id})
 		elif user.is_staff:
 			messages.error(request,"You are not a student!")
@@ -206,7 +206,7 @@ def stud_history(request, c_id):
 
 			att = Attendance.objects.filter(course_id=c_id,student=request.user,date=date)
 			log = logging.getLogger('stud_module')
-			log.debug(request.user.first_name + " Student saw his history for " + c_id + " corresponding to the date " + str_date)
+			log.info(request.user.first_name + " Student saw his history for " + c_id + " corresponding to the date " + str_date)
 			if len(att) == 0:
 				#messages.error(request,"No history to display")
 				return render(request, 'stud_history.html',{'course':c_id, 'date':str_date})
