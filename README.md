@@ -59,3 +59,11 @@ sendEmail.py
 
 searchFace.py
 	This file includes code to detect faces in an image and search for the detected faces in a course. This is also called as a separate process when a professor uploads photos to take attendance. More details can be found in the file.
+	
+STUD MODULE
+	Includes functions called when a student is logged in.
+	
+PROF MODULE
+	Includes functions called when a professor is logged in.
+	
+Issues have been created on github to keep track of what things were to be done. Feel free to raise more issues, if needed
