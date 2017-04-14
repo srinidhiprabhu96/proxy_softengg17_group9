@@ -225,7 +225,7 @@ def make_request(url,data,boundary):
 	try:
 		#post data to server
 		#print "trying"
-		resp = urllib2.urlopen(req, timeout=20)
+		resp = urllib2.urlopen(req, timeout=120)
 		#print "resp"
 		#get response
 		qrcont=resp.read()
