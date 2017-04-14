@@ -25,10 +25,10 @@ import logging
 
 @csrf_exempt
 def stud_home(request):
-	log = logging.getLogger('stud_module')
-	log.info(request.user.first_name + " Student went to his home page")
 	user = request.user
 	if user.is_authenticated() and not user.is_staff:	# Display the page only if the user is logged in and is a student
+		log = logging.getLogger('stud_module')
+		log.info(request.user.first_name + " Student went to his home page")
 		qs = Course.objects.filter(taken_by=user)
 		percent = []	# For student's attendance percentage
 		for a in qs:
@@ -50,10 +50,10 @@ def stud_home(request):
 
 @csrf_exempt
 def stud_course(request, c_id):
-	log = logging.getLogger('stud_module')
-	log.info(request.user.first_name + " Student went to " + c_id + " course page")
 	user = request.user
 	if user.is_authenticated and not user.is_staff:
+		log = logging.getLogger('stud_module')
+		log.info(request.user.first_name + " Student went to " + c_id + " course page")
 		try:										# Check if the student takes the course
 			c = Course.objects.get(course_id=c_id,taken_by=user)
 			return render(request, 'stud_course.html',{'course_id':c_id})
@@ -69,10 +69,10 @@ def stud_course(request, c_id):
 
 @csrf_exempt
 def stud_daily_report(request):
-	log = logging.getLogger('stud_module')
-	log.info(request.user.first_name + " Student saw the daily report")
 	user = request.user
 	if request.method == "POST":
+		log = logging.getLogger('stud_module')
+		log.info(request.user.first_name + " Student saw the daily report")
 		if user.is_authenticated and not user.is_staff:
 			form = DateForm(request.POST)
 			if form.is_valid():
@@ -101,10 +101,10 @@ def stud_daily_report(request):
 
 # Better if we can put date here also
 def view_queries(request, c_id):
-	log = logging.getLogger('stud_module')
-	log.info(request.user.first_name + " Student viewed " + c_id + " queries")
 	user = request.user
 	if user.is_authenticated and not user.is_staff:
+		log = logging.getLogger('stud_module')
+		log.info(request.user.first_name + " Student viewed " + c_id + " queries")
 		try:										# Check if the student takes the course
 			c = Course.objects.get(course_id=c_id,taken_by=user)
 		except Exception as e:

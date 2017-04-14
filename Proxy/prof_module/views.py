@@ -29,9 +29,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 @csrf_exempt
 def prof_home(request):
 	# add context as third arg to render
-	log = logging.getLogger('prof_module')
-	log.info(request.user.first_name + " Professor went to his home page")
 	if request.user.is_authenticated() and request.user.is_staff:
+		log = logging.getLogger('prof_module')
+		log.info(request.user.first_name + " Professor went to his home page")
 		# print request.user.username
 		qs = Course.objects.filter(taught_by=request.user)
 		return render(request, 'prof_home.html', {'courses':qs})
@@ -46,9 +46,9 @@ def prof_home(request):
 @csrf_exempt
 def prof_course(request, c_id):
 	# add context as third arg to render
-	log = logging.getLogger('prof_module')
-	log.info(request.user.first_name + " Professor went to " + c_id + " course page")
 	if request.user.is_authenticated() and request.user.is_staff:
+		log = logging.getLogger('prof_module')
+		log.info(request.user.first_name + " Professor went to " + c_id + " course page")
 		try:
 			c = Course.objects.get(course_id=c_id,taught_by=request.user)
 			return render(request, 'prof_course.html',{'course_id':c_id})
@@ -115,10 +115,10 @@ def daily_report(request, c_id, y, m, d):
 
 @csrf_exempt
 def prof_history(request, c_id):
-	log = logging.getLogger('prof_module')
-	log.info(request.user.first_name + " Professor saw the history of a " + c_id + " course")
 	# add context as third arg to render
 	if request.user.is_authenticated() and request.user.is_staff:
+		log = logging.getLogger('prof_module')
+		log.info(request.user.first_name + " Professor saw the history of a " + c_id + " course")
 		cr = Course.objects.filter(course_id=c_id, taught_by=request.user)
 		if not cr.exists():
 			#raise Http404("You dont teach the course!")
@@ -152,9 +152,9 @@ def prof_history(request, c_id):
 		return redirect('/login/')
 
 def upload_class_photos(request, c_id):
-	log = logging.getLogger('prof_module')
-	log.info(request.user.first_name + " Professor uploaded class photos for " + c_id)
 	if request.user.is_authenticated() and request.user.is_staff:
+		log = logging.getLogger('prof_module')
+		log.info(request.user.first_name + " Professor uploaded class photos for " + c_id)
 		cr = Course.objects.filter(course_id=c_id, taught_by=request.user)
 		if not cr.exists():
 			raise Http404("You don't teach the course!")
@@ -226,9 +226,9 @@ def take_attendance(request, c_id):
 @csrf_exempt
 def prof_queries(request, c_id):
 	# add context as third arg to render
-	log = logging.getLogger('prof_module')
-	log.info(request.user.first_name + " Professor saw queries for " + c_id)
 	if request.user.is_authenticated() and request.user.is_staff:
+		log = logging.getLogger('prof_module')
+		log.info(request.user.first_name + " Professor saw queries for " + c_id)
 		try:
 			cr = Course.objects.filter(course_id=c_id, taught_by=request.user)
 			if not cr.exists():
