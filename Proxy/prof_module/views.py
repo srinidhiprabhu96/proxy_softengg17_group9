@@ -26,6 +26,7 @@ import logging
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+# Implemented by Pavan
 @csrf_exempt
 def prof_home(request):
 	# add context as third arg to render
@@ -42,7 +43,7 @@ def prof_home(request):
 		messages.error(request,"You are not logged in.")
 		return redirect('/login/')
 
-
+# Implemented by Pavan
 @csrf_exempt
 def prof_course(request, c_id):
 	# add context as third arg to render
@@ -74,6 +75,7 @@ def prof_course(request, c_id):
 
 # def store_stud: doubt - where to create new student
 
+# Implemented by Pavan
 @csrf_exempt
 def daily_report(request, c_id, y, m, d):
 	# add context as third arg to render
@@ -113,6 +115,7 @@ def daily_report(request, c_id, y, m, d):
 		messages.error(request,"You are not logged in.")
 		return redirect('/login/')
 
+# Implemented by Pavan
 @csrf_exempt
 def prof_history(request, c_id):
 	# add context as third arg to render
@@ -151,6 +154,7 @@ def prof_history(request, c_id):
 		messages.error(request,"You are not logged in.")
 		return redirect('/login/')
 
+# Implemented by Pavan
 def upload_class_photos(request, c_id):
 	if request.user.is_authenticated() and request.user.is_staff:
 		log = logging.getLogger('prof_module')
@@ -166,6 +170,7 @@ def upload_class_photos(request, c_id):
 		messages.error(request,"You are not logged in.")
 		return redirect('/login/')
 
+# Implemented by Pavan
 @csrf_exempt
 def take_attendance(request, c_id):
 	# add context as third arg to render
@@ -193,7 +198,7 @@ def take_attendance(request, c_id):
 				path = default_storage.save(request.user.username+'/'+c_id+'/'+date_str2+'/'+i.name, ContentFile(i.read()))
 				paths += [os.path.join(settings.MEDIA_ROOT, path)]
 
-			## Added by SP - search in faceset
+			## Added by Srinidhi - starting a new process for making API calls to improve user experience.
 			date = date_str	# Currently setting today's date, change the date here.  -- Changed
 			args = []
 			args.append("python")
@@ -201,9 +206,8 @@ def take_attendance(request, c_id):
 			args.append(c_id)
 			args.append(date)
 			args = args + paths
-			#print args
 			subprocess.Popen(args)	# Creates a new thread which handles the updating of attendance.
-			## End of added by SP
+			## End of added by Srinidhi
 
 			log = logging.getLogger('prof_module')
 			log.info(request.user.first_name + " Professor uploaded files for " + c_id + " and took attendance for date " + date)
@@ -223,6 +227,7 @@ def take_attendance(request, c_id):
 		messages.error(request,"You are not logged in.")
 		return redirect('/login/')
 
+# Implemented by Pavan
 @csrf_exempt
 def prof_queries(request, c_id):
 	# add context as third arg to render
@@ -269,6 +274,7 @@ def prof_queries(request, c_id):
 		messages.error(request,"You are not logged in.")
 		return redirect('/login/')
 
+# Implemented by Pavan
 @csrf_exempt
 def view_images(request):
 	if request.user.is_authenticated() and request.user.is_staff:

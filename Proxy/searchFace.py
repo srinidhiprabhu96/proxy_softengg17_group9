@@ -11,6 +11,11 @@ from prof_module.models import *
 from django.contrib.auth.models import User
 import logging
 
+# This file includes code when a professor uploads photos for taking attendance. A separate process is started, so that the professor can continue to work on his page while the attendance is being recognized. This file is written by Srinidhi.
+
+# Assumption is that the image will be less than 2MB in size. This is because we are using Face++ free.
+
+# Set the logger.
 log = logging.getLogger('upload_attendance')
 hdlr = logging.FileHandler('logfile')
 hdlr.setLevel(logging.DEBUG)
@@ -25,17 +30,10 @@ log.info("Uploading attendance for "+course_number+" on "+date)
 image_paths = sys.argv[3:]
 date = datetime.datetime.strptime(date,'%Y-%m-%d').date()
 
-#print image_paths
-"""
-course_number = "CS1100"
-row_course = Course.objects.get(course_id=course_number)
-prof = row_course.taught_by
-stud1 = row_course.taken_by.all()[0]
-a = Attendance(course_id=course_number,student=stud1,prof=prof,is_present="1")
-a.save()
-"""
-atts = Attendance.objects.filter(course_id=course_number,date=date)
-if len(atts) == 0:
+
+atts = Attendance.objects.filter(course_id=course_number,date=date) # Get the attendances
+
+if len(atts) == 0:	# If the attendances are not present, then add the attendance records by setting default to "absent". As the faces are recognized, they will be changed to present.
 	try:
 		course = Course.objects.get(course_id=course_number)
 		students_in_course = course.taken_by.all()
@@ -49,9 +47,11 @@ if len(atts) == 0:
 else:
 	log.info("Attendance being updated")
 
+# For each image
 for image in image_paths:
-	faces = detectMultipleFaces(image)
-	for face in faces:
+	faces = detectMultipleFaces(image)	# Detect the faces and get the face tokens. 
+	
+	for face in faces:	# Search for each face in the corresponding faceset.
 		log.info("Face token "+face["face_token"]+" found in image")
 		response = searchFace(course_number,face_token=face["face_token"])
 		if response["results"][0]["confidence"] > 65.3:	# 65.3 is the threshold for error
@@ -68,6 +68,7 @@ for image in image_paths:
 			except:
 				row = None
 		else:
+			# If face in photo, but not in course, log a warning.
 			log.warning("Face not in course")
 			
 

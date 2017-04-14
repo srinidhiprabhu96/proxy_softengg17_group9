@@ -25,14 +25,13 @@ from django.contrib.auth import logout
 import logging
 
 
-# View that displays the page for signup.
-
+# View that displays the page for signup. Implemented by Srinidhi.
 def signup(request):
 	log = logging.getLogger('auth_module')
 	log.info("Signing up")
 	return render(request,'signup.html')
 
-# When the logout button is clicked, this function is invoked(see urls.py).
+# When the logout button is clicked, this function is invoked(see urls.py). Implemented by Srinidhi
 def logout_view(request):
 	log = logging.getLogger('auth_module')
 	log.info(request.user.first_name + " Logging out")
@@ -41,13 +40,12 @@ def logout_view(request):
 	# Redirect to the login page.
 	return redirect("/login/")
 
-# This function is called when the user clicks on the signup button.
+# This function is called when the user clicks on the signup button. Implemented by Srinidhi
 @csrf_exempt
 def before_verify(request):
 	if request.method == 'POST':		# If the method is POST, it means the request is coming from the signup page.
 		form = SignUpForm(request.POST)
 		if form.is_valid():		# Get the entered data as a form.
-
 			# Get form fields.
 			name = str(form.cleaned_data['name'])
 			email = str(form.cleaned_data['email'])
@@ -58,7 +56,6 @@ def before_verify(request):
 			if match:		# If the email is already present, just resend the mail.
 				row = match
 				if row.status == '0':
-					#sendEmail(row.name,row.email,row.code,row.account)
 					args = ["python","sendEmail.py",row.name,row.email,row.code,row.account]
 					subprocess.Popen(args)	# Creates a new thread which handles the updating of attendance.
 					messages.info(request,"Verification mail resent! Please check your inbox after some time.")
@@ -89,14 +86,7 @@ def before_verify(request):
 			signupobject = SignUp(name=name,email=email,code=code,account=account_label)
 			args = ["python","sendEmail.py",name,email,code,account_label]
 			subprocess.Popen(args)	# Creates a new thread which handles the updating of attendance.
-			messages.info(request,"Verification mail resent! Please check your inbox after some time.")
-
-			"""
-			if not mailSent:
-				# If there is some error while sending the mail, display an error message.
-				messages.error(request,"Something went wrong, please try again!")
-				return redirect("/signup/")
-			"""
+			messages.info(request,"Verification mail sent! Please check your inbox after some time.")
 
 			# Save the signup object only once mail is sent.
 			signupobject.save()
@@ -109,7 +99,7 @@ def before_verify(request):
 	messages.error(request,"Please use the signup page to get a verification mail.")
 	return redirect("/signup/")
 
-# The method called when the user clicks on the verification link.
+# The method called when the user clicks on the verification link. Implemented by Srinidhi
 def after_verify(request):
 	if request.method == 'GET':		# Use get request to send the verification code.
 		if not 'code' in request.GET.keys():
@@ -141,7 +131,7 @@ def after_verify(request):
 	# Redirect to signup page if request method is not GET.
 	return redirect("/signup/")
 
-# Generates a 32 character code that is not present in the SignUp table
+# Generates a 32 character code that is not present in the SignUp table. Implemented by Srinidhi
 def generateCode():
 	code = ''
 	codeLength = 32		# For more security, so that guessing the code is difficult.
@@ -151,7 +141,7 @@ def generateCode():
 		flag = len(SignUp.objects.filter(code=code))
 	return code
 
-# This method is called when the confirm signup button is clicked.
+# This method is called when the confirm signup button is clicked. Implemented by Srinidhi
 @csrf_exempt
 def finish_signup(request):
 	if request.method == 'POST':
@@ -161,8 +151,7 @@ def finish_signup(request):
 		password = request.POST['password']
 		confirm = request.POST['confirm_password']
 		if password == confirm:
-
-			hashed = make_password(password)		#Used for hashing the password. # Use a similar function check_password while trying to login.
+			hashed = make_password(password)		#Used for hashing the password. # Use a similar function authenticate while trying to login.
 			try:
 				row = SignUp.objects.get(email=email)	# Since email is unique
 			except:
@@ -191,11 +180,11 @@ def finish_signup(request):
 		return render(request,'password_signup_page.html',context)
 	return redirect("/signup/")
 
-# Initially, the website goes to the login page.
+# Initially, the website goes to the login page. Implemented by Srinidhi.
 def login_page(request):
 	return render(request, 'login.html')
 
-# Used for authenticating a user while logging in.
+# Used for authenticating a user while logging in. Implemented by Pavan
 @csrf_exempt
 def auth(request):
 	if request.method == 'POST':

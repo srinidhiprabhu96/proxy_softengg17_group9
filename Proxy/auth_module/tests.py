@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 
 # Create your tests here.
 
+# Test cases for auth module written by Hemanth
 class AuthTestCase(TestCase):
 
 	def setUp(self) :

@@ -5,6 +5,7 @@ from prof_module.models import *
 from stud_module.models import *
 import datetime
 
+# This file is written by Pavan.
 
 prof = User(username='prof@iitm.ac.in',first_name='Prof',email='prof@iitm.ac.in',password=make_password('123567'),is_staff=True)
 prof.save()

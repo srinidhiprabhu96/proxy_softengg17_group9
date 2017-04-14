@@ -7,6 +7,8 @@ from django.http.request import HttpRequest
 # Create your tests here.
 # To run these tests, "./manage.py test stud_module.tests" from Proxy.
 
+# Student test cases written by Srinidhi
+
 class StudentTestCase(TestCase):
 	def setUp(self):
 		self.client = Client()
@@ -28,26 +30,7 @@ class StudentTestCase(TestCase):
 		response = self.client.get('/login/')
 		self.assertEqual(response.status_code,200)
 		self.assertTemplateUsed(response,'login.html')
-	
-	"""
-	# A student logs in. Check if he is shown the stud_home page.	
-	def test_login_of_student(self):
-		self.client.login(username="testuser@smail.iitm.ac.in",password="123")
-		response = self.client.get('/stud_home/')
-		self.assertEqual(response.status_code,200)
-		self.assertTemplateUsed(response,'stud_home.html')
-	
-	# Prof tries to access student home page	
-	def test_prof_access_to_student_home(self):
-		self.client.login(username="testprof@smail.iitm.ac.in",password="123")
-		response = self.client.get('/stud_home/')
-		self.assertRedirects(response,'/login/',status_code=302, target_status_code=200)
-	
-	# A person who is not logged in tries to access the student home page
-	def test_unknown_access_to_student_home(self):
-		response = self.client.get('/stud_home/')
-		self.assertRedirects(response,'/login/',status_code=302, target_status_code=200)
-	"""	
+
 	def test_stud_home(self):
 		# If student logs in, he must be shown the student's home page.
 		self.client.login(username="testuser@smail.iitm.ac.in",password="123")

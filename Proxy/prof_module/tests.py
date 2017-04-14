@@ -7,7 +7,7 @@ from django.http.request import HttpRequest
 import datetime
 
 # Create your tests here.
-
+# Tests for prof module written by Pavan
 class ProfTestCase(TestCase):
 	def setUp(self):
 		self.client = Client()
