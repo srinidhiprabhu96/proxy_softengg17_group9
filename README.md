@@ -15,8 +15,8 @@ To run the server:
 	`cd Proxy`  
 	`python manage.py runserver`
 
-If running the server for the first time, you may have to run migrations:
-	`python manage.py makemigrations auth_module stud_module prof_module`
+If running the server for the first time, you may have to run migrations:        
+	`python manage.py makemigrations auth_module stud_module prof_module`         
 	`python manage.py migrate`
 
 Then on your browser type the address(for example 127.0.0.1:8080) to go to the login page.  
