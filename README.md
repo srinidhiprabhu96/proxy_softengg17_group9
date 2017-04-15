@@ -24,9 +24,9 @@ Then on your browser type the address(for example 127.0.0.1:8080) to go to the l
 We use the default Django "User" model (in django.contrib.auth.models) to store the users. This makes logging in and logging out, checking if the person trying to access the page is logged in etc. easier. We use the is_staff attribute to check if the user is a professor or a student.
 
 To make sure that changes in models(models are similar to tables for the DB) take place, do:  
-	`python manage.py check`  
-	`python manage.py makemigrations <module_name>`
-	`python manage.py migrate`  
+	`python manage.py check`     
+	`python manage.py makemigrations <module_name>`        
+	`python manage.py migrate`    
 	In case of any errors, resolve them.  
 
 To access the DB from command line:  
@@ -54,9 +54,9 @@ Common static includes all the static files such as JS and CSS files used across
 
 dummy_entries.py  
 	This file includes code to add some database entries. To run the script:
-	`python manage.py shell`
+	`python manage.py shell`       
 	In the shell, run:
-	`execfile("dummy_entries.py")`
+	`execfile("dummy_entries.py")`      
 	If there are errors, manually copy-paste the lines of the code from the file into the shell to add the database entries.
 
 All photos uploaded by a professor are included in the "media" folder.
