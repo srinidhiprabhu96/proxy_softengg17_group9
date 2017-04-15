@@ -53,9 +53,9 @@ ADMIN SIDE
 Common static includes all the static files such as JS and CSS files used across the various HTML pages.
 
 dummy_entries.py  
-	This file includes code to add some database entries. To run the script:
+	This file includes code to add some database entries. To run the script:       
 	`python manage.py shell`       
-	In the shell, run:
+	In the shell, run:     
 	`execfile("dummy_entries.py")`      
 	If there are errors, manually copy-paste the lines of the code from the file into the shell to add the database entries.
 
