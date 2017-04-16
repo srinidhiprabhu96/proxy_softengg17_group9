@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 import logging
 
-# This method is called when a student logs in. Implemented by Vinod.
+# This method is called when a student logs in. Implemented by Vinod and Hemanth.
 @csrf_exempt
 def stud_home(request):
 	user = request.user
@@ -54,7 +54,7 @@ def stud_home(request):
 		messages.error(request,"You are not logged in.")
 		return redirect('/login/')
 
-# This method is called when a student wants to view a particular course. Implemented by Vinod.
+# This method is called when a student wants to view a particular course. Implemented by Vinod and Hemanth.
 @csrf_exempt
 def stud_course(request, c_id):
 	user = request.user

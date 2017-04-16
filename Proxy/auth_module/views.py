@@ -34,7 +34,10 @@ def signup(request):
 # When the logout button is clicked, this function is invoked(see urls.py). Implemented by Srinidhi
 def logout_view(request):
 	log = logging.getLogger('auth_module')
-	log.info(request.user.first_name + " Logging out")
+	try:
+		log.info(request.user.first_name + " Logging out")
+	except:
+		pass
 	logout(request)		# The current user is logged out.
 	messages.info(request,"You have logged out successfully!")
 	# Redirect to the login page.
