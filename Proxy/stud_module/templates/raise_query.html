@@ -4,12 +4,9 @@
 	</head>
 	{% load static %}
 	<link rel="stylesheet" href="{% static "css/stud.css"%}">
-	<link rel="stylesheet" href="{% static "css/bootstrap.css"%}">
-	<link rel="stylesheet" href="{% static "css/bootstrap.css.map"%}">
 	<link rel="stylesheet" href="{% static "css/bootstrap.min.css"%}">
 	<link rel="stylesheet" href="{% static "css/bootstrap.min.css.map"%}">
 	<script src="{% static "js/bootstrap.min.js" %}"></script>
-	<script src="{% static "js/bootstrap.js" %}"></script>
 	<script type="text/javascript" src="{% static "js/datepicker.js" %}"></script>
 	<body>
 		<div class="box1">
@@ -22,14 +19,12 @@
     	<div class="box2">
     		<br>
 			<p>Hello, {{user.first_name}}<br> Raise your query for {{course}}  on {{date}} here.</p>
-			<!--<h1>Raise query</h1>-->
 			<form action="/query/{{course}}/" method="post" id="queryform">
 				<span style="font-weight: bold;">Date:<input type="text" name="date" id="datepicker" value="{{date}}" readonly="readonly"><br><br>
 				<p style="font-weight: bold;">Query:</p>
 				<textarea class="area" name="query" form="queryform" maxlength="500" cols="50" rows="10"></textarea><br><br>
 				<input id="home5" class="btn btn-success" type="submit" value="Submit"><br>
 			</form>
-			<!--<a href="/stud_course/{{course}}"><button id="home4" type="button" class="btn btn-info">Back to course page</button></a><br><br>-->
 			<form action="/stud_history/{{course}}/" method="post">
 				<span style="visibility:hidden"><span style="font-weight: bold;">Date:<input type="text" name="date" id="datepicker" value="{{date}}" readonly="readonly"></span></span><br>
 				<input id="home4" class="btn btn-info" type="submit" value="Back to view history"><br>

@@ -1,23 +1,17 @@
 <html>
 <head>
     <title>Daily Report</title>
-    <style>
-            .error {color: red;}
-            .info  {color: green;}
-        </style>
 </head>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
 {% load static %}
 <link rel="stylesheet" href="{% static "css/prof_style.css"%}">
 <link rel="stylesheet" href="{% static "css/options_colors.css"%}">
-<link rel="stylesheet" href="{% static "css/bootstrap.css"%}">
-<link rel="stylesheet" href="{% static "css/bootstrap.css.map"%}">
+<link rel="stylesheet" href="{% static "css/bootstrap.min.css"%}">
+<link rel="stylesheet" href="{% static "css/bootstrap.min.css.map"%}">
 <script src="{% static "js/bootstrap.min.js" %}"></script>
-<script src="{% static "js/bootstrap.js" %}"></script>
-    <link rel="stylesheet" type="text/css" href="{% static "css/jquery-ui.min.css" %}">
-    <script type="text/javascript" src="{% static "js/jquery.min.js" %}"></script>
-    <script type="text/javascript" src="{% static "js/jquery-ui.min.js" %}"></script>
-    <script type="text/javascript" src="{% static "js/datepicker.js" %}"></script>
+<link rel="stylesheet" type="text/css" href="{% static "css/jquery-ui.min.css" %}">
+<script type="text/javascript" src="{% static "js/jquery.min.js" %}"></script>
+<script type="text/javascript" src="{% static "js/jquery-ui.min.js" %}"></script>
+<script type="text/javascript" src="{% static "js/datepicker.js" %}"></script>
 <body>
 <div class = "box1">
     <h1 class = "head2">{{course_id}} Daily Report Page</h1>
@@ -32,7 +26,6 @@
 	<br>
 	{% if attendance %}
 		<h3>Uploaded Images</h3>
-		{% load static %}
 		{% for i in files %}
 		{% with user.username|add:'/'|add:course_id|add:'/'|add:date_url|add:'/'|add:i as image_static %}
 		<img src="{% static image_static %}" alt="{{i}}" style="height: 30%;"/>

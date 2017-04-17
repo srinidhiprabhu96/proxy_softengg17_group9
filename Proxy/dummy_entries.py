@@ -20,7 +20,7 @@ c1.save()
 c2.save()
 
 a1 = Attendance(course_id='CS1100',student=s1,prof=prof,is_present='0',date=datetime.date(2017,4,1))
-a2 = Attendance(course_id='CS1100',student=s2,prof=prof,is_present='1')
+a2 = Attendance(course_id='CS1100',student=s2,prof=prof,is_present='1',date=datetime.date(2017,4,2))
 a3 = Attendance(course_id='CS1300',student=s1,prof=prof,is_present='1')
 a4 = Attendance(course_id='CS1300',student=s2,prof=prof,is_present='0')
 a1.save()
